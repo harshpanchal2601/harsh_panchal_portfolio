@@ -1,26 +1,195 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-void: var(--void);
+  --color-ink: var(--ink);
+  --color-charcoal: var(--charcoal);
+  --color-graphite: var(--graphite);
+  --color-mist: var(--mist);
+  --color-smoke: var(--smoke);
+  --color-ash: var(--ash);
+  --color-champagne: var(--champagne);
+  --color-bronze: var(--bronze);
+  --color-copper: var(--copper);
+  --color-steel: var(--steel);
+  --color-sage: var(--sage);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-inter);
+  --font-display: var(--font-dm-sans);
+  --font-heading: var(--font-dm-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --void: #101415;
+  --ink: #0b0f10;
+  --charcoal: #1d2022;
+  --graphite: #323537;
+  --mist: #e0e3e5;
+  --smoke: #c7c4d7;
+  --ash: #908fa0;
+  --champagne: #c0c1ff;
+  --bronze: #8083ff;
+  --copper: #d0bcff;
+  --steel: #adc6ff;
+  --sage: #d8e2ff;
+  --background: #101415;
+  --foreground: #e0e3e5;
+  --card: #1d2022;
+  --card-foreground: #e0e3e5;
+  --popover: #191c1e;
+  --popover-foreground: #e0e3e5;
+  --primary: #c0c1ff;
+  --primary-foreground: #1000a9;
+  --secondary: #adc6ff;
+  --secondary-foreground: #002e6a;
+  --muted: #1d2022;
+  --muted-foreground: #c7c4d7;
+  --accent: #d0bcff;
+  --accent-foreground: #3c0091;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: #464554;
+  --input: #323537;
+  --ring: #c0c1ff;
+  --chart-1: var(--champagne);
+  --chart-2: var(--steel);
+  --chart-3: var(--sage);
+  --chart-4: var(--copper);
+  --chart-5: var(--bronze);
+  --radius: 0.125rem;
+  --sidebar: var(--ink);
+  --sidebar-foreground: var(--mist);
+  --sidebar-primary: var(--champagne);
+  --sidebar-primary-foreground: var(--void);
+  --sidebar-accent: var(--charcoal);
+  --sidebar-accent-foreground: var(--mist);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--champagne);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply h-full scroll-smooth font-sans;
+    color-scheme: dark;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply min-h-full bg-background text-foreground antialiased;
+    background:
+      radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(6, 182, 212, 0.1) 0px, transparent 50%),
+      var(--background);
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--champagne) 38%, transparent);
+    color: var(--mist);
+  }
+  a {
+    @apply underline-offset-4;
+  }
+  button,
+  a {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .mesh-gradient {
+    background:
+      radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(16, 20, 21, 1) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(6, 182, 212, 0.1) 0px, transparent 50%);
+  }
+
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(32px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .hero-image-mask {
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+
+  .kinetic-text {
+    -webkit-text-stroke: 1px rgba(224, 227, 229, 0.15);
+    color: transparent;
+  }
+
+  .journey-line {
+    background: linear-gradient(to bottom, transparent, #c0c1ff, transparent);
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
