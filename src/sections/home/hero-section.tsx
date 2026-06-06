@@ -25,7 +25,7 @@ export function HeroSection() {
         />
 
         <motion.div
-          className="relative z-10 flex w-full max-w-[1180px] flex-1 flex-col justify-end md:justify-center md:min-h-[720px]"
+          className="relative z-10 flex w-full max-w-[1180px] flex-1 flex-col justify-end pb-8 md:min-h-[720px] md:justify-center md:pb-0"
           initial={{ opacity: 0, y: 40 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           animate={{ opacity: 1, y: 0 }}
@@ -56,10 +56,10 @@ export function HeroSection() {
           </div>
         </motion.div>
 
-        <div className="pointer-events-none absolute inset-0 z-[1] flex h-full w-full justify-center md:bottom-0 md:right-0 md:inset-auto md:mt-0 md:h-full md:w-[52%] md:items-end md:justify-end lg:w-[56%]">
+        <div className="pointer-events-none absolute inset-0 z-[1] flex h-full w-full justify-center md:bottom-0 md:right-0 md:inset-auto md:mt-0 md:h-full md:w-[48%] md:items-start md:justify-end lg:w-[52%]">
           <Image
             alt="Harsh Panchal Professional Portrait"
-            className="h-full w-full object-cover object-[center_top] md:h-auto md:max-w-[700px] md:object-contain lg:max-w-[760px]"
+            className="h-full w-full object-cover object-[center_top] md:h-full md:max-h-[92vh] md:w-auto md:max-w-[640px] md:object-contain md:object-[center_top] lg:max-w-[700px]"
             height={1440}
             priority
             src="/images/profile.png"
