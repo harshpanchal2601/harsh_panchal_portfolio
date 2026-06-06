@@ -18,15 +18,15 @@ const footerLinks = [
 
 export function SiteFooter() {
   return (
-    <footer className="flex w-full flex-col items-start overflow-hidden bg-background px-[5vw] py-32">
-      <div className="mb-12 font-display text-[80px] font-bold leading-none tracking-[-0.05em] text-foreground">
+    <footer className="flex w-full flex-col items-start overflow-hidden border-t border-border/30 bg-background px-[5vw] py-16 md:py-24">
+      <div className="mb-10 font-display text-[56px] font-bold leading-none tracking-[-0.05em] text-foreground md:text-[80px]">
         HP.
       </div>
       <div className="flex w-full flex-col gap-12 md:flex-row md:items-end md:justify-between">
         <nav aria-label="Footer links" className="flex flex-col gap-4">
           {footerLinks.map((link) => (
             <Link
-              className="font-display text-[64px] font-bold uppercase leading-none text-muted-foreground transition-all duration-500 hover:text-accent hover:tracking-widest md:text-[120px]"
+              className="font-display text-[38px] font-bold uppercase leading-none text-muted-foreground transition-all duration-500 hover:text-accent hover:tracking-widest sm:text-[48px] md:text-[96px] lg:text-[112px]"
               href={link.href}
               key={link.label}
               rel={link.href.startsWith("http") ? "noreferrer" : undefined}
@@ -36,7 +36,7 @@ export function SiteFooter() {
             </Link>
           ))}
         </nav>
-        <p className="text-right text-xs font-semibold uppercase leading-relaxed tracking-widest text-muted-foreground">
+        <p className="text-left text-xs font-semibold uppercase leading-relaxed tracking-widest text-muted-foreground md:text-right">
           &copy; {new Date().getFullYear()} {SITE_METADATA.name}.
           <br />
           Architecting the Infinite.

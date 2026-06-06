@@ -1,49 +1,61 @@
 import { Reveal } from "@/components/motion/reveal";
 
-const journeyParagraphs = [
-  "My journey into software development started with curiosity and gradually evolved into a professional career centered around building production systems.",
-  "While pursuing my Bachelor of Science (Computer Applications & Information Technology) at K. S. School of Business Management & Information Technology, Gujarat University, I focused heavily on practical engineering experience beyond academics.",
-  "From learning HTML, CSS, and JavaScript fundamentals to mastering modern frameworks, backend systems, cloud infrastructure, and deployment pipelines, every project became an opportunity to deepen my engineering skills.",
-  "Today, I work as a Full Stack Developer at Shambhavi Technovation, contributing to large-scale products, leading technical initiatives, and building solutions used by real businesses and customers.",
+const journeySteps = [
+  {
+    year: "2022",
+    title: "Academic Foundation",
+    text: "Built the computer science base through CA & IT coursework, programming fundamentals, databases, and web technologies.",
+  },
+  {
+    year: "2023",
+    title: "Full Stack Learning",
+    text: "Moved from fundamentals into modern frontend, backend APIs, JavaScript ecosystems, and practical application structure.",
+  },
+  {
+    year: "2024",
+    title: "Real Project Building",
+    text: "Converted learning into shipped project work across product interfaces, backend workflows, deployments, and client needs.",
+  },
+  {
+    year: "2025",
+    title: "Production & Leadership",
+    text: "Stepped into production systems, AWS infrastructure, CI/CD, and team-level ownership at Shambhavi Technovation.",
+  },
 ] as const;
 
 export function CareerJourneySection() {
   return (
-    <section className="bg-[#323537]/30 px-[5vw] py-[160px]" id="journey">
+    <section className="border-y border-border/20 bg-[#323537]/30 px-[5vw] py-20 md:py-28 lg:py-32" id="journey">
       <div className="mx-auto max-w-6xl">
         <Reveal>
-          <h2 className="mb-24 text-center font-display text-[48px] font-bold leading-[1.2] tracking-[-0.02em]">
+          <h2 className="mb-14 text-center font-display text-[38px] font-bold leading-[1.12] tracking-[-0.025em] md:mb-20 md:text-[60px]">
             A Non-Linear Evolution
           </h2>
         </Reveal>
         <div className="relative">
           <div className="journey-line absolute left-1/2 top-0 bottom-0 hidden w-px -translate-x-1/2 opacity-30 md:block" />
-          <div className="space-y-32">
-            {journeyParagraphs.map((paragraph, index) => (
+          <div className="space-y-12 md:space-y-20">
+            {journeySteps.map((step, index) => (
               <Reveal
-                className={`relative flex flex-col items-center gap-12 md:flex-row ${
+                className={`relative flex flex-col items-start gap-5 md:flex-row md:items-center md:gap-12 ${
                   index % 2 === 1 ? "md:flex-row-reverse" : ""
                 }`}
-                key={paragraph}
+                key={step.year}
               >
                 <div
                   className={`w-full md:w-1/2 ${
                     index % 2 === 0 ? "md:text-right" : ""
                   }`}
                 >
-                  <span className="mb-2 block text-2xl font-bold text-primary">
-                    0{index + 1}
+                  <span className="mb-2 block font-display text-[44px] font-bold leading-none tracking-[-0.03em] text-primary md:text-[56px]">
+                    {step.year}
                   </span>
-                  <h3 className="mb-4 font-display text-[32px] font-bold leading-[1.2] tracking-[-0.02em]">
-                    {index === 0
-                      ? "Curiosity"
-                      : index === 1
-                        ? "Practical Engineering"
-                        : index === 2
-                          ? "Modern Systems"
-                          : "Production Work"}
+                  <h3 className="mb-3 font-display text-[28px] font-bold leading-[1.2] tracking-[-0.02em] md:text-[32px]">
+                    {step.title}
                   </h3>
-                  <p className="text-muted-foreground">{paragraph}</p>
+                  <p className="text-base leading-relaxed text-muted-foreground">
+                    {step.text}
+                  </p>
                 </div>
                 <div className="absolute left-1/2 z-10 hidden size-4 -translate-x-1/2 rounded-full border-4 border-background bg-primary md:block" />
                 <div className="w-full md:w-1/2" />

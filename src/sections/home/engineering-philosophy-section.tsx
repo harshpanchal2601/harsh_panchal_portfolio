@@ -8,15 +8,15 @@ const philosophyParagraphs = [
 
 export function EngineeringPhilosophySection() {
   return (
-    <section className="relative overflow-hidden bg-black px-[5vw] py-[160px] text-center">
+    <section className="relative overflow-hidden border-y border-border/20 bg-black px-[5vw] py-20 text-center md:py-28 lg:py-32">
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-10">
-        <span className="whitespace-nowrap text-[30vw] font-bold text-white">
+        <span className="whitespace-nowrap text-[22vw] font-bold text-white">
           CODE IS ART
         </span>
       </div>
       <div className="relative z-10 mx-auto max-w-4xl">
         <Reveal>
-          <h2 className="mb-16 font-display text-[48px] font-bold leading-[1.2] tracking-[-0.02em] md:text-[80px]">
+          <h2 className="mb-12 font-display text-[38px] font-bold leading-[1.12] tracking-[-0.025em] md:mb-16 md:text-[60px]">
             The Philosophy
           </h2>
         </Reveal>
@@ -30,7 +30,7 @@ export function EngineeringPhilosophySection() {
                     ? "Maintainable"
                     : "User-Focused"}
               </h4>
-              <p className="text-lg leading-[1.8] text-muted-foreground">
+              <p className="text-base leading-[1.75] text-muted-foreground md:text-lg">
                 {paragraph}
               </p>
             </Reveal>

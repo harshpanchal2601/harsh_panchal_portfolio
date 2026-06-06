@@ -14,101 +14,133 @@ const projectVisuals = [
 export function FeaturedProjectsSection() {
   return (
     <section
-      className="space-y-[160px] px-[5vw] py-[160px]"
+      className="border-t border-border/20 px-[5vw] py-20 md:py-28 lg:py-32"
       id="work"
     >
-      {primaryProjectPreviews.map((project, index) => (
-        <Reveal
-          className={`group flex flex-col items-center gap-8 md:flex-row ${
-            index === 1 ? "md:flex-row-reverse" : ""
-          }`}
-          key={project.slug}
-        >
-          <Link
-            className={`relative w-full cursor-pointer overflow-hidden rounded-lg ${
-              index === 0 ? "md:w-[60%]" : "md:w-[50%]"
+      <div className="mx-auto max-w-7xl space-y-20 md:space-y-28">
+        {primaryProjectPreviews.map((project, index) => (
+          <Reveal
+            className={`group grid items-center gap-8 md:grid-cols-12 md:gap-12 ${
+              index === 1 ? "md:[&>*:first-child]:order-2" : ""
             }`}
-            href={project.href}
+            key={project.slug}
           >
-            <div className="absolute inset-0 z-10 flex items-center justify-center bg-primary/20 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
-              <span className="translate-y-10 rounded-full bg-white px-8 py-4 font-bold text-black transition-transform duration-500 group-hover:translate-y-0">
-                View Project Details
-              </span>
-            </div>
-            <div
-              className={`h-[600px] w-full scale-100 transition-all duration-1000 group-hover:scale-105 ${
-                projectVisuals[index]
-              } ${index === 0 ? "grayscale group-hover:grayscale-0" : ""}`}
+            <Link
+              className="relative block w-full cursor-pointer overflow-hidden rounded-lg border border-border/40 md:col-span-7"
+              href={project.href}
             >
-              <div className="grid h-full place-items-center">
-                <div className="w-[72%] border border-border/60 bg-background/20 p-8 backdrop-blur-sm">
-                  <div className="mb-8 h-px bg-primary/70" />
-                  <p className="font-display text-[48px] font-bold tracking-[-0.03em]">
-                    {project.title}
-                  </p>
-                  <p className="mt-4 text-muted-foreground">{project.role}</p>
+              <div className="absolute inset-0 z-10 flex items-end justify-start bg-black/0 p-5 transition-colors duration-700 group-hover:bg-black/10 md:p-8">
+                <span className="inline-flex translate-y-4 items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold text-black opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+                  View Project Details
+                  <ArrowRight aria-hidden="true" size={16} />
+                </span>
+              </div>
+              <div
+                className={`h-[360px] w-full transition-transform duration-1000 group-hover:scale-[1.02] md:h-[560px] ${
+                  projectVisuals[index]
+                }`}
+              >
+                <div className="grid h-full place-items-center p-5 md:p-10">
+                  <div className="w-full max-w-[520px] border border-border/50 bg-background/25 p-5 backdrop-blur-sm md:p-8">
+                    <div className="mb-6 flex items-center justify-between gap-4 text-xs font-semibold uppercase tracking-[0.24em] text-primary">
+                      <span>Primary Build</span>
+                      <span>0{index + 1}</span>
+                    </div>
+                    <p className="font-display text-[34px] font-bold leading-tight tracking-[-0.03em] md:text-[48px]">
+                      {project.title}
+                    </p>
+                    <p className="mt-4 text-sm leading-relaxed text-muted-foreground md:text-base">
+                      {project.role}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
 
-          <div
-            className={`flex w-full flex-col items-start ${
-              index === 0 ? "md:w-[40%] md:pl-8" : "md:mr-[10%] md:w-[40%]"
-            }`}
-          >
-            <span className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-              Case Study 0{index + 1}
-            </span>
-            <h3 className="mb-6 font-display text-[48px] font-bold leading-[1.2] tracking-[-0.02em]">
-              {project.title}
-            </h3>
-            <p className="mb-8 text-lg leading-relaxed text-muted-foreground">
-              {project.summary}
-            </p>
-            <div className="mb-8 flex flex-wrap gap-4">
-              {project.tech.slice(0, 3).map((technology) => (
-                <span
-                  className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground"
-                  key={technology}
-                >
-                  {technology}
+            <div className="flex w-full flex-col items-start md:col-span-5">
+              <span className="mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-primary">
+                Case Study 0{index + 1}
+              </span>
+              <h3 className="mb-4 font-display text-[36px] font-bold leading-[1.12] tracking-[-0.025em] md:text-[48px]">
+                {project.title}
+              </h3>
+              <p className="mb-5 text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                {project.role}
+              </p>
+              <div className="mb-6 border-l border-primary/50 pl-5">
+                <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+                  Problem
                 </span>
-              ))}
+                <p className="text-base leading-relaxed text-muted-foreground md:text-lg">
+                  {project.challenge}
+                </p>
+              </div>
+              <p className="mb-7 text-base leading-relaxed text-muted-foreground">
+                {project.summary}
+              </p>
+              <div className="mb-8 flex flex-wrap gap-3">
+                {project.tech.slice(0, 5).map((technology) => (
+                  <span
+                    className="rounded-full border border-border/80 px-3 py-1 text-xs text-muted-foreground"
+                    key={technology}
+                  >
+                    {technology}
+                  </span>
+                ))}
+              </div>
+              <Link
+                className="group/link inline-flex items-center gap-2 text-base font-bold text-foreground transition-colors hover:text-primary md:text-lg"
+                href={project.href}
+              >
+                Explore Story
+                <ArrowRight
+                  aria-hidden="true"
+                  className="transition-transform group-hover/link:translate-x-2"
+                  size={20}
+                />
+              </Link>
             </div>
-            <Link
-              className="group/link flex items-center gap-2 text-xl font-bold text-foreground transition-colors hover:text-primary"
-              href={project.href}
-            >
-              Explore Story
-              <ArrowRight
-                aria-hidden="true"
-                className="transition-transform group-hover/link:translate-x-2"
-              />
-            </Link>
-          </div>
-        </Reveal>
-      ))}
-
-      <div className="grid gap-12 md:grid-cols-2">
-        {secondaryProjectPreviews.map((project, index) => (
-          <Reveal className="border-t border-border/40 pt-8" key={project.slug}>
-            <span className="mb-4 block text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-              Additional Work 0{index + 3}
-            </span>
-            <h3 className="mb-5 font-display text-[32px] font-bold leading-[1.2] tracking-[-0.02em]">
-              {project.title}
-            </h3>
-            <p className="mb-6 text-muted-foreground">{project.summary}</p>
-            <Link
-              className="inline-flex items-center gap-2 font-bold text-foreground transition-colors hover:text-primary"
-              href={project.href}
-            >
-              View Case Study
-              <ArrowRight aria-hidden="true" size={18} />
-            </Link>
           </Reveal>
         ))}
+
+        <div className="grid gap-6 md:grid-cols-2">
+          {secondaryProjectPreviews.map((project, index) => (
+            <Reveal
+              className="border-t border-border/40 pt-8"
+              key={project.slug}
+            >
+              <span className="mb-4 block text-xs font-semibold uppercase tracking-[0.24em] text-primary">
+                Additional Work 0{index + 3}
+              </span>
+              <h3 className="mb-3 font-display text-[30px] font-bold leading-[1.15] tracking-[-0.02em] md:text-[34px]">
+                {project.title}
+              </h3>
+              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                {project.role}
+              </p>
+              <p className="mb-5 text-base leading-relaxed text-muted-foreground">
+                {project.challenge}
+              </p>
+              <div className="mb-6 flex flex-wrap gap-2">
+                {project.tech.slice(0, 4).map((technology) => (
+                  <span
+                    className="rounded-full border border-border/70 px-3 py-1 text-xs text-muted-foreground"
+                    key={technology}
+                  >
+                    {technology}
+                  </span>
+                ))}
+              </div>
+              <Link
+                className="inline-flex items-center gap-2 font-bold text-foreground transition-colors hover:text-primary"
+                href={project.href}
+              >
+                View Case Study
+                <ArrowRight aria-hidden="true" size={18} />
+              </Link>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -4,9 +4,9 @@ import { MAIN_NAVIGATION, SITE_ROUTES } from "@/constants/routes";
 
 export function SiteHeader() {
   return (
-    <header className="fixed top-0 z-50 flex w-full items-center justify-between bg-transparent px-[5vw] py-8">
+    <header className="fixed top-0 z-50 flex w-full items-center justify-between bg-background/35 px-[5vw] py-5 backdrop-blur-xl md:bg-transparent md:py-8 md:backdrop-blur-none">
         <Link
-          className="font-display text-[44px] font-bold leading-none tracking-[-0.06em] text-foreground transition-colors hover:text-primary md:text-[56px]"
+          className="font-display text-[40px] font-bold leading-none tracking-[-0.06em] text-foreground transition-colors hover:text-primary md:text-[56px]"
           href={SITE_ROUTES.home}
         >
           HP.

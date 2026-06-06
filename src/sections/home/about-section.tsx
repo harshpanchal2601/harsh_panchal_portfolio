@@ -10,8 +10,8 @@ const aboutParagraphs = [
 
 export function AboutSection() {
   return (
-    <section className="relative px-[5vw] py-[160px]" id="about">
-      <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-12">
+    <section className="relative border-t border-border/20 px-[5vw] py-20 md:py-28 lg:py-32" id="about">
+      <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-12">
         <Reveal className="group relative md:col-span-5">
           <div className="absolute -inset-4 bg-primary/20 opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100" />
           <Image
@@ -24,14 +24,14 @@ export function AboutSection() {
         </Reveal>
 
         <Reveal className="md:col-span-7 md:pl-20">
-          <span className="mb-6 block text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+          <span className="mb-5 block text-xs font-semibold uppercase tracking-[0.24em] text-primary">
             The Mindset
           </span>
-          <h2 className="mb-8 font-display text-[32px] font-bold leading-[1.1] tracking-[-0.02em] text-foreground md:text-[80px]">
+          <h2 className="mb-7 font-display text-[34px] font-bold leading-[1.12] tracking-[-0.025em] text-foreground md:text-[56px] lg:text-[64px]">
             I architect <span className="text-secondary italic">digital reality</span>{" "}
             from production needs.
           </h2>
-          <div className="max-w-2xl space-y-6 text-lg leading-[1.8] tracking-[0.01em] text-muted-foreground">
+          <div className="max-w-2xl space-y-5 text-base leading-[1.75] tracking-[0.01em] text-muted-foreground md:text-lg">
             {aboutParagraphs.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
