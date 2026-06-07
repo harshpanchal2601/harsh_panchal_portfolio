@@ -2,17 +2,17 @@ import { Reveal } from "@/components/motion/reveal";
 
 export function EducationSection() {
   return (
-    <section className="border-t border-border/30 px-[5vw] py-20 md:py-28 lg:py-32">
+    <section className="border-t border-border px-[5vw] py-18 md:py-24 lg:py-28">
       <div className="mx-auto max-w-4xl">
         <Reveal>
-          <span className="mb-10 block text-center text-xs font-semibold uppercase tracking-[0.24em] text-primary">
-            Academic Roots
+          <span className="mb-10 block text-center text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+            Education
           </span>
         </Reveal>
         <div className="space-y-14 md:space-y-20">
           <div className="group flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
             <div>
-              <h3 className="font-display text-[38px] font-bold leading-tight tracking-[-0.025em] md:text-[56px]">
+              <h3 className="font-display text-[32px] font-bold leading-tight md:text-[44px] lg:text-[48px]">
                 Bachelor of Science
                 <br />
                 CA & IT
@@ -23,18 +23,17 @@ export function EducationSection() {
               <p className="mt-2 text-muted-foreground">Gujarat University</p>
             </div>
             <div className="text-left md:text-right">
-              <span className="font-display text-[40px] font-bold leading-[1.2] tracking-[-0.02em] text-border transition-colors group-hover:text-primary md:text-[48px]">
+              <span className="font-display text-[34px] font-bold leading-[1.2] text-muted-foreground transition-colors group-hover:text-primary md:text-[42px]">
                 2025
               </span>
             </div>
           </div>
           <Reveal>
             <p className="max-w-3xl text-base leading-[1.75] text-muted-foreground md:text-lg">
-              Focused on software development, web technologies, databases, and
-              practical application development. Alongside academic learning, I
-              invested heavily in hands-on engineering experience through
-              real-world projects, cloud deployments, backend architecture, and
-              modern JavaScript ecosystems.
+              My coursework covered software development, web technologies,
+              databases, and application development. Outside the classroom, I
+              spent most of my time building projects, learning deployments, and
+              improving my backend and JavaScript skills.
             </p>
           </Reveal>
         </div>

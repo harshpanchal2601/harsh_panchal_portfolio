@@ -9,9 +9,9 @@ export const featuredProjectPreviews = [
     liveUrl: "https://wikipoint.ai",
     role: "Full Stack Engineer & AWS/DevOps",
     summary:
-      "An AI platform that builds and manages complete digital presence in around 90 seconds, including dynamic websites, AI assistants, social content, and immersive 3D spaces.",
+      "AI platform for building and managing digital presence, including websites, AI assistants, content workflows, and deployment support.",
     challenge:
-      "Turning a complex multi-product AI workflow into fast, reliable infrastructure that can generate, deploy, and manage digital presence at speed.",
+      "Making a multi-part AI workflow feel reliable, fast, and manageable in production.",
     tech: [
       "MEAN Stack",
       "RAG",
@@ -30,9 +30,9 @@ export const featuredProjectPreviews = [
     liveUrl: "https://beige.app",
     role: "Full Stack Developer / Main Developer",
     summary:
-      "A photography and videography booking platform for Beige Studio with AI matchmaking, CRM workflows, end-to-end payments, and multiple role-based panels for sales, CPs, users, clients, admins, and super admins.",
+      "Photography and videography booking and CRM platform with AI matchmaking, payments, and role-based dashboards.",
     challenge:
-      "Unifying booking, operations, CRM workflows, payments, and role-based access into one polished product experience.",
+      "Bringing bookings, CRM workflows, payments, and different user roles into one product.",
     tech: [
       "Next.js",
       "Node.js",
@@ -52,9 +52,9 @@ export const featuredProjectPreviews = [
     liveUrl: undefined,
     role: "Junior Full Stack Developer",
     summary:
-      "An enterprise ERP system for electronics inventory and operations management, covering stock tracking, product workflows, reporting, and role-based access.",
+      "Inventory and operations system for electronics management, including stock workflows, reporting, and role-based access.",
     challenge:
-      "Supporting inventory-heavy operational workflows with clear data flow, reporting, and controlled access.",
+      "Keeping inventory-heavy workflows clear, trackable, and easy to manage.",
     tech: ["React/Angular", "Node.js", "Express.js", "MongoDB", "REST APIs"],
   },
   {
@@ -64,9 +64,9 @@ export const featuredProjectPreviews = [
     liveUrl: undefined,
     role: "Junior Full Stack Developer",
     summary:
-      "An HR platform for employee lifecycle management, attendance, leave tracking, role management, and administrative workflows.",
+      "Employee, attendance, and HR operations platform for internal team management.",
     challenge:
-      "Streamlining internal HR operations while keeping employee data, permissions, and admin workflows manageable.",
+      "Making employee data, attendance, leave, permissions, and admin workflows easier to handle.",
     tech: ["React/Angular", "Node.js", "Express.js", "MongoDB", "REST APIs"],
   },
 ] as const satisfies readonly ProjectPreview[];

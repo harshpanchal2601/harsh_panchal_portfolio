@@ -3,7 +3,7 @@ export const SITE_ROUTES = {
   about: "/#about",
   work: "/#work",
   journey: "/#journey",
-  contact: "/#contact",
+  contact: "/contact",
   projects: "/projects",
 } as const;
 

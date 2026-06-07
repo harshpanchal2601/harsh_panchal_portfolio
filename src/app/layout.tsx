@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans, Inter } from "next/font/google";
 import { AppProviders } from "@/providers/app-providers";
 import { SITE_METADATA } from "@/constants/site";
+import { createSeoMetadata } from "@/lib/seo";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -17,29 +18,21 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_METADATA.url),
-  title: {
-    default: SITE_METADATA.title,
-    template: `%s | ${SITE_METADATA.name}`,
-  },
-  description: SITE_METADATA.description,
+  metadataBase: new URL("http://localhost:3000"),
+  ...createSeoMetadata("/"),
   applicationName: SITE_METADATA.name,
   authors: [{ name: SITE_METADATA.author }],
   creator: SITE_METADATA.author,
-  openGraph: {
-    title: SITE_METADATA.title,
-    description: SITE_METADATA.description,
-    url: SITE_METADATA.url,
-    siteName: SITE_METADATA.name,
-    locale: "en_US",
-    type: "website",
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/favicon.png",
+    apple: "/apple-icon.png",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: SITE_METADATA.title,
-    description: SITE_METADATA.description,
-    creator: SITE_METADATA.twitterHandle,
-  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -50,7 +43,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${dmSans.variable} ${inter.variable} h-full antialiased`}
+      className={`${dmSans.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-background font-sans text-foreground">
         <AppProviders>{children}</AppProviders>

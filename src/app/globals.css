@@ -62,42 +62,42 @@
 }
 
 :root {
-  --void: #101415;
-  --ink: #0b0f10;
-  --charcoal: #1d2022;
-  --graphite: #323537;
-  --mist: #e0e3e5;
-  --smoke: #c7c4d7;
-  --ash: #908fa0;
-  --champagne: #c0c1ff;
-  --bronze: #8083ff;
-  --copper: #d0bcff;
-  --steel: #adc6ff;
-  --sage: #d8e2ff;
-  --background: #101415;
-  --foreground: #e0e3e5;
-  --card: #1d2022;
-  --card-foreground: #e0e3e5;
-  --popover: #191c1e;
-  --popover-foreground: #e0e3e5;
-  --primary: #c0c1ff;
-  --primary-foreground: #1000a9;
-  --secondary: #adc6ff;
-  --secondary-foreground: #002e6a;
-  --muted: #1d2022;
-  --muted-foreground: #c7c4d7;
-  --accent: #d0bcff;
-  --accent-foreground: #3c0091;
+  --void: #f7f4ef;
+  --ink: #171717;
+  --charcoal: #ffffff;
+  --graphite: #e7e0d6;
+  --mist: #171717;
+  --smoke: #5f5a52;
+  --ash: #817a70;
+  --champagne: #6d5ef6;
+  --bronze: #5b6cff;
+  --copper: #d7c7a3;
+  --steel: #dbe3ff;
+  --sage: #ece6d8;
+  --background: #f7f4ef;
+  --foreground: #171717;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --popover: #ffffff;
+  --popover-foreground: #171717;
+  --primary: #6d5ef6;
+  --primary-foreground: #ffffff;
+  --secondary: #d7c7a3;
+  --secondary-foreground: #171717;
+  --muted: #eee9df;
+  --muted-foreground: #5f5a52;
+  --accent: #5b6cff;
+  --accent-foreground: #ffffff;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: #464554;
-  --input: #323537;
-  --ring: #c0c1ff;
+  --border: rgba(23, 23, 23, 0.1);
+  --input: rgba(23, 23, 23, 0.12);
+  --ring: #6d5ef6;
   --chart-1: var(--champagne);
   --chart-2: var(--steel);
   --chart-3: var(--sage);
   --chart-4: var(--copper);
   --chart-5: var(--bronze);
-  --radius: 0.125rem;
+  --radius: 0.5rem;
   --sidebar: var(--ink);
   --sidebar-foreground: var(--mist);
   --sidebar-primary: var(--champagne);
@@ -109,28 +109,36 @@
 }
 
 @layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
   * {
     @apply border-border outline-ring/50;
   }
   html {
     @apply h-full overflow-x-hidden scroll-smooth font-sans;
-    color-scheme: dark;
+    color-scheme: light;
     text-rendering: optimizeLegibility;
   }
   body {
     @apply min-h-full overflow-x-hidden bg-background text-foreground antialiased;
     background:
-      radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
-      radial-gradient(at 0% 100%, rgba(6, 182, 212, 0.1) 0px, transparent 50%),
+      linear-gradient(rgba(23, 23, 23, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(23, 23, 23, 0.035) 1px, transparent 1px),
+      radial-gradient(at 12% 0%, rgba(109, 94, 246, 0.12) 0px, transparent 38%),
+      radial-gradient(at 86% 8%, rgba(215, 199, 163, 0.24) 0px, transparent 34%),
       var(--background);
+    background-size: 48px 48px, 48px 48px, auto, auto, auto;
     font-feature-settings:
       "rlig" 1,
       "calt" 1;
   }
   ::selection {
-    background: color-mix(in srgb, var(--champagne) 38%, transparent);
-    color: var(--mist);
+    background: color-mix(in srgb, var(--champagne) 22%, transparent);
+    color: var(--ink);
   }
   a {
     @apply underline-offset-4;
@@ -144,25 +152,24 @@
 @layer utilities {
   .mesh-gradient {
     background:
-      radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, rgba(16, 20, 21, 1) 0px, transparent 50%),
-      radial-gradient(at 0% 100%, rgba(6, 182, 212, 0.1) 0px, transparent 50%);
+      radial-gradient(at 12% 8%, rgba(109, 94, 246, 0.14) 0px, transparent 34%),
+      radial-gradient(at 82% 18%, rgba(215, 199, 163, 0.32) 0px, transparent 32%),
+      linear-gradient(180deg, #f7f4ef 0%, #f5f2ec 100%);
   }
 
   .glass-panel {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(32px);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(23, 23, 23, 0.1);
+    box-shadow: 0 24px 70px rgba(23, 23, 23, 0.08);
   }
 
   .kinetic-text {
-    -webkit-text-stroke: 1px rgba(224, 227, 229, 0.15);
+    -webkit-text-stroke: 1px rgba(23, 23, 23, 0.14);
     color: transparent;
   }
 
   .journey-line {
-    background: linear-gradient(to bottom, transparent, #c0c1ff, transparent);
+    background: linear-gradient(to bottom, transparent, #6d5ef6, transparent);
   }
 }
 

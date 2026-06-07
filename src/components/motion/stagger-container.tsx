@@ -1,6 +1,11 @@
 "use client";
 
-import { motion, type HTMLMotionProps, type Variants } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  type HTMLMotionProps,
+  type Variants,
+} from "framer-motion";
 import { cn } from "@/lib/utils";
 
 type StaggerContainerProps = HTMLMotionProps<"div">;
@@ -11,20 +16,22 @@ export function StaggerContainer({
   className,
   ...props
 }: StaggerContainerProps) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <motion.div
       className={cn(className)}
-      initial="hidden"
+      initial={reduceMotion ? "visible" : "hidden"}
       variants={{
         hidden: {},
         visible: {
           transition: {
-            staggerChildren: 0.09,
-            delayChildren: 0.12,
+            staggerChildren: reduceMotion ? 0 : 0.09,
+            delayChildren: reduceMotion ? 0 : 0.12,
           },
         },
       }}
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, amount: 0.22, margin: "0px 0px -56px 0px" }}
       whileInView="visible"
       {...props}
     >
