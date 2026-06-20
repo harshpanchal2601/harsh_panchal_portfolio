@@ -188,6 +188,39 @@
     border-color: rgba(109, 94, 246, 0.28);
   }
 
+  .premium-card-hover {
+    position: relative;
+    overflow: hidden;
+    transition:
+      transform 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.34s ease,
+      background-color 0.34s ease;
+  }
+  .premium-card-hover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.42) 48%, transparent 64%);
+    opacity: 0;
+    transform: translateX(-12%);
+    transition:
+      opacity 0.34s ease,
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .premium-card-hover:hover {
+    transform: translateY(-4px);
+    border-color: rgba(23, 23, 23, 0.16);
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 24px 62px rgba(23, 23, 23, 0.075);
+  }
+  .premium-card-hover:hover::before {
+    opacity: 0.7;
+    transform: translateX(12%);
+  }
+
   .section-label {
     display: inline-flex;
     align-items: center;

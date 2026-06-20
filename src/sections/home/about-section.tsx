@@ -11,6 +11,12 @@ const stats = [
   { value: "AWS", label: "CI/CD Focus" },
 ] as const;
 
+const profileSignals = [
+  "Full-stack product work",
+  "Frontend + backend delivery",
+  "AWS and CI/CD coordination",
+] as const;
+
 const aboutParagraphs = [
   "My path started with CA and IT coursework, programming fundamentals, databases, HTML, CSS, and JavaScript before moving into practical full-stack application work.",
   "I have worked on internal systems and product builds across ERP, HR operations, booking and CRM workflows, AI product infrastructure, REST APIs, and production deployment.",
@@ -29,11 +35,11 @@ export function AboutSection() {
   };
 
   return (
-    <section className="relative border-t border-border px-[5vw] py-18 md:py-24 lg:py-28 overflow-hidden" id="about">
+    <section className="relative overflow-hidden border-t border-border px-[5vw] py-12 md:py-16 lg:py-18" id="about">
       {/* Background accent */}
       <div className="pointer-events-none absolute left-0 top-0 h-full w-1/3 rounded-full bg-secondary/20 blur-[100px]" />
       
-      <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 md:grid-cols-12">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-9 md:grid-cols-12">
         <Reveal className="group relative md:col-span-5">
           <motion.div
             className="relative cursor-pointer"
@@ -69,12 +75,23 @@ export function AboutSection() {
 
         <Reveal className="md:col-span-7 md:pl-12 lg:pl-18">
           <span className="section-label mb-4 block">About</span>
-          <h2 className="mb-6 font-display text-[32px] font-bold leading-[1.12] text-foreground md:text-[44px] lg:text-[48px]">
+          <h2 className="mb-5 font-display text-[32px] font-semibold leading-[1.14] text-foreground md:text-[36px] lg:text-[38px]">
             I care about useful software, clean execution, and shipping the work properly.
           </h2>
-          <div className="mb-8 max-w-2xl space-y-5 text-base leading-[1.75] text-muted-foreground md:text-lg">
+          <div className="mb-6 max-w-2xl space-y-5 text-base leading-[1.75] text-muted-foreground md:text-[17px]">
             {aboutParagraphs.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
+            ))}
+          </div>
+
+          <div className="mb-7 grid gap-2 sm:grid-cols-3">
+            {profileSignals.map((signal) => (
+              <div
+                className="premium-card-hover rounded-xl border border-border bg-white/68 px-3 py-3 text-sm font-semibold leading-snug text-foreground"
+                key={signal}
+              >
+                {signal}
+              </div>
             ))}
           </div>
 
@@ -83,9 +100,9 @@ export function AboutSection() {
             {stats.map((stat) => (
               <div
                 key={stat.label}
-                className="rounded-xl border border-border bg-white/70 px-4 py-4 text-center shadow-[0_8px_24px_rgba(23,23,23,0.04)] backdrop-blur-sm transition duration-300 hover:border-primary/30 hover:shadow-[0_12px_34px_rgba(109,94,246,0.12)]"
+                className="premium-card-hover rounded-xl border border-border bg-white/70 px-4 py-4 text-center shadow-[0_8px_24px_rgba(23,23,23,0.04)] backdrop-blur-sm"
               >
-                <span className="block font-display text-[28px] font-bold text-gradient-primary leading-none">{stat.value}</span>
+                <span className="block font-display text-[24px] font-bold text-gradient-primary leading-none">{stat.value}</span>
                 <span className="mt-1.5 block text-xs font-semibold text-muted-foreground">{stat.label}</span>
               </div>
             ))}

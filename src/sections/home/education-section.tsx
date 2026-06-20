@@ -3,44 +3,36 @@ import { GraduationCap } from "lucide-react";
 
 export function EducationSection() {
   return (
-    <section className="border-t border-border px-[5vw] py-18 md:py-24 lg:py-28">
-      <div className="mx-auto max-w-4xl">
+    <section className="border-t border-border px-[5vw] py-10 md:py-14 lg:py-16">
+      <div className="mx-auto max-w-6xl">
         <Reveal>
-          <span className="section-label mb-10 block">Education</span>
-        </Reveal>
-        <div className="space-y-14 md:space-y-20">
-          <Reveal>
-            <div className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-white p-8 shadow-[0_18px_50px_rgba(23,23,23,0.05)] transition duration-300 hover:border-primary/25 hover:shadow-[0_28px_70px_rgba(109,94,246,0.1)] md:p-10">
-              {/* Accent top border animation */}
-              <div className="absolute inset-x-0 top-0 h-[2px] origin-left scale-x-0 bg-gradient-to-r from-primary to-accent transition-transform duration-700 group-hover:scale-x-100" />
-              
-              <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-                <div>
-                  <div className="mb-3 flex size-12 items-center justify-center rounded-xl bg-primary/8 text-primary">
-                    <GraduationCap className="size-6" />
-                  </div>
-                  <h3 className="font-display text-[28px] font-bold leading-tight md:text-[38px]">
-                    Bachelor of Science
-                    <br />
-                    CA &amp; IT
-                  </h3>
-                  <p className="mt-3 text-lg font-medium text-muted-foreground">
-                    K. S. School of Business Management &amp; Information Technology
-                  </p>
-                  <p className="mt-1 text-sm text-muted-foreground">Gujarat University</p>
-                </div>
-                <div className="shrink-0 rounded-xl border border-primary/20 bg-primary/8 px-6 py-4 text-center">
-                  <span className="block font-display text-[38px] font-bold leading-none text-primary">2025</span>
-                  <span className="mt-1 block text-xs font-semibold uppercase tracking-widest text-primary/60">Graduated</span>
+          <div className="premium-card-hover group relative overflow-hidden rounded-2xl border border-border bg-white/72 p-5 shadow-[0_18px_50px_rgba(23,23,23,0.045)] md:p-6">
+            <div className="absolute inset-x-0 top-0 h-[2px] origin-left scale-x-0 bg-gradient-to-r from-primary to-accent transition-transform duration-700 group-hover:scale-x-100" />
+            <div className="grid gap-5 md:grid-cols-[0.36fr_1fr_0.22fr] md:items-center">
+              <div>
+                <span className="section-label mb-4 block">Education</span>
+                <div className="flex size-12 items-center justify-center rounded-xl bg-primary/8 text-primary">
+                  <GraduationCap className="size-6" />
                 </div>
               </div>
-              
-              <p className="mt-8 max-w-3xl text-base leading-[1.75] text-muted-foreground md:text-lg">
-                My coursework covered software development, web technologies, databases, and application development. Outside the classroom, I spent most of my time building projects, learning deployments, and improving my backend and JavaScript skills.
-              </p>
+              <div>
+                <h3 className="font-display text-[27px] font-semibold leading-tight md:text-[32px]">
+                  Bachelor of Science, CA &amp; IT
+                </h3>
+                <p className="mt-3 text-base font-medium leading-relaxed text-muted-foreground md:text-[17px]">
+                  K. S. School of Business Management &amp; Information Technology / Gujarat University
+                </p>
+                <p className="mt-3 max-w-3xl text-base leading-[1.7] text-muted-foreground">
+                  Coursework covered software development, web technologies, databases, and application development, supported by project work and deployment practice.
+                </p>
+              </div>
+              <div className="rounded-xl border border-primary/20 bg-primary/8 px-6 py-4 text-center md:justify-self-end">
+                <span className="block font-display text-[32px] font-bold leading-none text-primary">2025</span>
+                <span className="mt-1 block text-xs font-semibold uppercase tracking-widest text-primary/60">Graduated</span>
+              </div>
             </div>
-          </Reveal>
-        </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

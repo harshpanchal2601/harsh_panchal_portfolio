@@ -305,13 +305,17 @@ export function PortfolioEntryIntro() {
   }, []);
 
   useEffect(() => {
+    if (!hasMounted) {
+      return;
+    }
+
     if (shouldRender) {
       // Intro is mounting — quickly fade out and remove the guard
       const g = document.getElementById("hp-intro-guard");
       if (g) {
-        g.style.transition = "opacity 0.12s";
+        g.style.transition = "opacity 0.2s ease";
         g.style.opacity = "0";
-        setTimeout(() => g.remove(), 130);
+        setTimeout(() => g.remove(), 220);
       }
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
@@ -325,7 +329,7 @@ export function PortfolioEntryIntro() {
       document.body.style.overflow = "";
       document.documentElement.style.overflow = "";
     };
-  }, [shouldRender]);
+  }, [hasMounted, shouldRender]);
 
   useEffect(() => {
     if (!shouldRender) return;

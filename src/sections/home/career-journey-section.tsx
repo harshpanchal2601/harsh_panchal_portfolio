@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Reveal } from "@/components/motion/reveal";
 import { motion, useScroll, useSpring } from "framer-motion";
 
@@ -29,6 +29,29 @@ const journeySteps = [
 
 export function CareerJourneySection() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [activeStep, setActiveStep] = useState(0);
+  const [typedTitle, setTypedTitle] = useState("");
+  const [typedText, setTypedText] = useState("");
+  const active = journeySteps[activeStep];
+
+  useEffect(() => {
+    const output = `${active.title}\n${active.text}`;
+    let index = -1;
+    const timer = window.setInterval(() => {
+      index += 1;
+      const current = output.slice(0, index);
+      const [title = "", text = ""] = current.split("\n");
+
+      setTypedTitle(title);
+      setTypedText(text);
+
+      if (index >= output.length) {
+        window.clearInterval(timer);
+      }
+    }, 18);
+
+    return () => window.clearInterval(timer);
+  }, [active]);
   
   // Track scroll progress relative to the timeline container
   const { scrollYProgress } = useScroll({
@@ -45,16 +68,86 @@ export function CareerJourneySection() {
   return (
     <section 
       ref={containerRef}
-      className="border-y border-border bg-[#f5f2ec] px-[5vw] py-18 md:py-24 lg:py-28 overflow-hidden" 
+      className="overflow-hidden border-y border-border bg-[#f5f2ec] px-[5vw] py-12 md:py-16 lg:py-18" 
       id="journey"
     >
       <div className="mx-auto max-w-6xl">
         <Reveal>
-          <h2 className="mb-12 text-center font-display text-[32px] font-bold leading-[1.12] md:mb-16 md:text-[44px] lg:text-[48px]">
+          <h2 className="mb-8 text-center font-display text-[32px] font-semibold leading-[1.14] md:mb-10 md:text-[36px] lg:text-[38px]">
             Career Journey
           </h2>
         </Reveal>
-        <div className="relative">
+        <Reveal className="md:hidden">
+          <div className="overflow-hidden rounded-2xl border border-border bg-[#101827] shadow-[0_24px_70px_rgba(16,24,39,0.18)]">
+            <div className="flex h-11 items-center justify-between border-b border-white/10 bg-white/8 px-4">
+              <div className="flex gap-1.5">
+                <span className="size-2.5 rounded-full bg-[#ff5f56]" />
+                <span className="size-2.5 rounded-full bg-[#ffbd2e]" />
+                <span className="size-2.5 rounded-full bg-[#27c93f]" />
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/45">
+                journey.sh
+              </span>
+            </div>
+
+            <div className="space-y-5 p-5 font-mono">
+              <div className="flex flex-wrap gap-2">
+                {journeySteps.map((step, index) => (
+                  <button
+                    className={`rounded-full border px-3 py-1.5 text-[11px] font-bold transition duration-300 ${
+                      activeStep === index
+                        ? "border-primary bg-primary text-white shadow-[0_10px_28px_rgba(109,94,246,0.35)]"
+                        : "border-white/10 bg-white/5 text-white/65 hover:border-primary/45 hover:text-white"
+                    }`}
+                    key={step.year}
+                    onClick={() => setActiveStep(index)}
+                    type="button"
+                  >
+                    run {step.year}
+                  </button>
+                ))}
+              </div>
+
+              <motion.div
+                animate={{ opacity: 1, y: 0 }}
+                className="rounded-xl border border-white/10 bg-black/18 p-4"
+                initial={{ opacity: 0, y: 8 }}
+                key={active.year}
+                transition={{ duration: 0.28, ease: "easeOut" }}
+              >
+                <p className="mb-3 text-[11px] font-bold text-emerald-300">
+                  <span className="text-primary">harsh@portfolio</span>
+                  <span className="text-white/35">:~$ </span>
+                  load_step --year {active.year}
+                </p>
+                <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-white/40">
+                  Output
+                </p>
+                <h3 className="mb-3 font-display text-[24px] font-bold leading-[1.12] text-white">
+                  {typedTitle}
+                  {typedTitle.length < active.title.length ? (
+                    <span className="ml-1 inline-block h-6 w-2 translate-y-1 bg-primary" />
+                  ) : null}
+                </h3>
+                <p className="min-h-[96px] text-sm leading-relaxed text-white/68">
+                  {typedText}
+                  {typedTitle.length >= active.title.length && typedText.length < active.text.length ? (
+                    <span className="ml-1 inline-block h-4 w-1.5 translate-y-0.5 bg-emerald-300" />
+                  ) : null}
+                </p>
+                <div className="mt-5 h-1.5 overflow-hidden rounded-full bg-white/10">
+                  <motion.div
+                    animate={{ width: `${((activeStep + 1) / journeySteps.length) * 100}%` }}
+                    className="h-full rounded-full bg-primary"
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                  />
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </Reveal>
+
+        <div className="relative hidden md:block">
           {/* Vertical timeline base track (light grey) */}
           <div className="absolute left-1/2 top-0 bottom-0 hidden w-0.5 -translate-x-1/2 bg-foreground/10 md:block z-0" />
           
@@ -64,7 +157,7 @@ export function CareerJourneySection() {
             className="absolute left-1/2 top-0 bottom-0 hidden w-0.5 -translate-x-1/2 bg-primary origin-top md:block z-0"
           />
 
-          <div className="space-y-12 md:space-y-20">
+          <div className="space-y-16">
             {journeySteps.map((step, index) => (
               <Reveal
                 className={`group relative flex flex-col items-start gap-5 rounded-xl transition duration-300 hover:translate-y-[-2px] md:flex-row md:items-center md:gap-12 ${
@@ -78,10 +171,10 @@ export function CareerJourneySection() {
                     index % 2 === 0 ? "md:text-right" : ""
                   }`}
                 >
-                  <span className="mb-2 block font-display text-[34px] font-bold leading-none text-primary md:text-[44px]">
+                  <span className="mb-2 block font-display text-[32px] font-bold leading-none text-primary md:text-[36px]">
                     {step.year}
                   </span>
-                  <h3 className="mb-3 font-display text-[24px] font-bold leading-[1.2] md:text-[30px]">
+                  <h3 className="mb-3 font-display text-[23px] font-semibold leading-[1.2] md:text-[25px]">
                     {step.title}
                   </h3>
                   <p className="text-base leading-relaxed text-muted-foreground">
