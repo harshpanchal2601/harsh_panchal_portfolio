@@ -1,4 +1,8 @@
+"use client";
+
+import { useRef } from "react";
 import { Reveal } from "@/components/motion/reveal";
+import { motion, useScroll, useSpring } from "framer-motion";
 
 const journeySteps = [
   {
@@ -24,8 +28,26 @@ const journeySteps = [
 ] as const;
 
 export function CareerJourneySection() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Track scroll progress relative to the timeline container
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end center"]
+  });
+
+  const scaleY = useSpring(scrollYProgress, {
+    stiffness: 80,
+    damping: 24,
+    restDelta: 0.001
+  });
+
   return (
-    <section className="border-y border-border bg-[#f5f2ec] px-[5vw] py-18 md:py-24 lg:py-28" id="journey">
+    <section 
+      ref={containerRef}
+      className="border-y border-border bg-[#f5f2ec] px-[5vw] py-18 md:py-24 lg:py-28 overflow-hidden" 
+      id="journey"
+    >
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <h2 className="mb-12 text-center font-display text-[32px] font-bold leading-[1.12] md:mb-16 md:text-[44px] lg:text-[48px]">
@@ -33,7 +55,15 @@ export function CareerJourneySection() {
           </h2>
         </Reveal>
         <div className="relative">
-          <div className="journey-line absolute left-1/2 top-0 bottom-0 hidden w-px -translate-x-1/2 opacity-30 md:block" />
+          {/* Vertical timeline base track (light grey) */}
+          <div className="absolute left-1/2 top-0 bottom-0 hidden w-0.5 -translate-x-1/2 bg-foreground/10 md:block z-0" />
+          
+          {/* Active dynamic scroll-filled progress line */}
+          <motion.div
+            style={{ scaleY }}
+            className="absolute left-1/2 top-0 bottom-0 hidden w-0.5 -translate-x-1/2 bg-primary origin-top md:block z-0"
+          />
+
           <div className="space-y-12 md:space-y-20">
             {journeySteps.map((step, index) => (
               <Reveal
@@ -42,8 +72,9 @@ export function CareerJourneySection() {
                 }`}
                 key={step.year}
               >
+                {/* Year Content Card */}
                 <div
-                  className={`w-full md:w-1/2 ${
+                  className={`w-full md:w-1/2 z-10 ${
                     index % 2 === 0 ? "md:text-right" : ""
                   }`}
                 >
@@ -57,7 +88,16 @@ export function CareerJourneySection() {
                     {step.text}
                   </p>
                 </div>
-                <div className="absolute left-1/2 z-10 hidden size-4 -translate-x-1/2 rounded-full border-4 border-background bg-primary transition-shadow duration-300 group-hover:shadow-[0_0_0_8px_rgba(109,94,246,0.12)] md:block" />
+
+                {/* Animated year checkpoint node circle */}
+                <motion.div
+                  initial={{ scale: 0.8, backgroundColor: "#B8B2A8" }}
+                  whileInView={{ scale: 1.15, backgroundColor: "#6d5ef6" }}
+                  viewport={{ once: false, amount: 0.95, margin: "-12% 0px -12% 0px" }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="absolute left-1/2 z-10 hidden size-5 -translate-x-1/2 rounded-full border-4 border-[#f5f2ec] transition-shadow duration-300 group-hover:shadow-[0_0_0_8px_rgba(109,94,246,0.18)] md:block cursor-pointer"
+                />
+
                 <div className="w-full md:w-1/2" />
               </Reveal>
             ))}

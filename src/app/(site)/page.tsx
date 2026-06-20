@@ -6,13 +6,17 @@ import { ExperienceTimelineSection } from "@/sections/home/experience-timeline-s
 import { FeaturedProjectsSection } from "@/sections/home/featured-projects-section";
 import { HeroSection } from "@/sections/home/hero-section";
 import { TechnicalExpertiseSection } from "@/sections/home/technical-expertise-section";
+import { PortfolioEntryIntro } from "@/components/intro/portfolio-entry-intro";
+import { PageParticles } from "@/components/motion/page-particles";
 
 export default function HomePage() {
   return (
     <>
+      {/* Global ambient particle layer — sits behind all sections */}
+      <PageParticles />
+      <PortfolioEntryIntro />
       <HeroSection />
       <AboutSection />
-      <TechnicalExpertiseSection />
       <ExperienceTimelineSection />
       <CareerJourneySection />
       <EngineeringPhilosophySection />

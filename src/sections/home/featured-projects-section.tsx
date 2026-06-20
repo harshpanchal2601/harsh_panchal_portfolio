@@ -5,11 +5,7 @@ import {
   primaryProjectPreviews,
   secondaryProjectPreviews,
 } from "@/data/projects";
-
-const projectVisuals = [
-  "bg-[radial-gradient(circle_at_22%_20%,rgba(109,94,246,0.22),transparent_28%),radial-gradient(circle_at_70%_65%,rgba(215,199,163,0.30),transparent_32%),linear-gradient(135deg,#ffffff,#f5f2ec)]",
-  "bg-[radial-gradient(circle_at_68%_24%,rgba(91,108,255,0.20),transparent_28%),radial-gradient(circle_at_26%_70%,rgba(215,199,163,0.28),transparent_32%),linear-gradient(135deg,#ffffff,#f5f2ec)]",
-] as const;
+import { InteractiveProjectShowcase } from "@/components/shared/interactive-project-showcase";
 
 export function FeaturedProjectsSection() {
   return (
@@ -25,37 +21,7 @@ export function FeaturedProjectsSection() {
             }`}
             key={project.slug}
           >
-            <Link
-              className="relative block w-full cursor-pointer overflow-hidden rounded-xl border border-border bg-white shadow-[0_24px_70px_rgba(23,23,23,0.08)] transition duration-500 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_30px_86px_rgba(109,94,246,0.14)] focus-visible:border-primary/40 md:col-span-7"
-              href={project.href}
-            >
-              <div className="absolute inset-0 z-10 flex items-end justify-start p-5 transition-colors duration-700 group-hover:bg-white/20 md:p-8">
-                <span className="inline-flex translate-y-4 items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-bold text-white opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-                  View Work
-                  <ArrowRight aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1" size={16} />
-                </span>
-              </div>
-              <div
-                className={`h-[340px] w-full transition-transform duration-1000 group-hover:scale-[1.02] md:h-[500px] ${
-                  projectVisuals[index]
-                }`}
-              >
-                <div className="grid h-full place-items-center p-5 md:p-10">
-                  <div className="w-full max-w-[520px] rounded-xl border border-border bg-white/82 p-5 shadow-[0_20px_60px_rgba(23,23,23,0.08)] md:p-8">
-                    <div className="mb-6 flex items-center justify-between gap-4 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                      <span>Primary Build</span>
-                      <span>0{index + 1}</span>
-                    </div>
-                    <p className="font-display text-[30px] font-bold leading-tight md:text-[42px]">
-                      {project.title}
-                    </p>
-                    <p className="mt-4 text-sm leading-relaxed text-muted-foreground md:text-base">
-                      {project.role}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </Link>
+            <InteractiveProjectShowcase project={project} />
 
             <div className="flex w-full flex-col items-start md:col-span-5">
               <span className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-primary">

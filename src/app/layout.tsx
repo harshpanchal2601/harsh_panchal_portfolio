@@ -46,6 +46,22 @@ export default function RootLayout({
       className={`${dmSans.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-background font-sans text-foreground">
+        {/*
+          Inline script runs BEFORE React hydrates.
+          Creates a cream guard div that blocks the page from showing.
+          PortfolioEntryIntro removes it in useLayoutEffect (synchronously before paint).
+          This prevents the flash of page content before the intro appears.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){
+  var g=document.createElement('div');
+  g.id='hp-intro-guard';
+  g.style.cssText='position:fixed;inset:0;background:#f7f4ef;z-index:99998;';
+  document.body.appendChild(g);
+})();`,
+          }}
+        />
         <AppProviders>{children}</AppProviders>
       </body>
     </html>
