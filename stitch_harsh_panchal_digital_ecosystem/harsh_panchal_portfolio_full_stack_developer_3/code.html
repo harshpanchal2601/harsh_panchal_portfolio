@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Harsh Panchal | Full Stack Developer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100;300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --bg-warm: #F7F4EE;
+            --navy-deep: #0B1F3A;
+            --stone-border: #E7E5E4;
+        }
+
+        body {
+            font-family: 'Geist', sans-serif;
+            background-color: var(--bg-warm);
+            color: var(--navy-deep);
+            overflow-x: hidden;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        .premium-shadow {
+            box-shadow: 0 4px 24px -2px rgba(11, 31, 58, 0.04);
+        }
+
+        .premium-shadow-hover:hover {
+            box-shadow: 0 12px 32px -4px rgba(11, 31, 58, 0.08);
+        }
+
+        .magnetic-btn {
+            transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .magnetic-btn:active {
+            transform: scale(0.95);
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--stone-border);
+        }
+
+        .tilt-card {
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
+        }
+
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .nav-dot-active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background-color: var(--navy-deep);
+            border-radius: 50%;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-warm);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d6d3d1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a29e;
+        }
+
+        @keyframes orbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes counter-orbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(-360deg); }
+        }
+
+        .orbit-container {
+            animation: orbit 25s linear infinite;
+        }
+
+        .counter-orbit {
+            animation: counter-orbit 25s linear infinite;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-primary-fixed": "#071c36",
+                        "surface": "#fbf9fb",
+                        "on-surface": "#1b1b1e",
+                        "background": "#fbf9fb",
+                        "primary": "#000615",
+                        "outline-variant": "#c4c6ce",
+                        "primary-container": "#0b1f3a",
+                        "on-primary": "#ffffff",
+                        "secondary": "#405f8d",
+                        "error": "#ba1a1a"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    spacing: {
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "container-max": "1200px",
+                        "section-gap": "128px",
+                        "margin-mobile": "20px"
+                    },
+                    fontFamily: {
+                        "label-md": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "body-md": ["Geist"]
+                    },
+                    fontSize: {
+                        "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "headline-lg": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                        "display": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="antialiased">
+<!-- Navigation -->
+<header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-outline-variant/30">
+<nav class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-5 max-w-container-max mx-auto">
+<div class="font-headline-md text-headline-md font-bold text-primary reveal-on-scroll">HP</div>
+<div class="hidden md:flex items-center gap-10">
+<a class="text-label-md font-label-md text-primary relative nav-dot-active magnetic-btn reveal-on-scroll" href="#work" style="transition-delay: 50ms;">Work</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors magnetic-btn reveal-on-scroll" href="#process" style="transition-delay: 100ms;">Process</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors magnetic-btn reveal-on-scroll" href="#about" style="transition-delay: 150ms;">About</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors magnetic-btn reveal-on-scroll" href="#contact" style="transition-delay: 200ms;">Contact</a>
+</div>
+<button class="bg-primary-container text-on-primary px-6 py-2.5 rounded-full font-label-md text-label-md magnetic-btn hover:scale-105 transition-all reveal-on-scroll" style="transition-delay: 250ms;">
+            Hire Me
+        </button>
+</nav>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative min-h-screen flex items-center pt-24 overflow-hidden px-margin-mobile md:px-margin-desktop">
+<div class="max-w-container-max mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+<div>
+<span class="inline-block px-3 py-1 bg-primary/5 text-primary font-label-md text-label-sm uppercase tracking-widest mb-6 border border-primary/10 reveal-on-scroll">Full Stack Developer</span>
+<h1 class="font-display text-display mb-6 reveal-on-scroll" style="transition-delay: 100ms;">
+                HARSH PANCHAL
+            </h1>
+<p class="font-body-md text-body-lg text-on-surface-variant mb-10 max-w-lg reveal-on-scroll" style="transition-delay: 200ms;">
+                Building thoughtful digital products through design, engineering, and innovation. Merging technical rigor with aesthetic precision.
+            </p>
+<div class="flex flex-wrap gap-4">
+<a class="bg-primary-container text-on-primary px-8 py-4 rounded-full font-label-md text-label-md magnetic-btn flex items-center gap-2 group reveal-on-scroll" href="#work" style="transition-delay: 300ms;">
+                    View Projects
+                    <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+<a class="bg-transparent border border-outline-variant text-primary px-8 py-4 rounded-full font-label-md text-label-md hover:bg-white transition-all magnetic-btn reveal-on-scroll" href="#contact" style="transition-delay: 400ms;">
+                    Get In Touch
+                </a>
+</div>
+</div>
+<div class="flex justify-center lg:justify-end reveal-on-scroll" style="transition-delay: 500ms;">
+<div class="tilt-card relative p-3 bg-white border border-stone-border rounded-xl premium-shadow group max-w-md">
+<img alt="Harsh Panchal portrait" class="w-full aspect-[4/5] object-cover rounded-lg group-hover:grayscale-0 transition-all duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMVEfPlja6sqnvChjLpoRsVahWRHinfGAecMzKg7FE7dnNom4nJaa1YIbrVCkAacdg43Lv2pnmTA7D6hMbvgiiN2WEwBZTnrTiXKR23QS2Ox52Nilq4ViDYv-wkvaJi1PPZxePxbaThb3Rew9t0HWqvH5-6dJgznjEikShFAfEj9xCJPSYpFdOI7jaJApkSCapT6k02XxlLfEzlZjiiC_Z3MXFioYOvo4cWfPJg9qt6aQBadRi4uTd2fkp4OrpwUb4w7T5umenXQ"/>
+<div class="absolute -bottom-6 -left-6 bg-white border border-stone-border p-5 rounded-lg premium-shadow reveal-on-scroll" style="transition-delay: 700ms;">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+<span class="font-label-md text-label-md">Available for new opportunities</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- About Bento Grid -->
+<section class="py-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" id="about">
+<div class="mb-16">
+<h2 class="font-headline-lg text-headline-lg mb-4 reveal-on-scroll">Core Identity</h2>
+<div class="w-12 h-1 bg-primary reveal-on-scroll" style="transition-delay: 100ms;"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Large Card -->
+<div class="md:col-span-2 bg-white border border-stone-border p-10 rounded-xl premium-shadow reveal-on-scroll">
+<span class="material-symbols-outlined text-primary text-4xl mb-6">rocket_launch</span>
+<h3 class="font-headline-md text-headline-md mb-4 reveal-on-scroll" style="transition-delay: 50ms;">Current Focus</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed reveal-on-scroll" style="transition-delay: 100ms;">
+                I am currently architecting scalable web applications that prioritize user experience without compromising on performance. My philosophy centers on "The Work" – ensuring every line of code serves a functional and aesthetic purpose.
+            </p>
+</div>
+<!-- Location Card -->
+<div class="bg-white border border-stone-border p-10 rounded-xl premium-shadow flex flex-col justify-between reveal-on-scroll" style="transition-delay: 150ms;">
+<div>
+<span class="material-symbols-outlined text-primary text-4xl mb-6">location_on</span>
+<h3 class="font-headline-md text-headline-md mb-2 reveal-on-scroll" style="transition-delay: 50ms;">India</h3>
+<p class="font-label-md text-label-md text-on-surface-variant reveal-on-scroll" style="transition-delay: 100ms;">Working Remotely Globally</p>
+</div>
+<div class="mt-8 border-t border-stone-border pt-4">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm uppercase opacity-50 reveal-on-scroll" style="transition-delay: 150ms;">Local Time</span>
+<span class="font-label-md text-label-md reveal-on-scroll" id="local-time" style="transition-delay: 200ms;">03:48 PM IST</span>
+</div>
+</div>
+</div>
+<!-- Tech Stack Card -->
+<div class="bg-white border border-stone-border p-10 rounded-xl premium-shadow reveal-on-scroll" style="transition-delay: 200ms;">
+<h3 class="font-label-md text-label-md uppercase tracking-widest mb-6 opacity-50 reveal-on-scroll" style="transition-delay: 50ms;">Tech Stack</h3>
+<ul class="space-y-3">
+<li class="flex items-center gap-3 reveal-on-scroll" style="transition-delay: 100ms;">
+<span class="w-4 h-[1px] bg-primary"></span>
+<span class="font-body-md text-body-md">React / Next.js</span>
+</li>
+<li class="flex items-center gap-3 reveal-on-scroll" style="transition-delay: 150ms;">
+<span class="w-4 h-[1px] bg-primary"></span>
+<span class="font-body-md text-body-md">TypeScript</span>
+</li>
+<li class="flex items-center gap-3 reveal-on-scroll" style="transition-delay: 200ms;">
+<span class="w-4 h-[1px] bg-primary"></span>
+<span class="font-body-md text-body-md">Node.js / Express</span>
+</li>
+</ul>
+</div>
+<!-- Experience Card -->
+<div class="md:col-span-2 bg-primary-container text-on-primary p-10 rounded-xl reveal-on-scroll" style="transition-delay: 250ms;">
+<div class="flex justify-between items-start mb-8">
+<div>
+<h3 class="font-headline-md text-headline-md mb-2 reveal-on-scroll" style="transition-delay: 50ms;">Full Stack Mastery</h3>
+<p class="opacity-70 font-body-md text-body-md reveal-on-scroll" style="transition-delay: 100ms;">Developing end-to-end digital experiences.</p>
+</div>
+<span class="material-symbols-outlined text-4xl opacity-20">code</span>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+<div class="reveal-on-scroll" style="transition-delay: 150ms;">
+<div class="text-headline-lg font-bold mb-1">20+</div>
+<div class="text-label-sm uppercase tracking-tighter opacity-50">Projects Built</div>
+</div>
+<div class="reveal-on-scroll" style="transition-delay: 200ms;">
+<div class="text-headline-lg font-bold mb-1">03+</div>
+<div class="text-label-sm uppercase tracking-tighter opacity-50">Years Exp</div>
+</div>
+<div class="reveal-on-scroll" style="transition-delay: 250ms;">
+<div class="text-headline-lg font-bold mb-1">99%</div>
+<div class="text-label-sm uppercase tracking-tighter opacity-50">Uptime Focus</div>
+</div>
+<div class="reveal-on-scroll" style="transition-delay: 300ms;">
+<div class="text-headline-lg font-bold mb-1">15+</div>
+<div class="text-label-sm uppercase tracking-tighter opacity-50">Tools Used</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Journey Section -->
+<section class="py-section-gap bg-white overflow-hidden">
+<div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20">
+<div>
+<h2 class="font-headline-lg text-headline-lg mb-8 reveal-on-scroll">The Professional Journey</h2>
+<p class="font-body-md text-body-lg text-on-surface-variant mb-12 reveal-on-scroll" style="transition-delay: 100ms;">
+                Tracing the path from local scripting to international full-stack architecture. A timeline defined by constant learning and refinement.
+            </p>
+<div class="space-y-12 relative">
+<div class="absolute left-[7px] top-0 bottom-0 w-[1px] bg-stone-border"></div>
+<!-- Timeline Item 1 -->
+<div class="relative pl-10 reveal-on-scroll" style="transition-delay: 200ms;">
+<div class="absolute left-0 top-2 w-4 h-4 rounded-full bg-primary border-4 border-white premium-shadow"></div>
+<span class="font-label-sm text-label-sm uppercase opacity-50 mb-2 block">2024 — Present</span>
+<h4 class="font-headline-md text-headline-md mb-2">Senior Full Stack Architect</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Leading technical strategy for high-performance SaaS applications and mentoring junior engineering teams.</p>
+</div>
+<!-- Timeline Item 2 -->
+<div class="relative pl-10 reveal-on-scroll" style="transition-delay: 300ms;">
+<div class="absolute left-0 top-2 w-4 h-4 rounded-full bg-stone-border border-4 border-white"></div>
+<span class="font-label-sm text-label-sm uppercase opacity-50 mb-2 block">2022 — 2023</span>
+<h4 class="font-headline-md text-headline-md mb-2">Product Engineer</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Bridging the gap between UI/UX design and scalable backend systems using the MERN stack.</p>
+</div>
+<!-- Timeline Item 3 -->
+<div class="relative pl-10 reveal-on-scroll" style="transition-delay: 400ms;">
+<div class="absolute left-0 top-2 w-4 h-4 rounded-full bg-stone-border border-4 border-white"></div>
+<span class="font-label-sm text-label-sm uppercase opacity-50 mb-2 block">2020 — 2021</span>
+<h4 class="font-headline-md text-headline-md mb-2">Frontend Developer</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Mastering the art of responsive design and client-side performance optimization.</p>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-center reveal-on-scroll" style="transition-delay: 500ms;">
+<div class="relative w-full aspect-square max-w-lg">
+<div class="absolute inset-0 border border-stone-border rounded-full opacity-20 animate-[spin_20s_linear_infinite]"></div>
+<div class="absolute inset-20 border border-stone-border rounded-full opacity-40 animate-[spin_15s_linear_infinite_reverse]"></div>
+<div class="absolute inset-40 border border-stone-border rounded-full opacity-60"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-primary-container rounded-full flex items-center justify-center text-on-primary z-20">
+<span class="font-headline-md text-headline-md font-bold reveal-on-scroll" style="transition-delay: 600ms;">HP</span>
+</div>
+<!-- Orbiting Tech Icons Container -->
+<div class="absolute inset-0 orbit-container z-10">
+<!-- Icon 1: Top Center -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-4 reveal-on-scroll" style="transition-delay: 700ms;">
+<div class="counter-orbit w-12 h-12 bg-white rounded-lg premium-shadow flex items-center justify-center border border-stone-border">
+<span class="material-symbols-outlined text-primary">data_object</span>
+</div>
+</div>
+<!-- Icon 2: Right Center -->
+<div class="absolute top-1/2 right-0 translate-x-4 -translate-y-1/2 reveal-on-scroll" style="transition-delay: 750ms;">
+<div class="counter-orbit w-12 h-12 bg-white rounded-lg premium-shadow flex items-center justify-center border border-stone-border">
+<span class="material-symbols-outlined text-primary">cloud_done</span>
+</div>
+</div>
+<!-- Icon 3: Bottom Center -->
+<div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-4 reveal-on-scroll" style="transition-delay: 800ms;">
+<div class="counter-orbit w-12 h-12 bg-white rounded-lg premium-shadow flex items-center justify-center border border-stone-border">
+<span class="material-symbols-outlined text-primary">javascript</span>
+</div>
+</div>
+<!-- Icon 4: Left Center -->
+<div class="absolute top-1/2 left-0 -translate-x-4 -translate-y-1/2 reveal-on-scroll" style="transition-delay: 850ms;">
+<div class="counter-orbit w-12 h-12 bg-white rounded-lg premium-shadow flex items-center justify-center border border-stone-border">
+<span class="material-symbols-outlined text-primary">terminal</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Projects Section -->
+<section class="py-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" id="work">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+<div>
+<h2 class="font-headline-lg text-headline-lg mb-4 reveal-on-scroll">Selected Works</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md reveal-on-scroll" style="transition-delay: 100ms;">Cinematic showcases of digital solutions tailored for performance and scale.</p>
+</div>
+<div class="flex gap-4 reveal-on-scroll" style="transition-delay: 200ms;">
+<button class="w-12 h-12 rounded-full border border-stone-border flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined">west</span>
+</button>
+<button class="w-12 h-12 rounded-full border border-stone-border flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined">east</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+<!-- Project 1 -->
+<div class="group">
+<div class="overflow-hidden rounded-xl border border-stone-border premium-shadow mb-6 reveal-on-scroll">
+<img class="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiPIEonRZBvWnMY9gKNUAh8ISX6np9BfeE3u1RuwOS9T4qTFSw1poTMKoVXgNzj_1Zmlrl1vVClYCox3EeQozBVBdgwMI_n2dwALHaCOWjCWbHLyQDdvAyUGxfO-IwUvDMhbqa9p3TZOresfJ8XOvWHVtE2jsppE6wIM1yxrY0CUaDoWWqZaZzuwPKLn8BSYc6xCIbCy5HLjSWnO4MUD2QfQ8jCcvTIq5SKYxNuMQ0Zd_Zo3xdiIDJIpWZplo9ZA9XuHoEk1zeqA"/>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<div class="flex gap-2 mb-3 reveal-on-scroll" style="transition-delay: 50ms;">
+<span class="px-2 py-0.5 bg-primary/5 text-[10px] font-bold uppercase border border-primary/10 tracking-widest">Fintech</span>
+<span class="px-2 py-0.5 bg-primary/5 text-[10px] font-bold uppercase border border-primary/10 tracking-widest">React</span>
+</div>
+<h3 class="font-headline-md text-headline-md group-hover:text-secondary transition-colors reveal-on-scroll" style="transition-delay: 100ms;">Vortex Analytics</h3>
+</div>
+</div>
+</div>
+<!-- Project 2 -->
+<div class="group">
+<div class="overflow-hidden rounded-xl border border-stone-border premium-shadow mb-6 reveal-on-scroll" style="transition-delay: 200ms;">
+<img class="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiguqLSo5jm5jqDL_XsMhlkAXYu16CZk0J7uD_IkLBpz8eR5eSzX0Xe-s5tjc8j1ArmD1E4k8woW9gILHwQ2FKeBvvz2LX0ViDy03Z4t2niYexYjwqat81BlQi1_vUWf-vxR49WTdrXjjzs-Nv7T8w1-b_4UNvNQzJDe2KU1C5zwFt9Bjejn4L_HV88HYRbjnAe7d0QgLpMi9zHIfW503_OxNyi37F8oRLDW-VisqWDY2T8u7BD8cuxNpbce3UWS985b5f6xXtlA"/>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<div class="flex gap-2 mb-3 reveal-on-scroll" style="transition-delay: 250ms;">
+<span class="px-2 py-0.5 bg-primary/5 text-[10px] font-bold uppercase border border-primary/10 tracking-widest">E-commerce</span>
+<span class="px-2 py-0.5 bg-primary/5 text-[10px] font-bold uppercase border border-primary/10 tracking-widest">Node.js</span>
+</div>
+<h3 class="font-headline-md text-headline-md group-hover:text-secondary transition-colors reveal-on-scroll" style="transition-delay: 300ms;">Elysian Home</h3>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Process Section -->
+<section class="py-section-gap bg-primary-container text-on-primary" id="process">
+<div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="text-center mb-20">
+<h2 class="font-headline-lg text-headline-lg mb-4 reveal-on-scroll">Methodology</h2>
+<p class="opacity-70 max-w-xl mx-auto reveal-on-scroll" style="transition-delay: 100ms;">A rigorous four-stage process to transform concepts into world-class digital realities.</p>
+</div>
+<div class="relative grid grid-cols-1 md:grid-cols-4 gap-12">
+<!-- Flow Lines (Desktop Only) -->
+<div class="hidden md:block absolute top-1/2 left-0 w-full h-[1px] bg-white/10 -translate-y-1/2 z-0"></div>
+<!-- Step 1 -->
+<div class="relative z-10 text-center reveal-on-scroll" style="transition-delay: 200ms;">
+<div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-primary-container mx-auto mb-6 premium-shadow">
+<span class="material-symbols-outlined text-3xl">search</span>
+</div>
+<h4 class="font-headline-md text-headline-md mb-3 reveal-on-scroll" style="transition-delay: 300ms;">Discover</h4>
+<p class="text-sm opacity-60 leading-relaxed reveal-on-scroll" style="transition-delay: 400ms;">Defining project scope, user needs, and technical constraints.</p>
+</div>
+<!-- Step 2 -->
+<div class="relative z-10 text-center reveal-on-scroll" style="transition-delay: 300ms;">
+<div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-primary-container mx-auto mb-6 premium-shadow">
+<span class="material-symbols-outlined text-3xl">architecture</span>
+</div>
+<h4 class="font-headline-md text-headline-md mb-3 reveal-on-scroll" style="transition-delay: 400ms;">Design</h4>
+<p class="text-sm opacity-60 leading-relaxed reveal-on-scroll" style="transition-delay: 500ms;">Visualizing the interface and system architecture for optimal scale.</p>
+</div>
+<!-- Step 3 -->
+<div class="relative z-10 text-center reveal-on-scroll" style="transition-delay: 400ms;">
+<div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-primary-container mx-auto mb-6 premium-shadow">
+<span class="material-symbols-outlined text-3xl">code</span>
+</div>
+<h4 class="font-headline-md text-headline-md mb-3 reveal-on-scroll" style="transition-delay: 500ms;">Develop</h4>
+<p class="text-sm opacity-60 leading-relaxed reveal-on-scroll" style="transition-delay: 600ms;">Clean, performant, and maintainable implementation of the vision.</p>
+</div>
+<!-- Step 4 -->
+<div class="relative z-10 text-center reveal-on-scroll" style="transition-delay: 500ms;">
+<div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-primary-container mx-auto mb-6 premium-shadow">
+<span class="material-symbols-outlined text-3xl">rocket</span>
+</div>
+<h4 class="font-headline-md text-headline-md mb-3 reveal-on-scroll" style="transition-delay: 600ms;">Deploy</h4>
+<p class="text-sm opacity-60 leading-relaxed reveal-on-scroll" style="transition-delay: 700ms;">Continuous integration and deployment with zero downtime.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Contact Section -->
+<section class="py-section-gap px-margin-mobile md:px-margin-desktop" id="contact">
+<div class="max-w-4xl mx-auto">
+<div class="bg-white border border-stone-border rounded-2xl premium-shadow overflow-hidden relative reveal-on-scroll">
+<div class="p-10 md:p-20 text-center relative z-10">
+<h2 class="font-display text-[48px] mb-6 reveal-on-scroll" style="transition-delay: 100ms;">Let's build something exceptional.</h2>
+<p class="font-body-md text-body-lg text-on-surface-variant mb-12 max-w-xl mx-auto reveal-on-scroll" style="transition-delay: 200ms;">
+                    Available for freelance projects, full-time engineering roles, and technical consulting.
+                </p>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="flex items-center gap-3 px-8 py-4 bg-primary-container text-on-primary rounded-full magnetic-btn font-label-md reveal-on-scroll" href="mailto:hello@harshpanchal.dev" style="transition-delay: 300ms;">
+<span class="material-symbols-outlined">mail</span>
+                        Email Me
+                    </a>
+<div class="flex gap-4 reveal-on-scroll" style="transition-delay: 400ms;">
+<a class="w-14 h-14 border border-stone-border rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-all magnetic-btn" href="#" title="GitHub">
+<svg class="w-6 h-6 fill-current" viewbox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg>
+</a>
+<a class="w-14 h-14 border border-stone-border rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-all magnetic-btn" href="#" title="LinkedIn">
+<svg class="w-6 h-6 fill-current" viewbox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-section-gap border-t border-outline-variant bg-surface">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto gap-gutter">
+<div class="font-label-md text-label-md uppercase tracking-widest text-primary font-bold reveal-on-scroll">
+            HARSH PANCHAL
+        </div>
+<div class="text-on-surface-variant font-body-md text-body-md text-center reveal-on-scroll" style="transition-delay: 100ms;">
+            © 2024 Crafted with intellectual rigor.
+        </div>
+<div class="flex gap-6 reveal-on-scroll" style="transition-delay: 200ms;">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md" href="#">GitHub</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md" href="#">LinkedIn</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md" href="#">Read.cv</a>
+</div>
+</div>
+</footer>
+<script>
+    // Update Local Time
+    function updateTime() {
+        const timeElement = document.getElementById('local-time');
+        if (!timeElement) return;
+        const options = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true };
+        const timeString = new Intl.DateTimeFormat('en-US', options).format(new Date());
+        timeElement.textContent = timeString + ' IST';
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    // Reveal on Scroll Logic
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+
+    // Magnetic Effect for Buttons
+    const magneticBtns = document.querySelectorAll('.magnetic-btn');
+    magneticBtns.forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+        });
+
+        btn.addEventListener('mouseleave', () => {
+            btn.style.transform = 'translate(0, 0)';
+        });
+    });
+
+    // 3D Tilt Effect
+    const tiltCard = document.querySelector('.tilt-card');
+    if (tiltCard) {
+        tiltCard.addEventListener('mousemove', (e) => {
+            const rect = tiltCard.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+            tiltCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        tiltCard.addEventListener('mouseleave', () => {
+            tiltCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+        });
+    }
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+        const header = document.querySelector('header');
+        if (window.scrollY > 50) {
+            header.classList.add('py-3');
+            header.classList.remove('py-5');
+        } else {
+            header.classList.add('py-5');
+            header.classList.remove('py-3');
+        }
+    });
+</script>
+</body></html>

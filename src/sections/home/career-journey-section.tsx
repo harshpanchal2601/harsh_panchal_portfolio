@@ -1,68 +1,130 @@
-import { Reveal } from "@/components/motion/reveal";
+"use client";
 
-const journeySteps = [
+import { useRevealOnScroll } from "@/hooks/use-reveal-on-scroll";
+
+const journeyItems = [
   {
     year: "2022",
     title: "Getting the basics right",
-    text: "Built a base through CA & IT coursework, programming fundamentals, databases, HTML, CSS, and JavaScript.",
+    description:
+      "Built a base through CA & IT coursework, programming fundamentals, databases, HTML, CSS, and JavaScript.",
+    isCurrent: false,
   },
   {
     year: "2023",
     title: "Moving into full stack",
-    text: "Started connecting frontend work with backend APIs, JavaScript frameworks, and practical application structure.",
+    description:
+      "Started connecting frontend work with backend APIs, JavaScript frameworks, and practical application structure.",
+    isCurrent: false,
   },
   {
     year: "2024",
     title: "Building real projects",
-    text: "Worked on product interfaces, backend workflows, deployments, and the practical needs that come with client work.",
+    description:
+      "Worked on product interfaces, backend workflows, deployments, and the practical needs that come with client work.",
+    isCurrent: false,
   },
   {
     year: "2025",
     title: "Production work",
-    text: "Moved into production systems, AWS infrastructure, CI/CD, and team lead capacity at Shambhavi Technovation.",
+    description:
+      "Moved into production systems, AWS infrastructure, CI/CD, and team lead capacity at Shambhavi Technovation.",
+    isCurrent: true,
   },
-] as const;
+];
 
 export function CareerJourneySection() {
+  useRevealOnScroll();
+
   return (
-    <section className="border-y border-border bg-[#f5f2ec] px-[5vw] py-18 md:py-24 lg:py-28" id="journey">
-      <div className="mx-auto max-w-6xl">
-        <Reveal>
-          <h2 className="mb-12 text-center font-display text-[32px] font-bold leading-[1.12] md:mb-16 md:text-[44px] lg:text-[48px]">
+    <section className="py-section-gap bg-white overflow-hidden" id="journey">
+      <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20">
+
+        {/* Left — Timeline */}
+        <div>
+          <span className="inline-block px-3 py-1 bg-primary/5 text-primary font-label-md text-label-sm uppercase tracking-widest mb-6 border border-primary/10 reveal-on-scroll">
             Career Journey
+          </span>
+          <h2 className="font-headline-lg text-headline-lg mb-4 reveal-on-scroll" style={{ transitionDelay: "80ms" }}>
+            The Professional Journey
           </h2>
-        </Reveal>
-        <div className="relative">
-          <div className="journey-line absolute left-1/2 top-0 bottom-0 hidden w-px -translate-x-1/2 opacity-30 md:block" />
-          <div className="space-y-12 md:space-y-20">
-            {journeySteps.map((step, index) => (
-              <Reveal
-                className={`group relative flex flex-col items-start gap-5 rounded-xl transition duration-300 hover:translate-y-[-2px] md:flex-row md:items-center md:gap-12 ${
-                  index % 2 === 1 ? "md:flex-row-reverse" : ""
-                }`}
-                key={step.year}
+          <p className="font-body-md text-body-lg text-[#44474d] mb-12 reveal-on-scroll" style={{ transitionDelay: "150ms" }}>
+            Tracing the path from fundamentals to full-stack production engineering — a timeline defined by constant learning and real-world delivery.
+          </p>
+
+          <div className="space-y-10 relative">
+            {/* Vertical line */}
+            <div className="absolute left-[11px] top-2 bottom-2 w-[2px] bg-gradient-to-b from-primary via-secondary to-stone-border" />
+
+            {journeyItems.map((item, i) => (
+              <div
+                key={item.year}
+                className="relative pl-12 reveal-on-scroll"
+                style={{ transitionDelay: `${200 + i * 120}ms` }}
               >
+                {/* Dot */}
                 <div
-                  className={`w-full md:w-1/2 ${
-                    index % 2 === 0 ? "md:text-right" : ""
+                  className={`absolute left-0 top-1.5 w-6 h-6 rounded-full flex items-center justify-center border-2 ${
+                    item.isCurrent
+                      ? "bg-primary border-primary shadow-[0_0_12px_rgba(11,31,58,0.4)]"
+                      : "bg-white border-stone-border"
                   }`}
                 >
-                  <span className="mb-2 block font-display text-[34px] font-bold leading-none text-primary md:text-[44px]">
-                    {step.year}
-                  </span>
-                  <h3 className="mb-3 font-display text-[24px] font-bold leading-[1.2] md:text-[30px]">
-                    {step.title}
-                  </h3>
-                  <p className="text-base leading-relaxed text-muted-foreground">
-                    {step.text}
-                  </p>
+                  {item.isCurrent && (
+                    <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                  )}
                 </div>
-                <div className="absolute left-1/2 z-10 hidden size-4 -translate-x-1/2 rounded-full border-4 border-background bg-primary transition-shadow duration-300 group-hover:shadow-[0_0_0_8px_rgba(109,94,246,0.12)] md:block" />
-                <div className="w-full md:w-1/2" />
-              </Reveal>
+
+                <div className={`p-5 rounded-xl border transition-all duration-300 ${item.isCurrent ? "border-primary/30 bg-primary/3" : "border-stone-border bg-white hover:border-primary/20"} premium-shadow`}>
+                  <span className={`font-label-md text-label-sm uppercase tracking-widest mb-1 block ${item.isCurrent ? "text-primary" : "text-[#44474d] opacity-60"}`}>
+                    {item.year}{item.isCurrent ? " — Present" : ""}
+                  </span>
+                  <h4 className="font-headline-md text-headline-md mb-2">{item.title}</h4>
+                  <p className="font-body-md text-body-md text-[#44474d] leading-relaxed">{item.description}</p>
+                </div>
+              </div>
             ))}
           </div>
         </div>
+
+        {/* Right — HP Icon + Orbital Animation (unchanged) */}
+        <div className="flex items-center justify-center reveal-on-scroll" style={{ transitionDelay: "500ms" }}>
+          <div className="relative w-full aspect-square max-w-lg">
+            <div className="absolute inset-0 border border-stone-border rounded-full opacity-20 animate-[spin_20s_linear_infinite]" />
+            <div className="absolute inset-20 border border-stone-border rounded-full opacity-40 animate-[spin_15s_linear_infinite_reverse]" />
+            <div className="absolute inset-40 border border-stone-border rounded-full opacity-60" />
+
+            {/* HP center */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-primary-container rounded-full flex items-center justify-center text-on-primary z-20 premium-shadow">
+              <span className="font-headline-md text-headline-md font-bold">HP</span>
+            </div>
+
+            {/* Orbiting tech icons */}
+            <div className="absolute inset-0 orbit-container z-10">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-4">
+                <div className="counter-orbit w-12 h-12 bg-white rounded-lg premium-shadow flex items-center justify-center border border-stone-border">
+                  <span className="material-symbols-outlined text-primary">data_object</span>
+                </div>
+              </div>
+              <div className="absolute top-1/2 right-0 translate-x-4 -translate-y-1/2">
+                <div className="counter-orbit w-12 h-12 bg-white rounded-lg premium-shadow flex items-center justify-center border border-stone-border">
+                  <span className="material-symbols-outlined text-primary">cloud_done</span>
+                </div>
+              </div>
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-4">
+                <div className="counter-orbit w-12 h-12 bg-white rounded-lg premium-shadow flex items-center justify-center border border-stone-border">
+                  <span className="material-symbols-outlined text-primary">javascript</span>
+                </div>
+              </div>
+              <div className="absolute top-1/2 left-0 -translate-x-4 -translate-y-1/2">
+                <div className="counter-orbit w-12 h-12 bg-white rounded-lg premium-shadow flex items-center justify-center border border-stone-border">
+                  <span className="material-symbols-outlined text-primary">terminal</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
   );

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+  </style>
+</head>
+<body>
+<!-- STITCH_THREEJS_START:ANIMATION_3 class="fixed inset-0 w-full h-full bg-transparent" -->
+<div class="fixed inset-0 w-full h-full bg-transparent" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_3" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_3');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  
+const width = container.clientWidth || window.innerWidth;
+const height = container.clientHeight || window.innerHeight;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+renderer.setSize(width, height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+container.appendChild(renderer.domElement);
+
+// Lighting
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+scene.add(ambientLight);
+const pointLight = new THREE.PointLight(0x183B66, 2);
+pointLight.position.set(5, 5, 5);
+scene.add(pointLight);
+
+// Elements Group
+const group = new THREE.Group();
+scene.add(group);
+
+// Create Floating Interface Cards (Boxes)
+const cardGeometry = new THREE.BoxGeometry(1.2, 0.8, 0.05);
+const cardMaterial = new THREE.MeshPhongMaterial({ 
+  color: 0xffffff, 
+  transparent: true, 
+  opacity: 0.8,
+  shininess: 100 
+});
+
+const cards = [];
+for (let i = 0; i < 8; i++) {
+  const card = new THREE.Mesh(cardGeometry, cardMaterial);
+  card.position.set(
+    (Math.random() - 0.5) * 8,
+    (Math.random() - 0.5) * 6,
+    (Math.random() - 0.5) * 4
+  );
+  card.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+  group.add(card);
+  cards.push({
+    mesh: card,
+    speed: 0.005 + Math.random() * 0.01,
+    rotSpeed: 0.002 + Math.random() * 0.005
+  });
+}
+
+// Create Connection Lines (API connections)
+const lineMaterial = new THREE.LineBasicMaterial({ color: 0x183B66, transparent: true, opacity: 0.3 });
+const points = [];
+for (let i = 0; i < 15; i++) {
+  const p1 = new THREE.Vector3((Math.random() - 0.5) * 10, (Math.random() - 0.5) * 8, (Math.random() - 0.5) * 5);
+  const p2 = new THREE.Vector3((Math.random() - 0.5) * 10, (Math.random() - 0.5) * 8, (Math.random() - 0.5) * 5);
+  const geometry = new THREE.BufferGeometry().setFromPoints([p1, p2]);
+  const line = new THREE.Line(geometry, lineMaterial);
+  group.add(line);
+}
+
+// Floating Database Nodes (Spheres)
+const sphereGeo = new THREE.SphereGeometry(0.1, 16, 16);
+const sphereMat = new THREE.MeshPhongMaterial({ color: 0x0B1F3A });
+for (let i = 0; i < 20; i++) {
+  const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+  sphere.position.set(
+    (Math.random() - 0.5) * 10,
+    (Math.random() - 0.5) * 8,
+    (Math.random() - 0.5) * 6
+  );
+  group.add(sphere);
+}
+
+camera.position.z = 8;
+
+// Interaction
+let mouseX = 0;
+let mouseY = 0;
+window.addEventListener('mousemove', (e) => {
+  mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+  mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+});
+
+function animate() {
+  requestAnimationFrame(animate);
+  
+  group.rotation.y += 0.001;
+  group.rotation.x += 0.0005;
+  
+  // Smoothly move group based on mouse
+  group.position.x += (mouseX * 0.5 - group.position.x) * 0.05;
+  group.position.y += (-mouseY * 0.5 - group.position.y) * 0.05;
+
+  cards.forEach(c => {
+    c.mesh.rotation.x += c.rotSpeed;
+    c.mesh.rotation.y += c.rotSpeed;
+    c.mesh.position.y += Math.sin(Date.now() * 0.001 * c.speed) * 0.002;
+  });
+
+  renderer.render(scene, camera);
+}
+
+window.addEventListener('resize', () => {
+  const w = container.clientWidth || window.innerWidth;
+  const h = container.clientHeight || window.innerHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+});
+
+animate();
+
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_3 -->
+</body>
+</html>

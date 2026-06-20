@@ -1,197 +1,70 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowUpRight, Cloud, Code2, Database, GitBranch } from "lucide-react";
-import { StaggerContainer, StaggerItem } from "@/components/motion/stagger-container";
-
-const marqueeItems = [
-  "MERN",
-  "MEAN",
-  "NEXT.JS",
-  "AWS",
-  "CI/CD",
-] as const;
-
-const badges = ["MERN", "MEAN", "Next.js", "AWS", "CI/CD"] as const;
-
-function HeroVisual() {
-  const reduceMotion = useReducedMotion();
-  const nodes = [
-    { label: "API", className: "left-[7%] top-[27%]", icon: Code2, drift: -8 },
-    { label: "AWS", className: "right-[8%] top-[18%]", icon: Cloud, drift: 7 },
-    { label: "Data", className: "left-[18%] bottom-[15%]", icon: Database, drift: 6 },
-    { label: "CI/CD", className: "right-[14%] bottom-[20%]", icon: GitBranch, drift: -6 },
-  ] as const;
-  const cards = [
-    { title: "Cloud", meta: "EC2 / S3", className: "left-[4%] top-[10%]" },
-    { title: "Release", meta: "Actions", className: "right-[1%] top-[48%]" },
-    { title: "API", meta: "Node.js", className: "left-[33%] bottom-[2%]" },
-  ] as const;
-
-  return (
-    <motion.div
-      aria-hidden="true"
-      animate={reduceMotion ? undefined : { y: [0, -12, 0] }}
-      className="relative mx-auto aspect-square w-full max-w-[350px] sm:max-w-[520px]"
-      transition={{ duration: 8, ease: "easeInOut", repeat: Infinity }}
-    >
-      <div className="absolute inset-2 rounded-[2rem] bg-[radial-gradient(circle_at_48%_40%,rgba(255,255,255,0.98),rgba(109,94,246,0.18)_34%,rgba(215,199,163,0.22)_57%,transparent_74%)] blur-sm" />
-      <div className="absolute inset-10 rounded-full border border-foreground/10 bg-white/38 shadow-[0_34px_110px_rgba(23,23,23,0.11)]" />
-      <div className="absolute inset-12 rounded-full bg-[linear-gradient(rgba(23,23,23,0.055)_1px,transparent_1px),linear-gradient(90deg,rgba(23,23,23,0.055)_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(circle,black_0%,transparent_68%)]" />
-      <div className="absolute inset-18 rounded-full border border-foreground/10 sm:inset-20" />
-      <motion.div
-        animate={reduceMotion ? undefined : { rotate: 360 }}
-        className="absolute inset-16 rounded-full border border-dashed border-primary/35 sm:inset-18"
-        transition={{ duration: 42, ease: "linear", repeat: Infinity }}
-      />
-      <motion.div
-        animate={reduceMotion ? undefined : { rotate: -360 }}
-        className="absolute inset-24 rounded-full border border-primary/15 sm:inset-28"
-        transition={{ duration: 58, ease: "linear", repeat: Infinity }}
-      />
-      <div className="absolute left-1/2 top-1/2 grid size-30 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-xl border border-foreground/10 bg-white/92 shadow-[0_24px_70px_rgba(23,23,23,0.1)] backdrop-blur-md sm:size-36">
-        <div className="text-center">
-          <span className="block text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            System
-          </span>
-          <span className="mt-1 block font-display text-2xl font-bold text-foreground">
-            Cloud
-          </span>
-        </div>
-      </div>
-      {cards.map((card, index) => (
-        <motion.div
-          animate={reduceMotion ? undefined : { y: [0, index % 2 ? 7 : -7, 0] }}
-          className={`absolute ${card.className} rounded-xl border border-foreground/10 bg-white/82 px-4 py-3 shadow-[0_18px_55px_rgba(23,23,23,0.08)] backdrop-blur-md`}
-          key={card.title}
-          transition={{ duration: 5 + index, ease: "easeInOut", repeat: Infinity }}
-        >
-          <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-            {card.title}
-          </span>
-          <span className="mt-1 block text-sm font-semibold text-muted-foreground">
-            {card.meta}
-          </span>
-        </motion.div>
-      ))}
-      {nodes.map((node, index) => {
-        const Icon = node.icon;
-
-        return (
-          <motion.div
-            animate={reduceMotion ? undefined : { y: [0, node.drift, 0] }}
-            className={`absolute ${node.className} flex items-center gap-2 rounded-full border border-foreground/10 bg-white/90 px-3 py-2.5 text-xs font-semibold text-foreground shadow-[0_18px_50px_rgba(23,23,23,0.09)] backdrop-blur-md sm:px-4 sm:py-3 sm:text-sm`}
-            key={node.label}
-            transition={{
-              duration: 4 + index,
-              ease: "easeInOut",
-              repeat: Infinity,
-            }}
-          >
-            <Icon className="size-4 text-primary" />
-            {node.label}
-          </motion.div>
-        );
-      })}
-      <div className="absolute left-[14%] top-[44%] h-px w-[70%] rotate-[-15deg] bg-gradient-to-r from-transparent via-primary/35 to-transparent" />
-      <div className="absolute left-[17%] top-[56%] h-px w-[66%] rotate-[21deg] bg-gradient-to-r from-transparent via-secondary to-transparent" />
-      <div className="absolute left-[28%] top-[22%] h-px w-[48%] rotate-[58deg] bg-gradient-to-r from-transparent via-foreground/12 to-transparent" />
-    </motion.div>
-  );
-}
+import { useRevealOnScroll } from "@/hooks/use-reveal-on-scroll";
+import { useMagneticEffect } from "@/hooks/use-magnetic-effect";
+import { ThreeJsBackground } from "@/components/motion/three-js-background";
 
 export function HeroSection() {
-  return (
-    <>
-      <section
-        aria-labelledby="hero-heading"
-        className="mesh-gradient relative isolate max-w-full overflow-hidden px-[5vw] pt-16 pb-12 md:pt-24 md:pb-20"
-      >
-        <div className="mx-auto grid min-h-[calc(100svh-6rem)] w-full max-w-7xl items-center gap-10 overflow-hidden md:grid-cols-[1.05fr_0.95fr] md:gap-10 md:overflow-visible">
-          <StaggerContainer className="relative z-10 min-w-0 max-w-[340px] sm:max-w-full">
-            <StaggerItem>
-              <p className="mb-4 text-sm font-semibold text-primary md:text-base">
-                Harsh Panchal
-              </p>
-            </StaggerItem>
-            <StaggerItem>
-              <p className="mb-5 text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                Full Stack Developer
-              </p>
-            </StaggerItem>
-            <StaggerItem>
-              <h1
-                className="max-w-4xl text-wrap font-display text-[34px] font-bold leading-[1.08] text-foreground sm:text-[42px] md:text-[64px] lg:text-[72px]"
-                id="hero-heading"
-              >
-                <span className="block sm:inline">I build web</span>{" "}
-                <span className="block sm:inline">products that move</span>{" "}
-                <span className="block sm:inline">from idea to</span>{" "}
-                <span className="block sm:inline">production.</span>
-              </h1>
-            </StaggerItem>
-            <StaggerItem>
-              <p className="mt-6 max-w-[340px] text-base leading-[1.75] text-muted-foreground sm:max-w-2xl md:text-lg">
-                I work across frontend, backend, and cloud deployment, building
-                scalable applications with Next.js, Node.js, Angular, MongoDB, and
-                AWS.
-              </p>
-            </StaggerItem>
-            <StaggerItem className="mt-8 flex w-full max-w-[340px] flex-col gap-3 sm:w-auto sm:max-w-none sm:flex-row">
-              <Link
-                className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-7 py-3.5 font-semibold text-primary-foreground shadow-[0_18px_44px_rgba(109,94,246,0.22)] transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-accent hover:shadow-[0_22px_54px_rgba(109,94,246,0.28)] active:translate-y-0 active:scale-[0.98] sm:w-auto"
-                href="/#work"
-              >
-                View Work
-                <ArrowUpRight aria-hidden="true" className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
-              <Link
-                className="inline-flex w-full items-center justify-center rounded-full border border-border bg-white px-7 py-3.5 font-semibold text-foreground transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:border-primary/40 hover:text-primary hover:shadow-[0_16px_40px_rgba(23,23,23,0.08)] active:translate-y-0 active:scale-[0.98] sm:w-auto"
-                href="/contact"
-              >
-                Lets Connect
-              </Link>
-              <a
-                className="inline-flex w-full items-center justify-center rounded-full border border-border bg-white px-7 py-3.5 font-semibold text-foreground transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:border-primary/40 hover:text-primary hover:shadow-[0_16px_40px_rgba(23,23,23,0.08)] active:translate-y-0 active:scale-[0.98] sm:w-auto"
-                href="/Harsh-Panchal-Resume.pdf"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Download Resume
-              </a>
-            </StaggerItem>
-            <StaggerItem className="mt-8 flex max-w-[340px] flex-wrap gap-2.5 sm:max-w-none">
-              {badges.map((badge, index) => (
-                <span
-                  className="rounded-full border border-border bg-white px-3.5 py-2 text-sm font-medium text-muted-foreground transition duration-300 hover:-translate-y-0.5 hover:border-primary/35 hover:bg-primary/8 hover:text-primary"
-                  style={{ transitionDelay: `${index * 18}ms` }}
-                  key={badge}
-                >
-                  {badge}
-                </span>
-              ))}
-            </StaggerItem>
-          </StaggerContainer>
+  useRevealOnScroll();
+  useMagneticEffect();
 
-          <div className="relative z-10 min-w-0 overflow-hidden pb-4 md:overflow-visible md:pb-0">
-            <HeroVisual />
+  return (
+    <section className="relative min-h-screen flex items-center pt-24 overflow-hidden px-margin-mobile md:px-margin-desktop">
+      <div className="max-w-container-max mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+        {/* Left — Text + Particle BG */}
+        <div className="relative min-h-[500px]">
+          <ThreeJsBackground />
+          <div className="relative z-10 py-10">
+            <span className="inline-block px-3 py-1 bg-primary/5 text-primary font-label-md text-label-sm uppercase tracking-widest mb-6 border border-primary/10 reveal-on-scroll">
+              Full Stack Developer
+            </span>
+            <h1 className="font-display text-display mb-6 reveal-on-scroll" style={{ transitionDelay: "100ms" }}>
+              HARSH PANCHAL
+            </h1>
+            <p className="font-body-md text-body-lg text-[#44474d] mb-10 max-w-lg reveal-on-scroll" style={{ transitionDelay: "200ms" }}>
+              Building thoughtful digital products through design, engineering, and innovation. Merging technical rigor with aesthetic precision.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Link
+                className="bg-primary-container text-on-primary px-8 py-4 rounded-full font-label-md text-label-md magnetic-btn flex items-center gap-2 group reveal-on-scroll"
+                href="/#work"
+                style={{ transitionDelay: "300ms" }}
+              >
+                View Projects
+                <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              </Link>
+              <Link
+                className="bg-transparent border border-outline-variant text-primary px-8 py-4 rounded-full font-label-md text-label-md hover:bg-white transition-all magnetic-btn reveal-on-scroll"
+                href="/#contact"
+                style={{ transitionDelay: "400ms" }}
+              >
+                Get In Touch
+              </Link>
+            </div>
           </div>
         </div>
-      </section>
 
-      <div className="w-full overflow-hidden border-y border-border bg-white/50 py-7 whitespace-nowrap select-none md:py-10">
-        <div className="animate-marquee flex gap-8 md:gap-10">
-          {[...marqueeItems, ...marqueeItems].map((item, index) => (
-            <span
-              className="kinetic-text font-display text-[34px] font-bold leading-[1.1] md:text-[64px]"
-              key={`${item}-${index}`}
+        {/* Right — Profile Photo (stable, no tilt) */}
+        <div className="flex justify-center lg:justify-end reveal-on-scroll" style={{ transitionDelay: "500ms" }}>
+          <div className="relative p-3 bg-white border border-stone-border rounded-xl premium-shadow w-full max-w-md">
+            <img
+              alt="Harsh Panchal portrait"
+              className="w-full aspect-square object-cover object-bottom rounded-lg"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKE8cBcnAOJzdWS2Ldo9Mcm30yMzno3JpTWP5ZMgjvBYNV4jomZEqy-4qDdMyqLTw5BZ-U_QD1R5Qjc9_SqFxcNAYzOQSMHyxyOUzBdq2ySVE0_M1eajTw_u1Xzi3mhV7vyf4hkBPMpXDEn4JufBDJLzoDpYpDUGKIrVlhN331haHjrwDfYZoJTqUwD2ccmpwqjTMwQPvwV77mB6uM8SFQxFufktnDF7HuvdNAQ57shGtEYARBpzgv5neThNY__HJ-BRcYhJ6qNA"
+            />
+            <div
+              className="absolute -bottom-6 -left-6 bg-white border border-stone-border p-5 rounded-lg premium-shadow reveal-on-scroll"
+              style={{ transitionDelay: "700ms" }}
             >
-              {item}
-            </span>
-          ))}
+              <div className="flex items-center gap-3">
+                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                <span className="font-label-md text-label-md">Available for new opportunities</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </>
+    </section>
   );
 }

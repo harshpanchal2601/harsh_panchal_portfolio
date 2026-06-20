@@ -1,21 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans, Inter } from "next/font/google";
 import { AppProviders } from "@/providers/app-providers";
 import { SITE_METADATA } from "@/constants/site";
 import { createSeoMetadata } from "@/lib/seo";
 import "./globals.css";
-
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("http://localhost:3000"),
@@ -43,9 +30,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${inter.variable} h-full antialiased`}
+      className="h-full scroll-smooth antialiased"
     >
-      <body className="min-h-full bg-background font-sans text-foreground">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+      </head>
+      <body className="min-h-full bg-background text-navy-deep antialiased font-geist">
         <AppProviders>{children}</AppProviders>
       </body>
     </html>

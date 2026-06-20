@@ -253,7 +253,7 @@ export default function BeigeProjectPage() {
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-3.5 font-semibold text-primary-foreground shadow-[0_18px_44px_rgba(109,94,246,0.22)] transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-accent hover:shadow-[0_22px_54px_rgba(109,94,246,0.28)] active:scale-[0.98]"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary-container text-on-primary px-7 py-3.5 font-semibold shadow-[0_18px_44px_rgba(11,31,58,0.25)] transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:opacity-90 active:scale-[0.98]"
                 href={liveUrl}
                 rel="noopener noreferrer"
                 target="_blank"
@@ -668,7 +668,7 @@ export default function BeigeProjectPage() {
           </section>
 
           <Reveal>
-            <section className="rounded-xl border border-border bg-foreground p-7 text-white shadow-[0_28px_80px_rgba(23,23,23,0.14)] md:p-10">
+            <section className="rounded-xl border border-primary/30 bg-primary-container p-7 text-on-primary shadow-[0_28px_80px_rgba(11,31,58,0.25)] md:p-10">
               <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
                 <div>
                   <span className="mb-4 block text-xs font-semibold uppercase tracking-[0.18em] text-white/70">

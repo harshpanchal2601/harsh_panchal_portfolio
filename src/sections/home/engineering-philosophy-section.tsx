@@ -1,36 +1,66 @@
-import { Reveal } from "@/components/motion/reveal";
+"use client";
 
-const philosophyParagraphs = [
-  "Good software should be understandable after the first release. I try to keep structure clear so future changes are not painful.",
-  "I prefer practical decisions over over-engineering. The goal is to solve the product problem and keep the system stable.",
-  "Users should not have to think about the technical work behind a product. The experience should feel direct, fast, and reliable.",
-] as const;
+import { useRevealOnScroll } from "@/hooks/use-reveal-on-scroll";
 
 export function EngineeringPhilosophySection() {
+  useRevealOnScroll();
+
   return (
-    <section className="relative overflow-hidden border-y border-border bg-white/60 px-[5vw] py-18 text-center md:py-24 lg:py-28">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-secondary/20 to-transparent" />
-      <div className="relative z-10 mx-auto max-w-4xl">
-        <Reveal>
-          <h2 className="mb-10 font-display text-[32px] font-bold leading-[1.12] md:mb-12 md:text-[44px] lg:text-[48px]">
-            How I Work
-          </h2>
-        </Reveal>
-        <div className="grid grid-cols-1 gap-5 text-left md:grid-cols-3">
-          {philosophyParagraphs.map((paragraph, index) => (
-            <Reveal className="rounded-xl border border-border bg-white p-6 shadow-[0_18px_50px_rgba(23,23,23,0.05)] transition duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_24px_64px_rgba(109,94,246,0.1)]" key={paragraph}>
-              <h4 className="mb-4 text-xl font-bold text-primary">
-                {index === 0
-                  ? "Clear"
-                  : index === 1
-                    ? "Practical"
-                    : "User-Focused"}
-              </h4>
-              <p className="text-base leading-[1.75] text-muted-foreground md:text-lg">
-                {paragraph}
-              </p>
-            </Reveal>
-          ))}
+    <section className="py-section-gap bg-primary-container text-on-primary" id="process">
+      <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+        <div className="text-center mb-20">
+          <h2 className="font-headline-lg text-headline-lg mb-4 reveal-on-scroll">Methodology</h2>
+          <p className="opacity-70 max-w-xl mx-auto reveal-on-scroll" style={{ transitionDelay: "100ms" }}>
+            A rigorous four-stage process to transform concepts into world-class digital realities.
+          </p>
+        </div>
+        <div className="relative grid grid-cols-1 md:grid-cols-4 gap-12">
+          {/* Flow Lines (Desktop Only) */}
+          <div className="hidden md:block absolute top-1/2 left-0 w-full h-[1px] bg-white/10 -translate-y-1/2 z-0"></div>
+          
+          {/* Step 1 */}
+          <div className="relative z-10 text-center reveal-on-scroll" style={{ transitionDelay: "200ms" }}>
+            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-primary-container mx-auto mb-6 premium-shadow">
+              <span className="material-symbols-outlined text-3xl">search</span>
+            </div>
+            <h4 className="font-headline-md text-headline-md mb-3 reveal-on-scroll" style={{ transitionDelay: "300ms" }}>Discover</h4>
+            <p className="text-sm opacity-60 leading-relaxed reveal-on-scroll" style={{ transitionDelay: "400ms" }}>
+              Defining project scope, user needs, and technical constraints.
+            </p>
+          </div>
+          
+          {/* Step 2 */}
+          <div className="relative z-10 text-center reveal-on-scroll" style={{ transitionDelay: "300ms" }}>
+            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-primary-container mx-auto mb-6 premium-shadow">
+              <span className="material-symbols-outlined text-3xl">architecture</span>
+            </div>
+            <h4 className="font-headline-md text-headline-md mb-3 reveal-on-scroll" style={{ transitionDelay: "400ms" }}>Design</h4>
+            <p className="text-sm opacity-60 leading-relaxed reveal-on-scroll" style={{ transitionDelay: "500ms" }}>
+              Visualizing the interface and system architecture for optimal scale.
+            </p>
+          </div>
+          
+          {/* Step 3 */}
+          <div className="relative z-10 text-center reveal-on-scroll" style={{ transitionDelay: "400ms" }}>
+            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-primary-container mx-auto mb-6 premium-shadow">
+              <span className="material-symbols-outlined text-3xl">code</span>
+            </div>
+            <h4 className="font-headline-md text-headline-md mb-3 reveal-on-scroll" style={{ transitionDelay: "500ms" }}>Develop</h4>
+            <p className="text-sm opacity-60 leading-relaxed reveal-on-scroll" style={{ transitionDelay: "600ms" }}>
+              Clean, performant, and maintainable implementation of the vision.
+            </p>
+          </div>
+          
+          {/* Step 4 */}
+          <div className="relative z-10 text-center reveal-on-scroll" style={{ transitionDelay: "500ms" }}>
+            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-primary-container mx-auto mb-6 premium-shadow">
+              <span className="material-symbols-outlined text-3xl">rocket</span>
+            </div>
+            <h4 className="font-headline-md text-headline-md mb-3 reveal-on-scroll" style={{ transitionDelay: "600ms" }}>Deploy</h4>
+            <p className="text-sm opacity-60 leading-relaxed reveal-on-scroll" style={{ transitionDelay: "700ms" }}>
+              Continuous integration and deployment with zero downtime.
+            </p>
+          </div>
         </div>
       </div>
     </section>

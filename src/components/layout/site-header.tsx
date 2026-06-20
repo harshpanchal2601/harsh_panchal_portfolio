@@ -1,48 +1,76 @@
+"use client";
+
 import Link from "next/link";
-import { MobileNavigation } from "@/components/layout/mobile-navigation";
-import { MAIN_NAVIGATION, SITE_ROUTES } from "@/constants/routes";
+import { useEffect, useState } from "react";
+import { useMagneticEffect } from "@/hooks/use-magnetic-effect";
+import { useRevealOnScroll } from "@/hooks/use-reveal-on-scroll";
+import { motion, AnimatePresence } from "framer-motion";
+import { useSplash } from "@/context/splash-context";
 
 export function SiteHeader() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const { isSplashActive } = useSplash();
+  useMagneticEffect();
+  useRevealOnScroll();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="fixed top-0 z-50 flex w-full items-center justify-between border-b border-border bg-background/80 px-[5vw] py-4 backdrop-blur-xl md:py-5">
-        <Link
-          className="font-display text-[28px] font-bold leading-none text-foreground transition-colors hover:text-primary md:text-[34px]"
-          href={SITE_ROUTES.home}
-        >
-          HP.
-        </Link>
-
-        <nav
-          aria-label="Primary navigation"
-          className="hidden items-center gap-8 md:flex"
-        >
-          {MAIN_NAVIGATION.map((item) => (
-            <Link
-              className="group relative text-sm font-medium text-muted-foreground transition-colors duration-300 hover:text-primary"
-              href={item.href}
-              key={item.href}
-            >
-              {item.label}
-              <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-primary transition-transform duration-300 group-hover:scale-x-100" />
-            </Link>
-          ))}
-          <a
-            className="rounded-full border border-border bg-white px-5 py-2 text-sm font-semibold text-foreground transition duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:text-primary hover:shadow-[0_14px_34px_rgba(23,23,23,0.08)] active:scale-95"
-            href="/Harsh-Panchal-Resume.pdf"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Download Resume
-          </a>
-          <Link
-            className="ml-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground shadow-[0_12px_30px_rgba(109,94,246,0.18)] transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-accent hover:shadow-[0_16px_38px_rgba(109,94,246,0.25)] active:scale-95"
-            href={SITE_ROUTES.contact}
-          >
-            Lets Connect
+    <header className={`fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-outline-variant/30 transition-all ${isScrolled ? "py-3" : "py-5"}`}>
+      <nav className="flex justify-between items-center px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+        <div className="flex items-center gap-3 reveal-on-scroll">
+          <AnimatePresence>
+            {!isSplashActive && (
+              <motion.div
+                layoutId="avatar-container"
+                className="w-10 h-10 rounded-full overflow-hidden border border-stone-border bg-white flex items-center justify-center premium-shadow"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
+              >
+                <motion.img
+                  layoutId="avatar-image"
+                  src="/images/avatar.png"
+                  alt="Avatar"
+                  className="w-full h-full object-cover object-[center_30%]"
+                  transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <div className="font-headline-md text-headline-md font-bold text-primary">HP</div>
+        </div>
+        <div className="hidden md:flex items-center gap-10">
+          <Link className="text-label-md font-label-md text-[#44474d] hover:text-primary transition-colors magnetic-btn reveal-on-scroll" href="/#about" style={{ transitionDelay: "50ms" }}>
+            About
           </Link>
-        </nav>
-
-        <MobileNavigation />
+          <Link className="text-label-md font-label-md text-[#44474d] hover:text-primary transition-colors magnetic-btn reveal-on-scroll" href="/#work" style={{ transitionDelay: "100ms" }}>
+            Work
+          </Link>
+          <Link className="text-label-md font-label-md text-[#44474d] hover:text-primary transition-colors magnetic-btn reveal-on-scroll" href="/#journey" style={{ transitionDelay: "150ms" }}>
+            Journey
+          </Link>
+          <Link className="text-label-md font-label-md text-[#44474d] hover:text-primary transition-colors magnetic-btn reveal-on-scroll" href="/#contact" style={{ transitionDelay: "200ms" }}>
+            Contact
+          </Link>
+        </div>
+        <a
+          href="/Harsh-Panchal-Resume.pdf"
+          download
+          className="bg-primary-container text-on-primary px-6 py-2.5 rounded-full font-label-md text-label-md magnetic-btn hover:scale-105 transition-all reveal-on-scroll inline-flex items-center gap-2"
+          style={{ transitionDelay: "250ms" }}
+        >
+          <span className="material-symbols-outlined text-[16px]">download</span>
+          Download Resume
+        </a>
+      </nav>
     </header>
   );
 }
+

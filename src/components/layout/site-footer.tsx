@@ -1,49 +1,40 @@
+"use client";
+
 import Link from "next/link";
 import { SITE_METADATA } from "@/constants/site";
+import { useRevealOnScroll } from "@/hooks/use-reveal-on-scroll";
+
 const footerLinks = [
-  {
-    label: "GitHub",
-    href: "https://github.com/harshpanchal2601",
-  },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/harshpanchal2601/",
-  },
-  {
-    label: "Email",
-    href: "mailto:harshpanchal7979@gmail.com",
-  },
+  { label: "GitHub", href: "https://github.com/harshpanchal2601" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/harshpanchal2601/" },
+  { label: "Email", href: "mailto:harshpanchal7979@gmail.com" },
 ] as const;
 
 export function SiteFooter() {
+  useRevealOnScroll();
+
   return (
-    <footer className="flex w-full flex-col items-start overflow-hidden border-t border-border bg-white/55 px-[5vw] py-12 md:py-16">
-      <div className="mb-8 font-display text-[38px] font-bold leading-none text-foreground md:text-[52px]">
-        HP.
-      </div>
-      <div className="flex w-full flex-col gap-10 md:flex-row md:items-end md:justify-between">
-        <nav aria-label="Footer links" className="flex flex-wrap gap-4 md:gap-6">
+    <footer className="w-full py-section-gap border-t border-outline-variant bg-surface">
+      <div className="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto gap-gutter">
+        <div className="font-label-md text-label-md uppercase tracking-widest text-primary font-bold reveal-on-scroll">
+          {SITE_METADATA.name}
+        </div>
+        <div className="text-[#44474d] font-body-md text-body-md text-center reveal-on-scroll" style={{ transitionDelay: "100ms" }}>
+          © {new Date().getFullYear()} Crafted with intellectual rigor.
+        </div>
+        <div className="flex gap-6 reveal-on-scroll" style={{ transitionDelay: "200ms" }}>
           {footerLinks.map((link) => (
             <Link
-              className="text-base font-semibold text-muted-foreground transition-colors hover:text-primary md:text-lg"
-              href={link.href}
               key={link.label}
-              rel={
-                link.href.startsWith("http")
-                  ? "noopener noreferrer"
-                  : undefined
-              }
+              className="text-[#44474d] hover:text-primary transition-colors font-label-md text-label-md"
+              href={link.href}
+              rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
               target={link.href.startsWith("http") ? "_blank" : undefined}
             >
               {link.label}
             </Link>
           ))}
-        </nav>
-        <p className="text-left text-xs font-semibold uppercase leading-relaxed tracking-[0.16em] text-muted-foreground md:text-right">
-          &copy; {new Date().getFullYear()} {SITE_METADATA.name}.
-          <br />
-          Built with care.
-        </p>
+        </div>
       </div>
     </footer>
   );
