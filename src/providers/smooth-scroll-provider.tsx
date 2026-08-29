@@ -1,14 +1,25 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 
 type SmoothScrollProviderProps = Readonly<{
   children: React.ReactNode;
 }>;
 
+function usesV2ScrollRuntime(pathname: string): boolean {
+  return pathname === "/" || pathname.startsWith("/projects/");
+}
+
 export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
+  const pathname = usePathname();
+
   useEffect(() => {
+    if (usesV2ScrollRuntime(pathname)) {
+      return;
+    }
+
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     if (mediaQuery.matches) {
@@ -33,7 +44,7 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
       window.cancelAnimationFrame(frameId);
       lenis.destroy();
     };
-  }, []);
+  }, [pathname]);
 
   return children;
 }

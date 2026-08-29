@@ -1,0 +1,533 @@
+.portfolio-v2 .v2-capabilities {
+  --cap-bg: #17130f;
+  --cap-text: #f3e4d0;
+  --cap-muted: rgba(243, 228, 208, 0.28);
+  --cap-faint: rgba(243, 228, 208, 0.12);
+  --cap-accent: #b96143;
+  --cap-line: rgba(243, 228, 208, 0.14);
+  --cap-scroll-distance: 300dvh;
+
+  --cap-s0-n0-x: 20;
+  --cap-s0-n0-y: 24;
+  --cap-s0-n1-x: 74;
+  --cap-s0-n1-y: 20;
+  --cap-s0-n2-x: 79;
+  --cap-s0-n2-y: 73;
+  --cap-s0-n3-x: 24;
+  --cap-s0-n3-y: 79;
+
+  --cap-s1-n0-x: 16;
+  --cap-s1-n0-y: 16;
+  --cap-s1-n1-x: 84;
+  --cap-s1-n1-y: 16;
+  --cap-s1-n2-x: 84;
+  --cap-s1-n2-y: 84;
+  --cap-s1-n3-x: 16;
+  --cap-s1-n3-y: 84;
+
+  --cap-s2-n0-x: 16;
+  --cap-s2-n0-y: 16;
+  --cap-s2-n1-x: 84;
+  --cap-s2-n1-y: 16;
+  --cap-s2-n2-x: 84;
+  --cap-s2-n2-y: 84;
+  --cap-s2-n3-x: 16;
+  --cap-s2-n3-y: 84;
+
+  --cap-s3-n0-x: 18;
+  --cap-s3-n0-y: 18;
+  --cap-s3-n1-x: 82;
+  --cap-s3-n1-y: 18;
+  --cap-s3-n2-x: 82;
+  --cap-s3-n2-y: 82;
+  --cap-s3-n3-x: 18;
+  --cap-s3-n3-y: 82;
+
+  --cap-s4-n0-x: 18;
+  --cap-s4-n0-y: 50;
+  --cap-s4-n1-x: 50;
+  --cap-s4-n1-y: 18;
+  --cap-s4-n2-x: 82;
+  --cap-s4-n2-y: 50;
+  --cap-s4-n3-x: 50;
+  --cap-s4-n3-y: 82;
+
+  position: relative;
+  z-index: 1;
+  margin-top: 0;
+  background: var(--cap-bg);
+  color: var(--cap-text);
+  overflow: visible;
+}
+
+.portfolio-v2 .v2-capabilities::after {
+  content: "";
+  display: block;
+  height: var(--cap-scroll-distance);
+  pointer-events: none;
+}
+
+.portfolio-v2 .v2-cap-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.portfolio-v2 .v2-cap-stage {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100dvh;
+  min-height: 100svh;
+  overflow: clip;
+  overscroll-behavior: none;
+  isolation: isolate;
+  background: var(--cap-bg);
+}
+
+.portfolio-v2 .v2-cap-chapter {
+  position: absolute;
+  inset:
+    max(4.5rem, 9vh)
+    var(--v2-page-padding)
+    auto;
+  z-index: 2;
+  width: min(72rem, calc(100% - (2 * var(--v2-page-padding))));
+  transform-origin: 0 0;
+  will-change: transform, opacity;
+}
+
+.portfolio-v2 .v2-cap-chapter-kicker {
+  margin: 0 0 clamp(2.5rem, 7vh, 5rem);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--cap-accent);
+}
+
+.portfolio-v2 .v2-cap-mask {
+  display: block;
+  overflow: hidden;
+}
+
+.portfolio-v2 .v2-cap-mask--offset {
+  padding-left: clamp(2rem, 10vw, 10rem);
+}
+
+.portfolio-v2 .v2-cap-mask > span {
+  display: block;
+  will-change: transform, opacity;
+}
+
+.portfolio-v2 .v2-cap-chapter-title {
+  margin: 0;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: clamp(5.5rem, 12vw, 12.5rem);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.88;
+  text-transform: uppercase;
+  color: var(--cap-text);
+}
+
+.portfolio-v2 .v2-cap-workspace {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
+  gap: clamp(2rem, 5vw, 7rem);
+  align-items: end;
+  padding:
+    clamp(11rem, 24vh, 15rem)
+    var(--v2-page-padding)
+    clamp(4rem, 10vh, 6.5rem);
+  visibility: hidden;
+  opacity: 0;
+}
+
+.portfolio-v2 .v2-cap-list {
+  min-width: 0;
+  border-top: 1px solid var(--cap-line);
+  padding-bottom: 0.75rem;
+}
+
+.portfolio-v2 .v2-cap-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  gap: clamp(0.75rem, 1.5vw, 1.5rem);
+  min-height: clamp(5.25rem, 10.5vh, 7rem);
+  padding: clamp(0.75rem, 1.5vh, 1.15rem) 0;
+  border-bottom: 1px solid var(--cap-line);
+}
+
+.portfolio-v2 .v2-cap-row-hit {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+
+.portfolio-v2 .v2-cap-row:has(.v2-cap-row-hit:hover) .v2-cap-row-number,
+.portfolio-v2 .v2-cap-row:has(.v2-cap-row-hit:focus-visible) .v2-cap-row-number {
+  color: var(--cap-accent) !important;
+}
+
+.portfolio-v2 .v2-cap-row:has(.v2-cap-row-hit:hover) .v2-cap-row-title,
+.portfolio-v2 .v2-cap-row:has(.v2-cap-row-hit:focus-visible) .v2-cap-row-title {
+  color: var(--cap-text) !important;
+}
+
+.portfolio-v2 .v2-cap-row:has(.v2-cap-row-hit:hover) .v2-cap-row-description,
+.portfolio-v2 .v2-cap-row:has(.v2-cap-row-hit:focus-visible) .v2-cap-row-description {
+  color: var(--cap-text) !important;
+  opacity: 0.82 !important;
+}
+
+.portfolio-v2 .v2-cap-row:has(.v2-cap-row-hit:hover) .v2-cap-row-technologies,
+.portfolio-v2 .v2-cap-row:has(.v2-cap-row-hit:focus-visible) .v2-cap-row-technologies {
+  color: var(--cap-muted) !important;
+  opacity: 1 !important;
+}
+
+.portfolio-v2 .v2-cap-row:has(.v2-cap-row-hit:focus-visible) {
+  outline: 1px solid var(--cap-accent);
+  outline-offset: -1px;
+}
+
+.portfolio-v2 .v2-cap-row-number {
+  padding-top: 0.28rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--cap-faint);
+}
+
+.portfolio-v2 .v2-cap-row-body {
+  min-width: 0;
+}
+
+.portfolio-v2 .v2-cap-row-title {
+  margin: 0;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: clamp(1.25rem, 1.75vw, 1.85rem);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--cap-muted);
+}
+
+.portfolio-v2 .v2-cap-row-description {
+  max-width: 34rem;
+  margin: 0.5rem 0 0;
+  font-size: clamp(0.72rem, 0.82vw, 0.86rem);
+  line-height: 1.45;
+  color: var(--cap-muted);
+}
+
+.portfolio-v2 .v2-cap-row-technologies {
+  margin: 0.55rem 0 0;
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  line-height: 1.45;
+  text-transform: uppercase;
+  color: var(--cap-faint);
+}
+
+.portfolio-v2 .v2-cap-system {
+  position: relative;
+  align-self: stretch;
+  min-width: 0;
+  min-height: clamp(25rem, 61vh, 42rem);
+  border-top: 1px solid var(--cap-line);
+  border-bottom: 1px solid var(--cap-line);
+}
+
+.portfolio-v2 .v2-cap-connectors {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.portfolio-v2 .v2-cap-connectors line {
+  vector-effect: non-scaling-stroke;
+  stroke: var(--cap-line);
+  stroke-width: 0.22;
+}
+
+.portfolio-v2 .v2-cap-core,
+.portfolio-v2 .v2-cap-node {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--cap-line);
+  background: var(--cap-bg);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.portfolio-v2 .v2-cap-core {
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  width: clamp(6.25rem, 9vw, 8.5rem);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-color: rgba(185, 97, 67, 0.48);
+  color: var(--cap-accent);
+}
+
+.portfolio-v2 .v2-cap-node {
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: clamp(7rem, 11vw, 10rem);
+  min-height: clamp(3.5rem, 6vw, 5rem);
+  padding: 0.75rem;
+  translate: -50% -50%;
+  color: var(--cap-text);
+  will-change: transform;
+}
+
+.portfolio-v2 .v2-cap-node-index {
+  position: absolute;
+  top: 0.42rem;
+  left: 0.5rem;
+  font-size: 0.48rem;
+  letter-spacing: 0.12em;
+  color: var(--cap-faint);
+}
+
+.portfolio-v2 [data-cap-node-label],
+.portfolio-v2 [data-cap-core-label] {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 0.75rem 0.5rem 0.45rem;
+  text-align: center;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.portfolio-v2 .v2-cap-system-axis {
+  position: absolute;
+  z-index: -1;
+  background: var(--cap-faint);
+  opacity: 0.45;
+}
+
+.portfolio-v2 .v2-cap-system-axis--x {
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: 1px;
+}
+
+.portfolio-v2 .v2-cap-system-axis--y {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+}
+
+@media (max-width: 1023px) {
+  .portfolio-v2 .v2-capabilities {
+    --cap-s0-n0-x: 20;
+    --cap-s0-n0-y: 23;
+    --cap-s0-n1-x: 77;
+    --cap-s0-n1-y: 27;
+    --cap-s0-n2-x: 72;
+    --cap-s0-n2-y: 75;
+    --cap-s0-n3-x: 23;
+    --cap-s0-n3-y: 78;
+
+    --cap-s1-n0-x: 16;
+    --cap-s1-n0-y: 16;
+    --cap-s1-n1-x: 84;
+    --cap-s1-n1-y: 16;
+    --cap-s1-n2-x: 84;
+    --cap-s1-n2-y: 84;
+    --cap-s1-n3-x: 16;
+    --cap-s1-n3-y: 84;
+
+    --cap-s2-n0-x: 16;
+    --cap-s2-n0-y: 16;
+    --cap-s2-n1-x: 84;
+    --cap-s2-n1-y: 16;
+    --cap-s2-n2-x: 84;
+    --cap-s2-n2-y: 84;
+    --cap-s2-n3-x: 16;
+    --cap-s2-n3-y: 84;
+
+    --cap-s3-n0-x: 18;
+    --cap-s3-n0-y: 18;
+    --cap-s3-n1-x: 82;
+    --cap-s3-n1-y: 18;
+    --cap-s3-n2-x: 82;
+    --cap-s3-n2-y: 82;
+    --cap-s3-n3-x: 18;
+    --cap-s3-n3-y: 82;
+
+    --cap-s4-n0-x: 18;
+    --cap-s4-n0-y: 50;
+    --cap-s4-n1-x: 50;
+    --cap-s4-n1-y: 20;
+    --cap-s4-n2-x: 82;
+    --cap-s4-n2-y: 50;
+    --cap-s4-n3-x: 50;
+    --cap-s4-n3-y: 80;
+
+    --cap-scroll-distance: 240dvh;
+  }
+
+  .portfolio-v2 .v2-cap-chapter {
+    inset:
+      max(4rem, 8vh)
+      var(--v2-page-padding)
+      auto;
+  }
+
+  .portfolio-v2 .v2-cap-chapter-kicker {
+    margin-bottom: clamp(1.75rem, 5vh, 3rem);
+  }
+
+  .portfolio-v2 .v2-cap-mask--offset {
+    padding-left: clamp(1.25rem, 10vw, 4rem);
+  }
+
+  .portfolio-v2 .v2-cap-chapter-title {
+    font-size: clamp(4rem, 19vw, 7rem);
+    line-height: 0.91;
+  }
+
+  .portfolio-v2 .v2-cap-workspace {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(12rem, 1fr);
+    gap: clamp(1rem, 2.5vh, 1.75rem);
+    align-items: stretch;
+    padding:
+      clamp(9rem, 20vh, 12rem)
+      var(--v2-page-padding)
+      max(4.5rem, calc(3.5rem + env(safe-area-inset-bottom)));
+  }
+
+  .portfolio-v2 .v2-cap-row {
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    min-height: 0;
+    padding: clamp(0.48rem, 1vh, 0.7rem) 0;
+  }
+
+  .portfolio-v2 .v2-cap-row-title {
+    font-size: clamp(0.98rem, 4vw, 1.3rem);
+  }
+
+  .portfolio-v2 .v2-cap-row-description {
+    margin-top: 0.3rem;
+    font-size: clamp(0.63rem, 2.4vw, 0.75rem);
+    line-height: 1.35;
+  }
+
+  .portfolio-v2 .v2-cap-row-technologies {
+    margin-top: 0.3rem;
+    font-size: 0.5rem;
+    letter-spacing: 0.12em;
+  }
+
+  .portfolio-v2 .v2-cap-system {
+    grid-row: 2;
+    min-height: 0;
+  }
+
+  .portfolio-v2 .v2-cap-core {
+    width: clamp(4.5rem, 17vw, 6rem);
+    font-size: 0.48rem;
+  }
+
+  .portfolio-v2 .v2-cap-node {
+    width: clamp(5.25rem, 22vw, 7rem);
+    min-height: clamp(2.75rem, 11vw, 3.5rem);
+    padding: 0.55rem;
+    font-size: 0.5rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .portfolio-v2 .v2-cap-workspace {
+    padding-top: clamp(8rem, 18vh, 10rem);
+  }
+
+  .portfolio-v2 .v2-cap-row-description,
+  .portfolio-v2 .v2-cap-row-technologies {
+    max-width: 18rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-v2 .v2-capabilities {
+    height: auto;
+    min-height: 100svh;
+    background: var(--cap-bg);
+  }
+
+  .portfolio-v2 .v2-capabilities::after {
+    display: none;
+  }
+
+  .portfolio-v2 .v2-cap-stage {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
+    padding: clamp(4rem, 8vh, 6rem) var(--v2-page-padding);
+  }
+
+  .portfolio-v2 .v2-cap-chapter,
+  .portfolio-v2 .v2-cap-workspace {
+    position: relative;
+    inset: auto;
+    width: auto;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+  }
+
+  .portfolio-v2 .v2-cap-chapter-title {
+    margin-bottom: clamp(3rem, 8vh, 6rem);
+    font-size: clamp(4rem, 12vw, 9rem);
+  }
+
+  .portfolio-v2 .v2-cap-workspace {
+    padding: 0;
+  }
+
+  .portfolio-v2 [data-cap-chapter-kicker],
+  .portfolio-v2 [data-cap-chapter-line],
+  .portfolio-v2 [data-cap-node-label="4"],
+  .portfolio-v2 [data-cap-core-label="4"] {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+  }
+}

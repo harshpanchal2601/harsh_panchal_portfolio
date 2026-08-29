@@ -1,0 +1,392 @@
+.portfolio-v2 .v2-contact {
+  --contact-bg: #0f0e0c;
+  --contact-bg-secondary: #15110e;
+  --contact-text: #eee4d7;
+  --contact-text-muted: rgba(238, 228, 215, 0.42);
+  --contact-text-faint: rgba(238, 228, 215, 0.2);
+  --contact-accent: #b96143;
+  --contact-accent-mid: #c87352;
+  --contact-accent-soft: #d68a68;
+  --contact-accent-pale: #e3a080;
+  --contact-line: rgba(238, 228, 215, 0.13);
+  --contact-field: rgba(255, 255, 255, 0.018);
+  --contact-bg-x: 65%;
+  --contact-bg-y: 30%;
+  --contact-bg-strength: 0.25;
+
+  position: relative;
+  z-index: 3;
+  min-height: 100svh;
+  margin: 0;
+  padding: clamp(2.5rem, 6vh, 4.5rem) var(--v2-page-padding) 2rem;
+  overflow: clip;
+  background:
+    radial-gradient(
+      circle at 72% 42%,
+      rgba(122, 63, 39, 0.09),
+      transparent 40%
+    ),
+    linear-gradient(125deg, #0f0e0c 0%, #12100e 48%, #0d0c0b 100%);
+  color: var(--contact-text);
+  isolation: isolate;
+}
+
+.portfolio-v2 .v2-contact::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--contact-bg-strength);
+  background:
+    radial-gradient(
+      ellipse 58% 72% at var(--contact-bg-x) var(--contact-bg-y),
+      rgba(214, 138, 104, 0.18) 0%,
+      rgba(185, 97, 67, 0.12) 22%,
+      rgba(121, 59, 37, 0.07) 43%,
+      transparent 70%
+    ),
+    linear-gradient(
+      115deg,
+      transparent 20%,
+      rgba(185, 97, 67, 0.04) 45%,
+      rgba(214, 138, 104, 0.09) 52%,
+      transparent 72%
+    );
+  will-change: opacity, background-position;
+}
+
+.portfolio-v2 .v2-contact-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100svh - 4.5rem);
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+.portfolio-v2 .v2-contact-kicker {
+  margin: 0 0 clamp(1.35rem, 3.2vh, 2.25rem);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--contact-accent-soft);
+}
+
+.portfolio-v2 .v2-contact-visual {
+  --contact-text-x: 64%;
+  --contact-text-y: 34%;
+  --contact-text-strength: 0;
+
+  position: relative;
+  margin-bottom: clamp(2rem, 4.5vh, 3.25rem);
+}
+
+.portfolio-v2 .v2-contact-layers {
+  position: relative;
+}
+
+.portfolio-v2 .v2-contact-layer {
+  width: 100%;
+  margin: 0;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: clamp(5rem, 7.3vw, 8.5rem);
+  font-weight: 450;
+  letter-spacing: -0.052em;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.portfolio-v2 .v2-contact-layer--base {
+  color: var(--contact-text);
+}
+
+.portfolio-v2 .v2-contact-layer--accent {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--contact-text-strength);
+  color: transparent;
+  background: linear-gradient(
+    100deg,
+    #a9583d 0%,
+    #d68a68 45%,
+    #e3a080 60%,
+    #b96143 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  filter: drop-shadow(0 0 8px rgba(185, 97, 67, 0.1));
+  mask-image: radial-gradient(
+    circle 12.5rem at var(--contact-text-x) var(--contact-text-y),
+    #000 0%,
+    #000 20%,
+    rgba(0, 0, 0, 0.82) 38%,
+    rgba(0, 0, 0, 0.3) 64%,
+    transparent 78%
+  );
+  -webkit-mask-image: radial-gradient(
+    circle 12.5rem at var(--contact-text-x) var(--contact-text-y),
+    #000 0%,
+    #000 20%,
+    rgba(0, 0, 0, 0.82) 38%,
+    rgba(0, 0, 0, 0.3) 64%,
+    transparent 78%
+  );
+  will-change: opacity, mask-position, -webkit-mask-position;
+}
+
+.portfolio-v2 .v2-contact-line {
+  display: block;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.portfolio-v2 .v2-contact-mark {
+  color: rgb(214 138 104 / 0.88);
+}
+
+.portfolio-v2 .v2-contact-layer--accent .v2-contact-mark {
+  color: transparent;
+}
+
+.portfolio-v2 .v2-contact-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(11.5rem, 0.42fr);
+  min-height: clamp(5.4rem, 10.5vh, 6.75rem);
+  gap: 0;
+  margin-top: auto;
+  border-top: 1px solid var(--contact-line);
+  border-bottom: 1px solid var(--contact-line);
+  background: rgb(255 255 255 / 0.006);
+}
+
+.portfolio-v2 .v2-contact-field {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.55rem;
+  min-width: 0;
+  padding: 1rem 1.5rem 1rem 0;
+  border-right: 1px solid var(--contact-line);
+  background: var(--contact-field);
+  box-shadow: inset 0 -1px 0 transparent;
+  transition: box-shadow 220ms ease, background-color 220ms ease;
+}
+
+.portfolio-v2 .v2-contact-field + .v2-contact-field {
+  padding-left: 1.5rem;
+}
+
+.portfolio-v2 .v2-contact-field:focus-within {
+  background: rgb(185 97 67 / 0.025);
+  box-shadow: inset 0 -1px 0 var(--contact-accent);
+}
+
+.portfolio-v2 .v2-contact-field span {
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--contact-text-muted);
+}
+
+.portfolio-v2 .v2-contact-field input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.25rem 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--contact-text);
+  font: inherit;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.portfolio-v2 .v2-contact-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-width: 11.5rem;
+  padding: 0 1.5rem;
+  border: 0;
+  background: linear-gradient(120deg, #9f533b 0%, #b96143 45%, #ca7453 100%);
+  background-size: 180% 180%;
+  background-position: 0% 50%;
+  color: #f4e9db;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-position 300ms ease, color 220ms ease;
+}
+
+.portfolio-v2 .v2-contact-submit span {
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portfolio-v2 .v2-contact-submit:hover {
+  background-position: 100% 50%;
+}
+
+.portfolio-v2 .v2-contact-submit:hover span:first-child {
+  transform: translateX(2px);
+}
+
+.portfolio-v2 .v2-contact-submit:hover .v2-contact-submit-arrow {
+  transform: translate(3px, -3px);
+}
+
+.portfolio-v2 .v2-contact-submit:focus-visible {
+  outline: 1px solid var(--contact-accent-pale);
+  outline-offset: 3px;
+}
+
+.portfolio-v2 .v2-contact-rail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 4rem;
+  justify-content: space-between;
+  padding: 1.45rem 0 1.15rem;
+}
+
+.portfolio-v2 .v2-contact-rail-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1.35rem;
+  align-items: baseline;
+}
+
+.portfolio-v2 .v2-contact-rail-group span {
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgb(238 228 215 / 0.36);
+}
+
+.portfolio-v2 .v2-contact-rail-group a {
+  color: rgb(238 228 215 / 0.88);
+  font-size: 0.92rem;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+
+.portfolio-v2 .v2-contact-rail-group a:hover,
+.portfolio-v2 .v2-contact-rail-group a:focus-visible {
+  color: var(--contact-accent-soft);
+}
+
+.portfolio-v2 .v2-contact-rail-group a:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 0.25rem;
+}
+
+.portfolio-v2 .v2-contact-rail-group--write a {
+  font-size: clamp(0.95rem, 1.4vw, 1.2rem);
+  letter-spacing: -0.02em;
+}
+
+.portfolio-v2 .v2-contact-end {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.5rem;
+  justify-content: space-between;
+  padding-top: 0.4rem;
+  margin-top: 0.15rem;
+}
+
+.portfolio-v2 .v2-contact-end p {
+  margin: 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--contact-text-faint);
+}
+
+@media (max-width: 1100px) {
+  .portfolio-v2 .v2-contact-layer {
+    font-size: clamp(4rem, 7.7vw, 6.2rem);
+  }
+}
+
+@media (max-width: 900px) {
+  .portfolio-v2 .v2-contact {
+    --contact-bg-x: 65%;
+    --contact-bg-y: 30%;
+    --contact-bg-strength: 0.48;
+  }
+
+  .portfolio-v2 .v2-contact-visual {
+    --contact-text-x: 70%;
+    --contact-text-y: 68%;
+    --contact-text-strength: 0.34;
+  }
+
+  .portfolio-v2 .v2-contact-layer {
+    font-size: clamp(2.55rem, 10.2vw, 4.8rem);
+    line-height: 0.92;
+  }
+
+  .portfolio-v2 .v2-contact-line {
+    white-space: normal;
+  }
+
+  .portfolio-v2 .v2-contact-form {
+    grid-template-columns: 1fr;
+  }
+
+  .portfolio-v2 .v2-contact-field,
+  .portfolio-v2 .v2-contact-field + .v2-contact-field {
+    min-height: 4.6rem;
+    padding: 0.9rem 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--contact-line);
+  }
+
+  .portfolio-v2 .v2-contact-submit {
+    min-height: 3.8rem;
+  }
+
+  .portfolio-v2 .v2-contact-rail {
+    align-items: flex-start;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .portfolio-v2 .v2-contact {
+    --contact-bg-x: 65%;
+    --contact-bg-y: 30%;
+    --contact-bg-strength: 0.48;
+  }
+
+  .portfolio-v2 .v2-contact-visual {
+    --contact-text-x: 70%;
+    --contact-text-y: 68%;
+    --contact-text-strength: 0.34;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-v2 .v2-contact {
+    --contact-bg-x: 65%;
+    --contact-bg-y: 30%;
+    --contact-bg-strength: 0.48;
+  }
+
+  .portfolio-v2 .v2-contact-visual {
+    --contact-text-x: 70%;
+    --contact-text-y: 68%;
+    --contact-text-strength: 0.34;
+  }
+
+  .portfolio-v2 .v2-contact-submit,
+  .portfolio-v2 .v2-contact-submit span {
+    transition: none;
+  }
+}
