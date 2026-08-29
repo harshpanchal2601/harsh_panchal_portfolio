@@ -96,7 +96,7 @@ function restProgress(progress: number, direction: number): number | null {
     }
   }
 
-  let nearest = REST.frame;
+  let nearest: number = REST.frame;
   let distance = Math.abs(progress - REST.frame);
 
   for (const rest of [REST.build, REST.ship]) {
