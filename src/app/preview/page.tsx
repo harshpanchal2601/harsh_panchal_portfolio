@@ -16,6 +16,7 @@ export default async function PreviewRedirectPage({
       query.set(key, value);
     }
   }
+  
 
   const serializedQuery = query.toString();
 
