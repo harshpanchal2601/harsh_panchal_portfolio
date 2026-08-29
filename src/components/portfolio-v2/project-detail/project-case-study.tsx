@@ -37,7 +37,7 @@ function ProjectStoryAccordion({
 
   const activateOnHover = (
     event: PointerEvent<HTMLButtonElement>,
-    sectionId: string,
+    sectionId: ProjectCaseStudySectionId,
   ) => {
     if (
       event.pointerType === "mouse" &&
