@@ -63,8 +63,7 @@ export default async function ProjectOpenGraphImage({ params }: Props) {
               color: "rgba(238, 228, 215, 0.6)",
             }}
           >
-            harshpanchal2601.netlify.app
-          </div>
+            {domainText}
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>

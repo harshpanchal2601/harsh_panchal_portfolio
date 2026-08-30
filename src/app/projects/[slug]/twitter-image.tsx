@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { SITE_METADATA } from "@/constants/site";
 import { getV2CaseStudyProject, v2CaseStudySlugs } from "@/data/projects";
 
 export const dynamicParams = false;
@@ -25,6 +26,7 @@ export default async function ProjectTwitterImage({ params }: Props) {
   const title = project?.title || "Case Study";
   const summary = project?.summary || "Production web engineering case study.";
   const tech = project?.tech.slice(0, 4).join(" / ") || "Next.js / TypeScript";
+  const domainText = SITE_METADATA.url.replace(/^https?:\/\//, "");
 
   return new ImageResponse(
     (
@@ -63,7 +65,7 @@ export default async function ProjectTwitterImage({ params }: Props) {
               color: "rgba(238, 228, 215, 0.6)",
             }}
           >
-            harshpanchal2601.netlify.app
+            {domainText}
           </div>
         </div>
 
