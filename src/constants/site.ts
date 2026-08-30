@@ -1,7 +1,7 @@
 export const SITE_ORIGIN =
   process.env.NEXT_PUBLIC_SITE_URL ||
   process.env.SITE_URL ||
-  "https://harsh-panchal-portfolio-kappa.vercel.app/";
+  "https://harshpanchal.dev/";
 
 export const SITE_METADATA = {
   name: "Harsh Panchal",
