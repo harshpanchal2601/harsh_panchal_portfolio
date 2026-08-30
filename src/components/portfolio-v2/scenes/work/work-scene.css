@@ -421,41 +421,138 @@
 }
 
 /* ============================================================
-   RESPONSIVE — Mobile (≤ 900px)
+   RESPONSIVE — Tablet (600px–899px)
    ============================================================ */
 
-@media (max-width: 900px) {
+@media (min-width: 600px) and (max-width: 899px) {
+  .portfolio-v2 .v2-work {
+    --work-scroll-distance: 760dvh;
+  }
+
+  .portfolio-v2 .v2-work-kinetic-text {
+    font-size: 96px;
+  }
+
+  .portfolio-v2 .v2-work-exit-kinetic-text {
+    font-size: 104px;
+  }
+
+  .portfolio-v2 .v2-work-panel {
+    top: 3vh;
+    right: 1.5vw;
+    left: 1.5vw;
+    height: 94dvh;
+    padding:
+      clamp(1.5rem, 3vh, 2.25rem)
+      clamp(1.5rem, 4vw, 2.5rem)
+      clamp(1.25rem, 2.5vh, 1.75rem);
+  }
+
+  .portfolio-v2 .v2-work-panel-head {
+    min-height: clamp(6.5rem, 16vh, 9.5rem);
+    gap: 1rem;
+  }
+
+  .portfolio-v2 .v2-work-panel-title {
+    font-size: clamp(2.4rem, 5.5vw, 3.6rem);
+  }
+
+  .portfolio-v2 .v2-work-panel-number {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+  }
+
+  .portfolio-v2 .v2-work-panel-body {
+    grid-template-columns: minmax(0, 45fr) minmax(0, 55fr);
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    padding-top: clamp(1rem, 3vh, 2rem);
+  }
+
+  .portfolio-v2 .v2-work-panel-summary {
+    font-size: clamp(0.88rem, 1.8vw, 1rem);
+    line-height: 1.5;
+  }
+
+  .portfolio-v2 .v2-work-media {
+    min-height: clamp(12rem, 30vh, 18rem);
+  }
+}
+
+/* ============================================================
+   RESPONSIVE — Phone (< 600px)
+   ============================================================ */
+
+@media (max-width: 599px) {
   .portfolio-v2 .v2-work {
     --work-scroll-distance: 720dvh;
   }
 
   .portfolio-v2 .v2-work-kinetic-text {
-    font-size: 88px;
+    font-size: 64px;
   }
 
   .portfolio-v2 .v2-work-exit-kinetic-text {
-    font-size: 96px;
+    font-size: 68px;
   }
 
   .portfolio-v2 .v2-work-panel {
-    top: 2.5vh;
+    top: 1.5vh;
     right: 0;
     left: 0;
-    height: 95dvh;
-    padding-inline: var(--v2-page-padding);
+    height: 97dvh;
+    padding:
+      clamp(1rem, 2.5vh, 1.5rem)
+      var(--v2-page-padding)
+      clamp(0.75rem, 2vh, 1.25rem);
+  }
+
+  .portfolio-v2 .v2-work-panel-head {
+    min-height: auto;
+    gap: 0.5rem 1rem;
+    grid-template-rows: auto auto;
   }
 
   .portfolio-v2 .v2-work-panel-title {
-    font-size: clamp(2.1rem, 10vw, 3.4rem);
+    font-size: clamp(1.8rem, 8.2vw, 2.6rem);
+    line-height: 0.95;
+    max-width: none;
+  }
+
+  .portfolio-v2 .v2-work-panel-number {
+    font-size: clamp(1.35rem, 6vw, 1.85rem);
+  }
+
+  .portfolio-v2 .v2-work-panel-link {
+    min-height: 44px;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    padding: 0.25rem 0;
   }
 
   .portfolio-v2 .v2-work-panel-body {
     grid-template-columns: minmax(0, 1fr);
+    gap: clamp(0.6rem, 1.8vh, 1rem);
     align-items: stretch;
+    padding-top: clamp(0.5rem, 1.5vh, 1rem);
+  }
+
+  .portfolio-v2 .v2-work-panel-copy {
+    max-width: none;
+  }
+
+  .portfolio-v2 .v2-work-panel-summary {
+    font-size: clamp(0.82rem, 3.4vw, 0.92rem);
+    line-height: 1.42;
+  }
+
+  .portfolio-v2 .v2-work-panel-meta,
+  .portfolio-v2 .v2-work-panel-tech {
+    margin: 0.4rem 0 0;
+    font-size: 0.625rem;
+    line-height: 1.35;
   }
 
   .portfolio-v2 .v2-work-media {
-    min-height: clamp(10rem, 28vh, 16rem);
+    min-height: clamp(7.5rem, 22vh, 12rem);
   }
 }
 

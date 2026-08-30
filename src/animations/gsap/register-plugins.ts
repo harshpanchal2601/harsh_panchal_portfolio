@@ -15,6 +15,10 @@ export function registerGsapPlugins(): void {
   }
 
   gsap.registerPlugin(ScrollTrigger);
+  if (typeof window !== "undefined") {
+    (window as unknown as { ScrollTrigger: typeof ScrollTrigger; gsap: typeof gsap }).ScrollTrigger = ScrollTrigger;
+    (window as unknown as { ScrollTrigger: typeof ScrollTrigger; gsap: typeof gsap }).gsap = gsap;
+  }
   registered = true;
 }
 

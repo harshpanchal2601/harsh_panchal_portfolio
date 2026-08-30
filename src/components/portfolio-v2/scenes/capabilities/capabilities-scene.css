@@ -351,53 +351,74 @@
   width: 1px;
 }
 
-@media (max-width: 1023px) {
+@media (min-width: 600px) and (max-width: 1023px) {
   .portfolio-v2 .v2-capabilities {
-    --cap-s0-n0-x: 20;
-    --cap-s0-n0-y: 23;
-    --cap-s0-n1-x: 77;
-    --cap-s0-n1-y: 27;
-    --cap-s0-n2-x: 72;
-    --cap-s0-n2-y: 75;
-    --cap-s0-n3-x: 23;
-    --cap-s0-n3-y: 78;
+    --cap-scroll-distance: 260dvh;
+  }
 
-    --cap-s1-n0-x: 16;
-    --cap-s1-n0-y: 16;
-    --cap-s1-n1-x: 84;
-    --cap-s1-n1-y: 16;
-    --cap-s1-n2-x: 84;
-    --cap-s1-n2-y: 84;
-    --cap-s1-n3-x: 16;
-    --cap-s1-n3-y: 84;
+  .portfolio-v2 .v2-cap-chapter {
+    inset:
+      max(4rem, 8vh)
+      var(--v2-page-padding)
+      auto;
+  }
 
-    --cap-s2-n0-x: 16;
-    --cap-s2-n0-y: 16;
-    --cap-s2-n1-x: 84;
-    --cap-s2-n1-y: 16;
-    --cap-s2-n2-x: 84;
-    --cap-s2-n2-y: 84;
-    --cap-s2-n3-x: 16;
-    --cap-s2-n3-y: 84;
+  .portfolio-v2 .v2-cap-chapter-title {
+    font-size: clamp(4.5rem, 12vw, 7.5rem);
+    line-height: 0.9;
+  }
 
-    --cap-s3-n0-x: 18;
-    --cap-s3-n0-y: 18;
-    --cap-s3-n1-x: 82;
-    --cap-s3-n1-y: 18;
-    --cap-s3-n2-x: 82;
-    --cap-s3-n2-y: 82;
-    --cap-s3-n3-x: 18;
-    --cap-s3-n3-y: 82;
+  .portfolio-v2 .v2-cap-workspace {
+    grid-template-columns: minmax(0, 48fr) minmax(0, 52fr);
+    gap: clamp(1.5rem, 3vw, 3.5rem);
+    align-items: end;
+    padding:
+      clamp(10rem, 22vh, 13rem)
+      var(--v2-page-padding)
+      clamp(3rem, 7vh, 4.5rem);
+  }
 
-    --cap-s4-n0-x: 18;
-    --cap-s4-n0-y: 50;
-    --cap-s4-n1-x: 50;
-    --cap-s4-n1-y: 20;
-    --cap-s4-n2-x: 82;
-    --cap-s4-n2-y: 50;
-    --cap-s4-n3-x: 50;
-    --cap-s4-n3-y: 80;
+  .portfolio-v2 .v2-cap-row {
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    min-height: 0;
+    padding: clamp(0.65rem, 1.3vh, 0.95rem) 0;
+  }
 
+  .portfolio-v2 .v2-cap-row-title {
+    font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+  }
+
+  .portfolio-v2 .v2-cap-row-description {
+    margin-top: 0.35rem;
+    font-size: clamp(0.78rem, 1.6vw, 0.86rem);
+    line-height: 1.45;
+  }
+
+  .portfolio-v2 .v2-cap-row-technologies {
+    margin-top: 0.35rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+  }
+
+  .portfolio-v2 .v2-cap-system {
+    min-height: clamp(16rem, 36vh, 26rem);
+  }
+
+  .portfolio-v2 .v2-cap-core {
+    width: clamp(5.5rem, 12vw, 7rem);
+    font-size: 0.625rem;
+  }
+
+  .portfolio-v2 .v2-cap-node {
+    width: clamp(6.25rem, 14vw, 8rem);
+    min-height: clamp(3rem, 7vw, 4rem);
+    padding: 0.65rem;
+    font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 599px) {
+  .portfolio-v2 .v2-capabilities {
     --cap-scroll-distance: 240dvh;
   }
 
@@ -409,77 +430,78 @@
   }
 
   .portfolio-v2 .v2-cap-chapter-kicker {
-    margin-bottom: clamp(1.75rem, 5vh, 3rem);
+    margin-bottom: clamp(1.25rem, 4vh, 2.5rem);
   }
 
   .portfolio-v2 .v2-cap-mask--offset {
-    padding-left: clamp(1.25rem, 10vw, 4rem);
+    padding-left: clamp(1rem, 6vw, 2.5rem);
   }
 
   .portfolio-v2 .v2-cap-chapter-title {
-    font-size: clamp(4rem, 19vw, 7rem);
-    line-height: 0.91;
+    font-size: clamp(3.4rem, 15vw, 5.2rem);
+    line-height: 0.92;
   }
 
   .portfolio-v2 .v2-cap-workspace {
     grid-template-columns: 1fr;
-    grid-template-rows: auto minmax(12rem, 1fr);
-    gap: clamp(1rem, 2.5vh, 1.75rem);
+    grid-template-rows: auto minmax(9rem, 1fr);
+    gap: clamp(0.75rem, 1.8vh, 1.25rem);
     align-items: stretch;
     padding:
-      clamp(9rem, 20vh, 12rem)
+      clamp(7.5rem, 16vh, 9.5rem)
       var(--v2-page-padding)
-      max(4.5rem, calc(3.5rem + env(safe-area-inset-bottom)));
+      max(2rem, calc(1.5rem + env(safe-area-inset-bottom)));
   }
 
   .portfolio-v2 .v2-cap-row {
-    grid-template-columns: 2.25rem minmax(0, 1fr);
+    grid-template-columns: 2rem minmax(0, 1fr);
     min-height: 0;
-    padding: clamp(0.48rem, 1vh, 0.7rem) 0;
+    padding: 0.45rem 0;
+  }
+
+  .portfolio-v2 .v2-cap-row-number {
+    padding-top: 0.15rem;
+    font-size: 0.625rem;
   }
 
   .portfolio-v2 .v2-cap-row-title {
-    font-size: clamp(0.98rem, 4vw, 1.3rem);
+    font-size: clamp(1.05rem, 4.4vw, 1.3rem);
   }
 
   .portfolio-v2 .v2-cap-row-description {
-    margin-top: 0.3rem;
-    font-size: clamp(0.63rem, 2.4vw, 0.75rem);
-    line-height: 1.35;
+    margin-top: 0.25rem;
+    font-size: clamp(0.78rem, 2.8vw, 0.86rem);
+    line-height: 1.4;
   }
 
   .portfolio-v2 .v2-cap-row-technologies {
-    margin-top: 0.3rem;
-    font-size: 0.5rem;
+    margin-top: 0.25rem;
+    font-size: 0.625rem;
     letter-spacing: 0.12em;
+    line-height: 1.35;
   }
 
   .portfolio-v2 .v2-cap-system {
     grid-row: 2;
-    min-height: 0;
+    min-height: clamp(8.5rem, 18vh, 11rem);
   }
 
   .portfolio-v2 .v2-cap-core {
-    width: clamp(4.5rem, 17vw, 6rem);
-    font-size: 0.48rem;
+    width: clamp(4.4rem, 16vw, 5.6rem);
+    font-size: 0.58rem;
   }
 
   .portfolio-v2 .v2-cap-node {
-    width: clamp(5.25rem, 22vw, 7rem);
-    min-height: clamp(2.75rem, 11vw, 3.5rem);
-    padding: 0.55rem;
-    font-size: 0.5rem;
-  }
-}
-
-@media (max-width: 430px) {
-  .portfolio-v2 .v2-cap-workspace {
-    padding-top: clamp(8rem, 18vh, 10rem);
+    width: clamp(5.25rem, 21vw, 6.8rem);
+    min-height: clamp(2.4rem, 9vw, 3.2rem);
+    padding: 0.45rem;
+    font-size: 0.58rem;
   }
 
-  .portfolio-v2 .v2-cap-row-description,
-  .portfolio-v2 .v2-cap-row-technologies {
-    max-width: 18rem;
+  .portfolio-v2 .v2-cap-node-index {
+    top: 0.25rem;
+    left: 0.35rem;
+    font-size: 0.45rem;
   }
 }
 

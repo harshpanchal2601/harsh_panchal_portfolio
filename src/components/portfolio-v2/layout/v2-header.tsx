@@ -1,8 +1,10 @@
 "use client";
 
-import { type MouseEvent, useLayoutEffect, useRef } from "react";
+import { type MouseEvent, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import {
+  pauseV2Scroll,
+  resumeV2Scroll,
   scrollV2To,
   V2_HEADER_REVEAL_EVENT,
 } from "@/animations/gsap/scroll-runtime";
@@ -22,8 +24,47 @@ type SceneToneRange = {
   bottom: number;
 };
 
+const MOBILE_NAV_ITEMS = [
+  { href: "#work", label: "Work", index: "01" },
+  { href: "#about", label: "About", index: "02" },
+  { href: "#capabilities", label: "Capabilities", index: "03" },
+  { href: "#process", label: "Process", index: "04" },
+  { href: "#contact", label: "Contact", index: "05" },
+] as const;
+
 export function V2Header() {
   const headerRef = useRef<HTMLElement>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const closeMenu = useCallback(() => {
+    setIsMenuOpen(false);
+    resumeV2Scroll();
+  }, []);
+
+  const toggleMenu = useCallback(() => {
+    setIsMenuOpen((prev) => {
+      const next = !prev;
+      if (next) {
+        pauseV2Scroll();
+      } else {
+        resumeV2Scroll();
+      }
+      return next;
+    });
+  }, []);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && isMenuOpen) {
+        closeMenu();
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isMenuOpen, closeMenu]);
 
   useLayoutEffect(() => {
     const header = headerRef.current;
@@ -75,6 +116,11 @@ export function V2Header() {
     };
 
     const setVisibility = (visible: boolean) => {
+      if (isMenuOpen) {
+        header.dataset.headerVisibility = "visible";
+        return;
+      }
+
       const next = visible ? "visible" : "hidden";
 
       if (header.dataset.headerVisibility !== next) {
@@ -103,7 +149,7 @@ export function V2Header() {
 
       updateSceneContext(currentY);
 
-      if (currentY <= TOP_VISIBILITY_LIMIT) {
+      if (isMenuOpen || currentY <= TOP_VISIBILITY_LIMIT) {
         direction = null;
         accumulatedDelta = 0;
         setVisibility(true);
@@ -167,11 +213,15 @@ export function V2Header() {
       window.removeEventListener(V2_HEADER_REVEAL_EVENT, revealAfterHero);
       window.cancelAnimationFrame(updateFrame);
     };
-  }, []);
+  }, [isMenuOpen]);
 
   const navigateToSection = (event: MouseEvent<HTMLAnchorElement>) => {
     const hash = event.currentTarget.hash;
     const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+
+    if (isMenuOpen) {
+      closeMenu();
+    }
 
     if (!target) {
       return;
@@ -187,48 +237,123 @@ export function V2Header() {
   };
 
   return (
-    <header
-      className="v2-header"
-      data-active-section="top"
-      data-header-ready="false"
-      data-header-tone="dark"
-      data-header-visibility="visible"
-      ref={headerRef}
-    >
-      <a
-        className="v2-header-wordmark"
-        href="#top"
-        onClick={navigateToSection}
+    <>
+      <header
+        className="v2-header"
+        data-active-section="top"
+        data-header-menu-open={isMenuOpen ? "true" : "false"}
+        data-header-ready="false"
+        data-header-tone={isMenuOpen ? "light" : "dark"}
+        data-header-visibility="visible"
+        ref={headerRef}
       >
-        <span className="v2-header-wordmark-full">Harsh Panchal</span>
-        <span className="v2-header-wordmark-short">Harsh</span>
-      </a>
+        <a
+          className="v2-header-wordmark"
+          href="#top"
+          onClick={navigateToSection}
+        >
+          <span className="v2-header-wordmark-full">Harsh Panchal</span>
+          <span className="v2-header-wordmark-short">Harsh</span>
+        </a>
 
-      <nav className="v2-header-nav" aria-label="Portfolio sections">
-        {V2_NAV_ITEMS.map(({ href, label }) => (
-          <a
-            className="v2-header-link"
-            data-nav-section={href.slice(1)}
-            href={href}
-            key={href}
-            onClick={navigateToSection}
-          >
-            {label}
-          </a>
-        ))}
-      </nav>
+        <nav className="v2-header-nav" aria-label="Portfolio sections">
+          {V2_NAV_ITEMS.map(({ href, label }) => (
+            <a
+              className="v2-header-link"
+              data-nav-section={href.slice(1)}
+              href={href}
+              key={href}
+              onClick={navigateToSection}
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
 
-      <a
-        className="v2-header-talk"
-        href="#contact"
-        onClick={navigateToSection}
+        <a
+          className="v2-header-talk"
+          href="#contact"
+          onClick={navigateToSection}
+        >
+          Let&apos;s Talk
+        </a>
+
+        <button
+          aria-expanded={isMenuOpen}
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          className="v2-header-menu"
+          onClick={toggleMenu}
+          type="button"
+        >
+          {isMenuOpen ? "Close" : "Menu"}
+        </button>
+      </header>
+
+      {/* Fullscreen editorial mobile menu */}
+      <div
+        aria-hidden={!isMenuOpen}
+        aria-label="Mobile navigation"
+        className="v2-header-mobile-menu"
+        data-menu-open={isMenuOpen ? "true" : "false"}
+        role="dialog"
       >
-        Let&apos;s Talk
-      </a>
+        <div className="v2-header-mobile-menu-inner">
+          <nav className="v2-header-mobile-nav" aria-label="Mobile portfolio sections">
+            {MOBILE_NAV_ITEMS.map(({ href, label, index }) => (
+              <a
+                className="v2-header-mobile-link"
+                href={href}
+                key={href}
+                onClick={navigateToSection}
+              >
+                <span className="v2-header-mobile-link-index">{index}</span>
+                <span className="v2-header-mobile-link-label">{label}</span>
+                <span aria-hidden="true" className="v2-header-mobile-link-arrow">
+                  ↗
+                </span>
+              </a>
+            ))}
+          </nav>
 
-      <button aria-label="Menu" className="v2-header-menu" type="button">
-        Menu
-      </button>
-    </header>
+          <div className="v2-header-mobile-footer">
+            <a
+              className="v2-header-mobile-talk"
+              href="#contact"
+              onClick={navigateToSection}
+            >
+              <span>Start a Project</span>
+              <span aria-hidden="true" className="v2-header-mobile-talk-arrow">
+                ↗
+              </span>
+            </a>
+
+            <div className="v2-header-mobile-meta">
+              <a
+                href="mailto:harshpanchal7979@gmail.com"
+                className="v2-header-mobile-email"
+              >
+                harshpanchal7979@gmail.com
+              </a>
+              <div className="v2-header-mobile-socials">
+                <a
+                  href="https://www.linkedin.com/in/harshpanchal2601/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  LinkedIn
+                </a>
+                <a
+                  href="https://github.com/harshpanchal2601"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  GitHub
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }

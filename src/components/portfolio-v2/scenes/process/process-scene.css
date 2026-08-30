@@ -211,37 +211,89 @@
   color: var(--process-muted);
 }
 
-@media (max-width: 900px) {
+@media (min-width: 600px) and (max-width: 899px) {
   .portfolio-v2 .v2-process {
-    --process-scroll-distance: 320dvh;
-    --process-frame-top: -12;
-    --process-frame-mid: 14;
-    --process-frame-bot: -10;
-    --process-apart-a-top: -14;
-    --process-apart-a-mid: 16;
-    --process-apart-a-bot: -11;
-    --process-build-top: 13;
-    --process-build-mid: -12;
-    --process-build-bot: 11;
-    --process-apart-b-top: 12;
-    --process-apart-b-mid: -14;
-    --process-apart-b-bot: 10;
-    --process-ship-top: 11;
-    --process-ship-mid: -14;
-    --process-ship-bot: 9;
+    --process-scroll-distance: 340dvh;
+    --process-frame-top: -14;
+    --process-frame-mid: 16;
+    --process-frame-bot: -12;
+    --process-apart-a-top: -16;
+    --process-apart-a-mid: 18;
+    --process-apart-a-bot: -13;
+    --process-build-top: 15;
+    --process-build-mid: -14;
+    --process-build-bot: 13;
+    --process-apart-b-top: 14;
+    --process-apart-b-mid: -16;
+    --process-apart-b-bot: 12;
+    --process-ship-top: 13;
+    --process-ship-mid: -16;
+    --process-ship-bot: 11;
   }
 
   .portfolio-v2 .v2-process-giant {
-    font-size: 78dvh;
+    font-size: clamp(7.5rem, 23vw, 17rem);
+    line-height: 0.88;
   }
 
   .portfolio-v2 .v2-process-support-copy {
-    width: min(22rem, calc(100% - (2 * var(--v2-page-padding))));
+    width: min(24rem, 48vw);
   }
 
   .portfolio-v2 .v2-process-support-annotation {
-    top: max(3.25rem, 7.5vh);
-    max-width: 12rem;
+    top: max(3.5rem, 8vh);
+    max-width: 14rem;
+  }
+}
+
+@media (max-width: 599px) {
+  .portfolio-v2 .v2-process {
+    --process-scroll-distance: 300dvh;
+    --process-frame-top: -10;
+    --process-frame-mid: 12;
+    --process-frame-bot: -8;
+    --process-apart-a-top: -12;
+    --process-apart-a-mid: 14;
+    --process-apart-a-bot: -9;
+    --process-build-top: 11;
+    --process-build-mid: -10;
+    --process-build-bot: 9;
+    --process-apart-b-top: 10;
+    --process-apart-b-mid: -12;
+    --process-apart-b-bot: 8;
+    --process-ship-top: 9;
+    --process-ship-mid: -12;
+    --process-ship-bot: 7;
+  }
+
+  .portfolio-v2 .v2-process-giant {
+    font-size: clamp(4.5rem, 26vw, 8.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+  }
+
+  .portfolio-v2 .v2-process-kicker {
+    top: max(1rem, calc(0.75rem + env(safe-area-inset-top)));
+    font-size: 0.625rem;
+  }
+
+  .portfolio-v2 .v2-process-support-number {
+    bottom: clamp(5.25rem, 13vh, 7rem);
+    font-size: 0.625rem;
+  }
+
+  .portfolio-v2 .v2-process-support-copy {
+    bottom: clamp(1.5rem, 4vh, 2.5rem);
+    width: min(20rem, calc(100% - (2 * var(--v2-page-padding))));
+    font-size: clamp(0.85rem, 3.4vw, 0.95rem);
+    line-height: 1.42;
+  }
+
+  .portfolio-v2 .v2-process-support-annotation {
+    top: max(1rem, calc(0.75rem + env(safe-area-inset-top)));
+    max-width: 10rem;
+    font-size: 0.58rem;
+    line-height: 1.35;
   }
 }
 
