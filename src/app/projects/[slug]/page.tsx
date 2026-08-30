@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ProjectCaseStudy } from "@/components/portfolio-v2/project-detail/project-case-study";
+import { ProjectJsonLd } from "@/components/seo/structured-data";
+import { SITE_METADATA } from "@/constants/site";
 import {
   featuredProjectPreviews,
   getNextV2CaseStudyProject,
@@ -32,16 +34,38 @@ export async function generateMetadata({
     };
   }
 
+  const title = `${project.title} Case Study — Harsh Panchal`;
+  const description = `${project.summary} Built with ${project.tech.slice(0, 4).join(" / ")} by ${SITE_METADATA.name}.`;
+  const canonicalUrl = `${SITE_METADATA.url}/projects/${project.slug}`;
+  const ogImageUrl = `${SITE_METADATA.url}/projects/${project.slug}/opengraph-image`;
+
   return {
-    title: `${project.title} | Harsh Panchal`,
-    description: project.summary,
+    title,
+    description,
     alternates: {
-      canonical: `/projects/${project.slug}`,
+      canonical: canonicalUrl,
     },
     openGraph: {
-      title: `${project.title} | Harsh Panchal`,
-      description: project.summary,
-      url: `/projects/${project.slug}`,
+      title,
+      description,
+      url: canonicalUrl,
+      type: "article",
+      siteName: SITE_METADATA.name,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${project.title} Case Study — Harsh Panchal`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      creator: SITE_METADATA.twitterHandle,
+      images: [ogImageUrl],
     },
   };
 }
@@ -59,11 +83,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const nextProject = getNextV2CaseStudyProject(slug);
 
   return (
-    <ProjectCaseStudy
-      key={project.slug}
-      nextProject={nextProject}
-      project={project}
-      projectNumber={projectNumber}
-    />
+    <>
+      <ProjectJsonLd project={project} />
+      <ProjectCaseStudy
+        key={project.slug}
+        nextProject={nextProject}
+        project={project}
+        projectNumber={projectNumber}
+      />
+    </>
   );
 }

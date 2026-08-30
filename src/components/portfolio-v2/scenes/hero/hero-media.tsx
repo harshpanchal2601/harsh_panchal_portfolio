@@ -8,10 +8,10 @@ export function HeroMedia() {
         src={HERO_IMAGE_SRC}
         alt="Harsh Panchal"
         fill
-        preload
-        quality={82}
+        priority
+        quality={80}
         draggable={false}
-        sizes="100vw"
+        sizes="(max-width: 899px) 100vw, 100vw"
         className="v2-hero-photo"
       />
 

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { DM_Sans, Inter } from "next/font/google";
 import { SITE_METADATA } from "@/constants/site";
 import { createSeoMetadata } from "@/lib/seo";
+import { AnalyticsScript } from "@/components/analytics/analytics-script";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -43,6 +44,7 @@ export default function RootLayout({
       className={`${dmSans.variable} ${inter.variable}`}
     >
       <body>
+        <AnalyticsScript />
         {/* Route boot behavior that must run before React hydration. */}
         <script
           dangerouslySetInnerHTML={{
@@ -61,7 +63,10 @@ export default function RootLayout({
         hasWorkReturn=typeof intent.slug==='string'&&intent.slug.length>0&&typeof intent.createdAt==='number'&&age>=0&&age<=20000;
       }
     }catch(e){}
-    if(location.search||location.hash){
+    if(location.hash==='#work'){
+      hasWorkReturn=true;
+    }
+    if(location.search){
       history.replaceState(history.state,'','/');
     }
     if(!hasWorkReturn){

@@ -1,20 +1,22 @@
 import type { MetadataRoute } from "next";
-import { PROJECT_ROUTES } from "@/constants/routes";
-
-const routes = [
-  "/",
-  "/contact",
-  PROJECT_ROUTES.wikipointAi,
-  PROJECT_ROUTES.beige,
-  PROJECT_ROUTES.erpSystem,
-  PROJECT_ROUTES.hrManagementSystem,
-] as const;
+import { SITE_METADATA } from "@/constants/site";
+import { v2CaseStudySlugs } from "@/data/projects";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return routes.map((route) => ({
-    url: route,
+  const projectEntries = v2CaseStudySlugs.map((slug) => ({
+    url: `${SITE_METADATA.url}/projects/${slug}`,
     lastModified: new Date(),
-    changeFrequency: route === "/" ? "weekly" : "monthly",
-    priority: route === "/" ? 1 : 0.8,
+    changeFrequency: "monthly" as const,
+    priority: 0.85,
   }));
+
+  return [
+    {
+      url: `${SITE_METADATA.url}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 1.0,
+    },
+    ...projectEntries,
+  ];
 }

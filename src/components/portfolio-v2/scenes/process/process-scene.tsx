@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 
-import { useNearViewportMotion } from "@/components/portfolio-v2/motion/near-viewport-motion";
+import { playProcessScene } from "@/components/portfolio-v2/scenes/process/process-motion";
 
 import "@/components/portfolio-v2/scenes/process/process-scene.css";
 
@@ -36,23 +36,6 @@ const BANDS = [
   { id: "bot", index: 2 },
 ] as const;
 
-let processMotionPromise:
-  | Promise<typeof import("@/components/portfolio-v2/scenes/process/process-motion")>
-  | undefined;
-
-function preloadProcessMotion() {
-  processMotionPromise ??= import(
-    "@/components/portfolio-v2/scenes/process/process-motion"
-  );
-  return processMotionPromise;
-}
-
-async function initializeProcessMotion(root: HTMLElement) {
-  const { playProcessScene } = await preloadProcessMotion();
-  const context = playProcessScene(root);
-  return () => context.revert();
-}
-
 function GiantWordStack() {
   return (
     <div className="v2-process-slice" data-process-slice="">
@@ -78,12 +61,17 @@ function GiantWordStack() {
 export function ProcessScene() {
   const rootRef = useRef<HTMLElement>(null);
 
-  useNearViewportMotion(
-    rootRef,
-    "process",
-    preloadProcessMotion,
-    initializeProcessMotion,
-  );
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    if (!root) {
+      return;
+    }
+
+    const context = playProcessScene(root);
+    return () => {
+      context.revert();
+    };
+  }, []);
 
   return (
     <section

@@ -1,11 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 
-import {
-  V2_HEADER_REVEAL_EVENT,
-  V2_HERO_READY_EVENT,
-} from "@/animations/gsap/scroll-runtime";
+import { playAboutScene } from "@/components/portfolio-v2/scenes/about/about-motion";
 
 import "@/components/portfolio-v2/scenes/about/about-scene.css";
 
@@ -23,17 +20,6 @@ const PROOF_LINES = [
   "Cloud → delivery.",
   "Built for production.",
 ] as const;
-
-let aboutMotionPromise:
-  | Promise<typeof import("@/components/portfolio-v2/scenes/about/about-motion")>
-  | undefined;
-
-function preloadAboutMotion() {
-  aboutMotionPromise ??= import(
-    "@/components/portfolio-v2/scenes/about/about-motion"
-  );
-  return aboutMotionPromise;
-}
 
 function WordPhrase({
   text,
@@ -91,59 +77,15 @@ function SystemTile() {
 export function AboutScene() {
   const rootRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const root = rootRef.current;
-
     if (!root) {
       return;
     }
 
-    let cancelled = false;
-    let initialized = false;
-    let cleanup: (() => void) | undefined;
-
-    const preload = () => {
-      void preloadAboutMotion().catch(() => {
-        root.dataset.motionState = "unavailable";
-      });
-    };
-
-    const initialize = () => {
-      if (initialized) {
-        return;
-      }
-
-      initialized = true;
-      void preloadAboutMotion()
-        .then(({ playAboutScene }) => {
-          if (cancelled) {
-            return;
-          }
-
-          const context = playAboutScene(root);
-          cleanup = () => context.revert();
-        })
-        .catch(() => {
-          root.dataset.motionState = "unavailable";
-        });
-    };
-
-    window.addEventListener(V2_HEADER_REVEAL_EVENT, preload);
-    window.addEventListener(V2_HERO_READY_EVENT, initialize);
-
-    if (document.querySelector('[data-header-ready="true"]')) {
-      preload();
-    }
-
-    if (document.querySelector('[data-hero-state="ready"]')) {
-      initialize();
-    }
-
+    const context = playAboutScene(root);
     return () => {
-      cancelled = true;
-      window.removeEventListener(V2_HEADER_REVEAL_EVENT, preload);
-      window.removeEventListener(V2_HERO_READY_EVENT, initialize);
-      cleanup?.();
+      context.revert();
     };
   }, []);
 

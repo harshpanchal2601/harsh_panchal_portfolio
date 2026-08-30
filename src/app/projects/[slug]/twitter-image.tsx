@@ -1,4 +1,11 @@
 import { ImageResponse } from "next/og";
+import { getV2CaseStudyProject, v2CaseStudySlugs } from "@/data/projects";
+
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return v2CaseStudySlugs.map((slug) => ({ slug }));
+}
 
 export const size = {
   width: 1200,
@@ -7,7 +14,18 @@ export const size = {
 
 export const contentType = "image/png";
 
-export default function TwitterImage() {
+type Props = {
+  params: Promise<{ slug: string }>;
+};
+
+export default async function ProjectTwitterImage({ params }: Props) {
+  const { slug } = await params;
+  const project = getV2CaseStudyProject(slug);
+
+  const title = project?.title || "Case Study";
+  const summary = project?.summary || "Production web engineering case study.";
+  const tech = project?.tech.slice(0, 4).join(" / ") || "Next.js / TypeScript";
+
   return new ImageResponse(
     (
       <div
@@ -22,7 +40,7 @@ export default function TwitterImage() {
           color: "#eee4d7",
           fontFamily: "sans-serif",
           backgroundImage:
-            "radial-gradient(circle at 75% 35%, rgba(185, 97, 67, 0.18) 0%, transparent 50%), linear-gradient(135deg, #0f0e0c 0%, #15110e 100%)",
+            "radial-gradient(circle at 75% 35%, rgba(185, 97, 67, 0.22) 0%, transparent 55%), linear-gradient(135deg, #0f0e0c 0%, #15110e 100%)",
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -35,7 +53,7 @@ export default function TwitterImage() {
               fontWeight: 600,
             }}
           >
-            01 / Portfolio V2
+            Project Case Study — Harsh Panchal
           </div>
           <div
             style={{
@@ -52,36 +70,36 @@ export default function TwitterImage() {
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <div
             style={{
-              fontSize: "72px",
+              fontSize: "68px",
               fontWeight: 700,
-              letterSpacing: "-0.04em",
-              lineHeight: 1.0,
+              letterSpacing: "-0.035em",
+              lineHeight: 1.05,
               color: "#f3e4d0",
             }}
           >
-            HARSH PANCHAL
+            {title}
           </div>
           <div
             style={{
-              fontSize: "26px",
-              fontWeight: 500,
-              letterSpacing: "0.08em",
-              color: "#d68a68",
-              textTransform: "uppercase",
+              fontSize: "22px",
+              lineHeight: 1.35,
+              color: "rgba(238, 228, 215, 0.8)",
+              maxWidth: "950px",
             }}
           >
-            Full-Stack Developer & Software Engineer
+            {summary}
           </div>
           <div
             style={{
               fontSize: "18px",
-              letterSpacing: "0.12em",
-              color: "rgba(238, 228, 215, 0.72)",
+              letterSpacing: "0.14em",
+              color: "#d68a68",
               textTransform: "uppercase",
+              fontWeight: 600,
               marginTop: "8px",
             }}
           >
-            Next.js / React / Node.js / AWS / AI Integration
+            {tech}
           </div>
         </div>
 
@@ -102,7 +120,7 @@ export default function TwitterImage() {
               color: "rgba(238, 228, 215, 0.8)",
             }}
           >
-            Idea → Product → Production
+            Built for Production
           </div>
           <div
             style={{
@@ -112,7 +130,7 @@ export default function TwitterImage() {
               fontWeight: 600,
             }}
           >
-            Explore Selected Work ↗
+            Read Case Study ↗
           </div>
         </div>
       </div>

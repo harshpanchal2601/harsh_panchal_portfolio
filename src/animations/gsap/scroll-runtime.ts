@@ -20,6 +20,7 @@ export const V2_VIEWPORT_GEOMETRY_CHANGE_EVENT =
   "portfolio-v2:viewport-geometry-change";
 
 let lenisInstance: Lenis | null = null;
+let pendingScrollTarget: number | HTMLElement | null = null;
 let scrollPaused = false;
 
 type V2RuntimeWindow = Window & {
@@ -40,7 +41,7 @@ export function usesNativeTouchScroll(): boolean {
 export function canonicalizeV2HomepageUrl(): void {
   if (
     window.location.pathname === "/" &&
-    (window.location.search || window.location.hash)
+    window.location.search
   ) {
     window.history.replaceState(window.history.state, "", "/");
   }
@@ -145,8 +146,11 @@ export function scrollV2To(
     lenisInstance.scrollTo(target, {
       immediate,
     });
+    pendingScrollTarget = null;
     return;
   }
+
+  pendingScrollTarget = target;
 
   if (target instanceof HTMLElement) {
     target.scrollIntoView({
@@ -264,10 +268,42 @@ export function useV2ScrollRuntime(rootRef: RefObject<HTMLElement | null>): void
       };
     };
 
+    const restoreWorkTarget = (lenis?: Lenis) => {
+      const returnSlug =
+        readV2WorkReturnIntent() ||
+        (typeof window !== "undefined" && window.location.hash === "#work"
+          ? "wikipoint-ai"
+          : null);
+
+      if (!returnSlug) {
+        return;
+      }
+
+      const trigger = ScrollTrigger.getById("v2-work-master");
+      const timeline = trigger?.animation as gsap.core.Timeline | undefined;
+      const labelTime = timeline?.labels[`work:project:${returnSlug}`];
+      const duration = timeline?.duration() ?? 0;
+
+      if (trigger && labelTime !== undefined && duration > 0) {
+        const progress = gsap.utils.clamp(0, 1, labelTime / duration);
+        const targetY =
+          trigger.start + (trigger.end - trigger.start) * progress;
+
+        if (lenis) {
+          lenis.scrollTo(targetY, { immediate: true });
+        } else {
+          window.scrollTo({ top: targetY, behavior: "auto" });
+        }
+
+        clearV2WorkReturnIntent();
+      }
+    };
+
     const startNativeScroll = (reducedMotion: boolean) => {
       markReducedMotion(root, reducedMotion);
       const unbindViewportRefresh = bindMeaningfulViewportRefresh(true);
       ScrollTrigger.refresh();
+      restoreWorkTarget();
       return unbindViewportRefresh;
     };
 
@@ -304,6 +340,15 @@ export function useV2ScrollRuntime(rootRef: RefObject<HTMLElement | null>): void
         () => lenis.resize(),
       );
       ScrollTrigger.refresh();
+
+      if (pendingScrollTarget !== null) {
+        const target = pendingScrollTarget;
+        pendingScrollTarget = null;
+        lenis.scrollTo(target, { immediate: true });
+        ScrollTrigger.update();
+      } else {
+        restoreWorkTarget(lenis);
+      }
 
       return () => {
         unbindViewportRefresh();

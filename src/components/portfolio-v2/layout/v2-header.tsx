@@ -11,6 +11,7 @@ import {
 } from "@/animations/gsap/scroll-runtime";
 import { V2_NAV_ITEMS } from "@/components/portfolio-v2/scenes/hero/hero-content";
 import { prewarmV2Scene } from "@/components/portfolio-v2/motion/near-viewport-motion";
+import { trackEvent } from "@/lib/analytics";
 
 const TOP_VISIBILITY_LIMIT = 40;
 const HIDE_THRESHOLD = 12;
@@ -48,6 +49,7 @@ export function V2Header() {
       const next = !prev;
       if (next) {
         pauseV2Scroll();
+        trackEvent("mobile_menu_open");
       } else {
         resumeV2Scroll();
       }
@@ -341,18 +343,31 @@ export function V2Header() {
               </a>
               <div className="v2-header-mobile-socials">
                 <a
+                  aria-label="Harsh Panchal on LinkedIn (opens in new tab)"
                   href="https://www.linkedin.com/in/harshpanchal2601/"
+                  onClick={() => trackEvent("linkedin_click")}
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  LinkedIn
+                  LinkedIn ↗
                 </a>
                 <a
+                  aria-label="Harsh Panchal on GitHub (opens in new tab)"
                   href="https://github.com/harshpanchal2601"
+                  onClick={() => trackEvent("github_click", { url: "https://github.com/harshpanchal2601" })}
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  GitHub
+                  GitHub ↗
+                </a>
+                <a
+                  aria-label="Harsh Panchal Resume PDF (opens in new tab)"
+                  href="/Harsh-Panchal-Resume.pdf"
+                  onClick={() => trackEvent("resume_click")}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Resume ↗
                 </a>
               </div>
             </div>

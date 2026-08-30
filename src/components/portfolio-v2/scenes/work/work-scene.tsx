@@ -3,7 +3,7 @@
 import {
   type MouseEvent,
   useId,
-  useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -19,7 +19,10 @@ import {
 } from "@/animations/gsap/scroll-runtime";
 import { gsap } from "@/animations/gsap/register-plugins";
 import { featuredProjectPreviews } from "@/data/projects/previews";
-import { bindNearViewportActivation } from "@/components/portfolio-v2/motion/near-viewport-motion";
+import {
+  playWorkScene,
+  scrollToWorkProject,
+} from "@/components/portfolio-v2/scenes/work/work-motion";
 
 import "@/components/portfolio-v2/scenes/work/work-scene.css";
 
@@ -35,17 +38,6 @@ const EXIT_KINETIC_COPY =
 
 const WORK_PROJECTS = featuredProjectPreviews;
 type WorkProject = (typeof WORK_PROJECTS)[number];
-
-let workMotionPromise:
-  | Promise<typeof import("@/components/portfolio-v2/scenes/work/work-motion")>
-  | undefined;
-
-function preloadWorkMotion() {
-  workMotionPromise ??= import(
-    "@/components/portfolio-v2/scenes/work/work-motion"
-  );
-  return workMotionPromise;
-}
 
 function formatProjectNumber(index: number): string {
   return `(${String(index + 1).padStart(2, "0")})`;
@@ -160,73 +152,56 @@ export function WorkScene() {
   const entryPathId = `v2-work-arc${useId().replace(/:/g, "")}`;
   const exitPathId = `v2-work-exit-arc${useId().replace(/:/g, "")}`;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const root = rootRef.current;
 
     if (!root) {
       return;
     }
 
-    let returnSlug = readV2WorkReturnIntent();
-    let scrollToProject:
-      | typeof import("@/components/portfolio-v2/scenes/work/work-motion")["scrollToWorkProject"]
-      | undefined;
-    let revertMotion: (() => void) | undefined;
-    let cancelled = false;
-    let heroReady = Boolean(
-      document.querySelector('[data-hero-state="ready"]'),
-    );
-    let workReady = false;
+    setPreviewsEnabled(true);
+    const context = playWorkScene(root);
+
+    let returnSlug =
+      readV2WorkReturnIntent() ||
+      (typeof window !== "undefined" && window.location.hash === "#work"
+        ? "wikipoint-ai"
+        : null);
 
     const restoreProject = () => {
-      if (!returnSlug || !heroReady || !workReady) {
+      if (!returnSlug) {
         return;
       }
 
-      if (scrollToProject?.(root, returnSlug, { immediate: true })) {
+      if (scrollToWorkProject(root, returnSlug, { immediate: true })) {
         clearV2WorkReturnIntent();
         returnSlug = null;
       }
     };
 
     const onHeroReady = () => {
-      heroReady = true;
       restoreProject();
     };
 
     const onWorkReady = () => {
-      workReady = true;
       restoreProject();
     };
 
     window.addEventListener(V2_HERO_READY_EVENT, onHeroReady);
     window.addEventListener(V2_WORK_READY_EVENT, onWorkReady);
 
-    const unbindActivation = bindNearViewportActivation(
-      root,
-      "work",
-      preloadWorkMotion,
-      () => {
-        setPreviewsEnabled(true);
-        void preloadWorkMotion().then((motion) => {
-          if (cancelled) {
-            return;
-          }
-
-          scrollToProject = motion.scrollToWorkProject;
-          const context = motion.playWorkScene(root);
-          revertMotion = () => context.revert();
-        });
-      },
-      Boolean(returnSlug),
-    );
+    if (returnSlug) {
+      restoreProject();
+      requestAnimationFrame(restoreProject);
+      setTimeout(restoreProject, 50);
+      setTimeout(restoreProject, 150);
+      setTimeout(restoreProject, 350);
+    }
 
     return () => {
-      cancelled = true;
-      unbindActivation();
       window.removeEventListener(V2_HERO_READY_EVENT, onHeroReady);
       window.removeEventListener(V2_WORK_READY_EVENT, onWorkReady);
-      revertMotion?.();
+      context.revert();
     };
   }, []);
 

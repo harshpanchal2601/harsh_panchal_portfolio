@@ -5,6 +5,7 @@ import {
 
 import {
   pauseV2Scroll,
+  readV2WorkReturnIntent,
   resumeV2Scroll,
   V2_HEADER_REVEAL_EVENT,
   V2_HERO_READY_EVENT,
@@ -793,8 +794,15 @@ export function playHeroOpening(
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+    const hasWorkReturn = Boolean(
+      readV2WorkReturnIntent() ||
+      (typeof window !== "undefined" &&
+        (window.location.hash === "#work" ||
+          window.location.pathname.startsWith("/projects") ||
+          window.location.pathname.startsWith("/work")))
+    );
 
-    if (reducedMotion) {
+    if (reducedMotion || hasWorkReturn) {
       settleHero(scope);
       const profile = getHeroMotionProfile(
         window.innerWidth,

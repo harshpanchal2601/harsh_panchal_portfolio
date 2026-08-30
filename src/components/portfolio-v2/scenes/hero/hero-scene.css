@@ -160,23 +160,7 @@
   gap:
     clamp(1.35rem, 2.6vw, 2.15rem);
 
-  transition:
-    color 220ms ease,
-    text-shadow 220ms ease;
-}
-
-/*
- * The Hero wordmark sits over bright sky while the centered navigation
- * crosses the portrait's dark hair. Give only that local header region the
- * inverse tone so both areas remain legible without changing scene-wide tone.
- */
-.portfolio-v2
-  .v2-header[data-active-section="top"]
-  .v2-header-nav {
-  color: var(--v2-light);
-  text-shadow:
-    0 1px 3px rgba(18, 17, 15, 0.9),
-    0 0 12px rgba(18, 17, 15, 0.72);
+  transition: color 220ms ease;
 }
 
 .portfolio-v2 .v2-header-link,

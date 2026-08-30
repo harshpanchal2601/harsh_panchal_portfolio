@@ -254,7 +254,7 @@ export function ProjectCaseStudy({
         </Link>
         <Link
           className="v2-project-back"
-          href="/"
+          href="/#work"
           onClick={prepareAllWorkReturn}
           scroll={false}
         >
@@ -313,7 +313,7 @@ export function ProjectCaseStudy({
       </div>
 
       <footer className="v2-project-footer" data-project-reveal="">
-        <Link href="/" onClick={prepareAllWorkReturn} scroll={false}>
+        <Link href="/#work" onClick={prepareAllWorkReturn} scroll={false}>
           ← All Work
         </Link>
         {nextProject ? (
@@ -327,7 +327,7 @@ export function ProjectCaseStudy({
         ) : (
           <Link
             className="v2-project-next"
-            href="/"
+            href="/#work"
             onClick={prepareAllWorkReturn}
             scroll={false}
           >
