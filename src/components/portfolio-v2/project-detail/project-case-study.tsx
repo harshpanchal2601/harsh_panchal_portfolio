@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  type MouseEvent,
   type PointerEvent,
   type ReactNode,
   useLayoutEffect,
@@ -9,7 +10,10 @@ import {
 } from "react";
 import Link from "next/link";
 
-import { useV2ScrollRuntime } from "@/animations/gsap/scroll-runtime";
+import {
+  setV2WorkReturnIntent,
+  useV2ScrollRuntime,
+} from "@/animations/gsap/scroll-runtime";
 import { playProjectCaseStudy } from "@/components/portfolio-v2/project-detail/project-case-study-motion";
 import type { V2CaseStudyProject } from "@/data/projects";
 import type { ProjectCaseStudySectionId } from "@/types/project";
@@ -131,7 +135,19 @@ export function ProjectCaseStudy({
 
   const projectIndex = String(projectNumber).padStart(2, "0");
   const { caseStudy, presentation } = project;
-  const allWorkHref = `/?work=${encodeURIComponent(project.slug)}#work`;
+  const prepareAllWorkReturn = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    ) {
+      return;
+    }
+
+    setV2WorkReturnIntent(project.slug);
+  };
   const sections: CaseStudySection[] = [];
   const sectionNumber = (section: ProjectCaseStudySectionId) =>
     caseStudy.sectionNumbers?.[section] ??
@@ -236,9 +252,14 @@ export function ProjectCaseStudy({
         <Link className="v2-project-wordmark" href="/">
           Harsh Panchal
         </Link>
-        <a className="v2-project-back" href={allWorkHref}>
+        <Link
+          className="v2-project-back"
+          href="/"
+          onClick={prepareAllWorkReturn}
+          scroll={false}
+        >
           ← All Work
-        </a>
+        </Link>
       </header>
 
       <section className="v2-project-hero" aria-labelledby="v2-project-title">
@@ -277,7 +298,7 @@ export function ProjectCaseStudy({
               <span>Live product view</span>
             </div>
             <iframe
-              loading="eager"
+              loading="lazy"
               sandbox="allow-scripts allow-same-origin"
               src={project.liveUrl}
               tabIndex={-1}
@@ -292,7 +313,9 @@ export function ProjectCaseStudy({
       </div>
 
       <footer className="v2-project-footer" data-project-reveal="">
-        <a href={allWorkHref}>← All Work</a>
+        <Link href="/" onClick={prepareAllWorkReturn} scroll={false}>
+          ← All Work
+        </Link>
         {nextProject ? (
           <Link
             className="v2-project-next"
@@ -302,10 +325,15 @@ export function ProjectCaseStudy({
             <strong>{nextProject.title} →</strong>
           </Link>
         ) : (
-          <a className="v2-project-next" href={allWorkHref}>
+          <Link
+            className="v2-project-next"
+            href="/"
+            onClick={prepareAllWorkReturn}
+            scroll={false}
+          >
             <span>View All Work</span>
             <strong>All Projects →</strong>
-          </a>
+          </Link>
         )}
       </footer>
     </main>

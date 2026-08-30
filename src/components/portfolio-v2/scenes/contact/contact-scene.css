@@ -53,7 +53,7 @@
       rgba(214, 138, 104, 0.09) 52%,
       transparent 72%
     );
-  will-change: opacity, background-position;
+  will-change: opacity;
 }
 
 .portfolio-v2 .v2-contact-inner {
@@ -381,22 +381,42 @@
   }
 
   .portfolio-v2 .v2-contact::before {
+    inset: -20%;
+    background:
+      radial-gradient(
+        ellipse 48% 60% at 58% 42%,
+        rgba(214, 138, 104, 0.18) 0%,
+        rgba(185, 97, 67, 0.12) 22%,
+        rgba(121, 59, 37, 0.07) 43%,
+        transparent 70%
+      ),
+      linear-gradient(
+        115deg,
+        transparent 20%,
+        rgba(185, 97, 67, 0.04) 45%,
+        rgba(214, 138, 104, 0.09) 52%,
+        transparent 72%
+      );
     animation: v2-contact-drift 14s ease-in-out infinite alternate;
+    animation-play-state: paused;
+    transform: translate3d(-2%, -1%, 0) scale(1.02);
+    will-change: transform, opacity;
+  }
+
+  .portfolio-v2 .v2-contact[data-contact-ambient-visible="true"]::before {
+    animation-play-state: running;
   }
 }
 
 @keyframes v2-contact-drift {
   0% {
-    --contact-bg-x: 62%;
-    --contact-bg-y: 28%;
+    transform: translate3d(-2%, -1%, 0) scale(1.02);
   }
   50% {
-    --contact-bg-x: 48%;
-    --contact-bg-y: 36%;
+    transform: translate3d(2.5%, 1.5%, 0) scale(1.055);
   }
   100% {
-    --contact-bg-x: 72%;
-    --contact-bg-y: 25%;
+    transform: translate3d(4%, -2%, 0) scale(1.035);
   }
 }
 
@@ -409,6 +429,7 @@
 
   .portfolio-v2 .v2-contact::before {
     animation: none;
+    transform: none;
   }
 
   .portfolio-v2 .v2-contact-visual {

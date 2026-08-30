@@ -353,7 +353,11 @@
 
 @media (min-width: 600px) and (max-width: 1023px) {
   .portfolio-v2 .v2-capabilities {
-    --cap-scroll-distance: 260dvh;
+    --cap-scroll-distance: 260svh;
+  }
+
+  .portfolio-v2 .v2-cap-stage {
+    height: 100svh;
   }
 
   .portfolio-v2 .v2-cap-chapter {
@@ -419,7 +423,7 @@
 
 @media (max-width: 599px) {
   .portfolio-v2 .v2-capabilities {
-    --cap-scroll-distance: 240dvh;
+    --cap-scroll-distance: 240svh;
   }
 
   .portfolio-v2 .v2-cap-chapter {

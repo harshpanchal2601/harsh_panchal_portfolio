@@ -250,6 +250,7 @@
   background: var(--work-panel-media);
   will-change: clip-path;
   transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  touch-action: pan-y;
 }
 
 .portfolio-v2 .v2-work-panel:has(.v2-work-panel-link):hover .v2-work-media {
@@ -426,7 +427,11 @@
 
 @media (min-width: 600px) and (max-width: 899px) {
   .portfolio-v2 .v2-work {
-    --work-scroll-distance: 760dvh;
+    --work-scroll-distance: 760svh;
+  }
+
+  .portfolio-v2 .v2-work-stage {
+    height: 100svh;
   }
 
   .portfolio-v2 .v2-work-kinetic-text {
@@ -438,10 +443,10 @@
   }
 
   .portfolio-v2 .v2-work-panel {
-    top: 3vh;
+    top: 3svh;
     right: 1.5vw;
     left: 1.5vw;
-    height: 94dvh;
+    height: 94svh;
     padding:
       clamp(1.5rem, 3vh, 2.25rem)
       clamp(1.5rem, 4vw, 2.5rem)
@@ -483,7 +488,11 @@
 
 @media (max-width: 599px) {
   .portfolio-v2 .v2-work {
-    --work-scroll-distance: 720dvh;
+    --work-scroll-distance: 720svh;
+  }
+
+  .portfolio-v2 .v2-work-stage {
+    height: 100svh;
   }
 
   .portfolio-v2 .v2-work-kinetic-text {
@@ -495,10 +504,10 @@
   }
 
   .portfolio-v2 .v2-work-panel {
-    top: 1.5vh;
+    top: 1.5svh;
     right: 0;
     left: 0;
-    height: 97dvh;
+    height: 97svh;
     padding:
       clamp(1rem, 2.5vh, 1.5rem)
       var(--v2-page-padding)

@@ -17,6 +17,12 @@ import { createSceneContext } from "@/components/portfolio-v2/motion/scene-conte
 const WORK_TRIGGER_ID = "v2-work-master";
 const WORK_PROJECT_LABEL_PREFIX = "work:project:";
 
+export const V2_WORK_READY_EVENT = "portfolio-v2:work-ready";
+
+function signalWorkReady(): void {
+  window.dispatchEvent(new Event(V2_WORK_READY_EVENT));
+}
+
 /* ── Timeline proportions (normalized 0–1) ──────────────── */
 
 const ENTRY_TEXT_DUR = 0.22;       // Phase A: kinetic sweep
@@ -118,6 +124,7 @@ function buildWorkTimeline(scope: HTMLElement): () => void {
 
   if (!entryTextPath || !exitTextPath || panels.length === 0) {
     settleWorkScene(scope);
+    signalWorkReady();
     return () => {};
   }
 
@@ -474,6 +481,7 @@ function buildWorkTimeline(scope: HTMLElement): () => void {
   /* ── Refresh ───────────────────────────────────────────── */
 
   ScrollTrigger.refresh();
+  signalWorkReady();
 
   return () => {
     timeline.scrollTrigger?.kill();
@@ -492,6 +500,7 @@ export function playWorkScene(scope: HTMLElement): gsap.Context {
 
     if (reducedMotion) {
       settleWorkScene(scope);
+      signalWorkReady();
       return;
     }
 

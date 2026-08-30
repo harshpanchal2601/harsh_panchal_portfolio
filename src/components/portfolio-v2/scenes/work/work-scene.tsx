@@ -10,7 +10,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import {
+  clearV2WorkReturnIntent,
   pauseV2Scroll,
+  readV2WorkReturnIntent,
   V2_HERO_READY_EVENT,
 } from "@/animations/gsap/scroll-runtime";
 import { gsap } from "@/animations/gsap/register-plugins";
@@ -18,6 +20,7 @@ import { featuredProjectPreviews } from "@/data/projects";
 import {
   playWorkScene,
   scrollToWorkProject,
+  V2_WORK_READY_EVENT,
 } from "@/components/portfolio-v2/scenes/work/work-motion";
 
 import "@/components/portfolio-v2/scenes/work/work-scene.css";
@@ -147,43 +150,41 @@ export function WorkScene() {
       return;
     }
 
-    const context = playWorkScene(root);
-    const returnSlug = new URLSearchParams(window.location.search).get("work");
-    let cancelled = false;
-    let firstFrame = 0;
-    let secondFrame = 0;
+    let returnSlug = readV2WorkReturnIntent();
+    let heroReady = Boolean(
+      document.querySelector('[data-hero-state="ready"]'),
+    );
+    let workReady = false;
 
     const restoreProject = () => {
-      if (!returnSlug || window.location.hash !== "#work") {
+      if (!returnSlug || !heroReady || !workReady) {
         return;
       }
 
-      void document.fonts.ready.then(() => {
-        if (cancelled) {
-          return;
-        }
-
-        firstFrame = window.requestAnimationFrame(() => {
-          secondFrame = window.requestAnimationFrame(() => {
-            if (!cancelled) {
-              scrollToWorkProject(root, returnSlug, { immediate: true });
-            }
-          });
-        });
-      });
+      if (scrollToWorkProject(root, returnSlug, { immediate: true })) {
+        clearV2WorkReturnIntent();
+        returnSlug = null;
+      }
     };
 
-    window.addEventListener(V2_HERO_READY_EVENT, restoreProject, { once: true });
-
-    if (document.querySelector('[data-hero-state="ready"]')) {
+    const onHeroReady = () => {
+      heroReady = true;
       restoreProject();
-    }
+    };
+
+    const onWorkReady = () => {
+      workReady = true;
+      restoreProject();
+    };
+
+    window.addEventListener(V2_HERO_READY_EVENT, onHeroReady);
+    window.addEventListener(V2_WORK_READY_EVENT, onWorkReady);
+
+    const context = playWorkScene(root);
 
     return () => {
-      cancelled = true;
-      window.cancelAnimationFrame(firstFrame);
-      window.cancelAnimationFrame(secondFrame);
-      window.removeEventListener(V2_HERO_READY_EVENT, restoreProject);
+      window.removeEventListener(V2_HERO_READY_EVENT, onHeroReady);
+      window.removeEventListener(V2_WORK_READY_EVENT, onWorkReady);
       context.revert();
     };
   }, []);

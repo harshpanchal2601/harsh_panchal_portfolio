@@ -757,6 +757,13 @@
 
 .portfolio-v2
   .v2-hero[data-hero-state="ready"]
+  .v2-hero-intro {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.portfolio-v2
+  .v2-hero[data-hero-state="ready"]
   .v2-hero-media {
   clip-path:
     inset(

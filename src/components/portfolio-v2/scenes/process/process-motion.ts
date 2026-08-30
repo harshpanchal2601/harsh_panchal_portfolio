@@ -3,7 +3,10 @@ import {
   ScrollTrigger,
 } from "@/animations/gsap/register-plugins";
 
-import { scrollV2To } from "@/animations/gsap/scroll-runtime";
+import {
+  scrollV2To,
+  usesNativeTouchScroll,
+} from "@/animations/gsap/scroll-runtime";
 import { createSceneContext } from "@/components/portfolio-v2/motion/scene-context";
 
 const PROCESS_TRIGGER_ID = "v2-process-master";
@@ -34,8 +37,6 @@ function fitProcessWord(scope: HTMLElement): void {
     word.style.fontSize = "";
   });
 
-  gsap.set(words, { scaleX: 1, x: 0, y: 0 });
-
   const widest = words.reduce(
     (max, word) => Math.max(max, word.scrollWidth),
     0,
@@ -45,6 +46,8 @@ function fitProcessWord(scope: HTMLElement): void {
 
   gsap.set(words, {
     scaleX,
+    x: 0,
+    y: 0,
     force3D: true,
     transformOrigin: "50% 50%",
   });
@@ -169,6 +172,7 @@ function buildProcessTimeline(scope: HTMLElement): () => void {
 
   let snapTimer = 0;
   let snapping = false;
+  const enableRestSnap = !usesNativeTouchScroll();
 
   const timeline = gsap.timeline({
     defaults: {
@@ -183,7 +187,7 @@ function buildProcessTimeline(scope: HTMLElement): () => void {
       scrub: true,
       invalidateOnRefresh: true,
       onUpdate(self) {
-        if (snapping || !self.isActive) {
+        if (!enableRestSnap || snapping || !self.isActive) {
           return;
         }
 
@@ -204,10 +208,10 @@ function buildProcessTimeline(scope: HTMLElement): () => void {
         }, 280);
       },
       onRefresh(self) {
-        prepareProcessType(scope);
-
         const start = scope.getBoundingClientRect().top + window.scrollY;
         const end = start + scope.offsetHeight - window.innerHeight;
+
+        prepareProcessType(scope);
 
         if (self.start === start && self.end === end) {
           return;

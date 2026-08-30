@@ -51,21 +51,14 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `(function(){
   var p=location.pathname;
-  var entries=performance.getEntriesByType&&performance.getEntriesByType('navigation');
-  var isReload=entries&&entries[0]
-    ? entries[0].type==='reload'
-    : performance.navigation&&performance.navigation.type===1;
 
-  if(p==='/'&&!location.hash&&isReload){
-    var previousRestoration=history.scrollRestoration;
+  if(p==='/'){
+    window.__portfolioV2PreviousScrollRestoration=history.scrollRestoration;
     history.scrollRestoration='manual';
+    if(location.search||location.hash){
+      history.replaceState(history.state,'','/');
+    }
     scrollTo(0,0);
-    addEventListener('load',function(){
-      requestAnimationFrame(function(){
-        scrollTo(0,0);
-        history.scrollRestoration=previousRestoration;
-      });
-    },{once:true});
   }
 
   if(p!=='/legacy') return;

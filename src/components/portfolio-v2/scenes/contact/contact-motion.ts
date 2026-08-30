@@ -2,6 +2,7 @@ import {
   gsap,
   ScrollTrigger,
 } from "@/animations/gsap/register-plugins";
+import { V2_VIEWPORT_GEOMETRY_CHANGE_EVENT } from "@/animations/gsap/scroll-runtime";
 
 import { createSceneContext } from "@/components/portfolio-v2/motion/scene-context";
 
@@ -25,6 +26,40 @@ function canFollowPointer(): boolean {
     window.matchMedia("(pointer: fine)").matches &&
     window.matchMedia("(hover: hover)").matches
   );
+}
+
+function bindContactAmbientVisibility(scope: HTMLElement): () => void {
+  if (
+    prefersReducedMotion() ||
+    !window.matchMedia("(hover: none), (pointer: coarse)").matches
+  ) {
+    return () => {};
+  }
+
+  scope.dataset.contactAmbientVisible = "false";
+
+  if (!("IntersectionObserver" in window)) {
+    scope.dataset.contactAmbientVisible = "true";
+    return () => {
+      delete scope.dataset.contactAmbientVisible;
+    };
+  }
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      scope.dataset.contactAmbientVisible = entry?.isIntersecting
+        ? "true"
+        : "false";
+    },
+    { rootMargin: "50% 0px" },
+  );
+
+  observer.observe(scope);
+
+  return () => {
+    observer.disconnect();
+    delete scope.dataset.contactAmbientVisible;
+  };
 }
 
 function settleContactScene(scope: HTMLElement): void {
@@ -177,13 +212,13 @@ function bindContactPointer(scope: HTMLElement): () => void {
   root.addEventListener("pointerenter", onEnter);
   root.addEventListener("pointermove", onMove);
   root.addEventListener("pointerleave", onLeave);
-  window.addEventListener("resize", updateRects);
+  window.addEventListener(V2_VIEWPORT_GEOMETRY_CHANGE_EVENT, updateRects);
 
   return () => {
     root.removeEventListener("pointerenter", onEnter);
     root.removeEventListener("pointermove", onMove);
     root.removeEventListener("pointerleave", onLeave);
-    window.removeEventListener("resize", updateRects);
+    window.removeEventListener(V2_VIEWPORT_GEOMETRY_CHANGE_EVENT, updateRects);
     stopLoop();
   };
 }
@@ -271,11 +306,13 @@ function buildContactEntrance(scope: HTMLElement): () => void {
 export function playContactScene(scope: HTMLElement): gsap.Context {
   return createSceneContext(scope, () => {
     const unbindPointer = bindContactPointer(scope);
+    const unbindAmbientVisibility = bindContactAmbientVisibility(scope);
 
     if (prefersReducedMotion()) {
       settleContactScene(scope);
       return () => {
         unbindPointer();
+        unbindAmbientVisibility();
       };
     }
 
@@ -283,6 +320,7 @@ export function playContactScene(scope: HTMLElement): gsap.Context {
 
     return () => {
       unbindPointer();
+      unbindAmbientVisibility();
       killEntrance();
     };
   });

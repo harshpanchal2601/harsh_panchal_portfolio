@@ -183,10 +183,11 @@
   .portfolio-v2 .v2-about {
     --about-proof-entry-y: 6px;
     --about-tile-entry-y: 18px;
-    --about-scroll-distance: 160dvh;
+    --about-scroll-distance: 160svh;
   }
 
   .portfolio-v2 .v2-about-stage {
+    height: 100svh;
     padding:
       clamp(4rem, 8vh, 5.5rem)
       var(--v2-page-padding)
@@ -256,7 +257,7 @@
   .portfolio-v2 .v2-about {
     --about-proof-entry-y: 4px;
     --about-tile-entry-y: 12px;
-    --about-scroll-distance: 160dvh;
+    --about-scroll-distance: 160svh;
   }
 
   .portfolio-v2 .v2-about-stage {

@@ -7,6 +7,7 @@ import {
   resumeV2Scroll,
   scrollV2To,
   V2_HEADER_REVEAL_EVENT,
+  V2_VIEWPORT_GEOMETRY_CHANGE_EVENT,
 } from "@/animations/gsap/scroll-runtime";
 import { V2_NAV_ITEMS } from "@/components/portfolio-v2/scenes/hero/hero-content";
 
@@ -184,7 +185,7 @@ export function V2Header() {
       }
     };
 
-    const onResize = () => {
+    const onViewportGeometryChange = () => {
       refreshToneRanges();
       scheduleUpdate();
     };
@@ -198,7 +199,10 @@ export function V2Header() {
 
     refreshToneRanges();
     window.addEventListener("scroll", scheduleUpdate, { passive: true });
-    window.addEventListener("resize", onResize);
+    window.addEventListener(
+      V2_VIEWPORT_GEOMETRY_CHANGE_EVENT,
+      onViewportGeometryChange,
+    );
     window.addEventListener(V2_HEADER_REVEAL_EVENT, revealAfterHero);
 
     if (document.querySelector('[data-hero-state="ready"]')) {
@@ -209,13 +213,18 @@ export function V2Header() {
 
     return () => {
       window.removeEventListener("scroll", scheduleUpdate);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener(
+        V2_VIEWPORT_GEOMETRY_CHANGE_EVENT,
+        onViewportGeometryChange,
+      );
       window.removeEventListener(V2_HEADER_REVEAL_EVENT, revealAfterHero);
       window.cancelAnimationFrame(updateFrame);
     };
   }, [isMenuOpen]);
 
   const navigateToSection = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+
     const hash = event.currentTarget.hash;
     const target = document.getElementById(decodeURIComponent(hash.slice(1)));
 
@@ -225,12 +234,6 @@ export function V2Header() {
 
     if (!target) {
       return;
-    }
-
-    event.preventDefault();
-
-    if (window.location.hash !== hash) {
-      window.history.pushState(window.history.state, "", hash);
     }
 
     scrollV2To(target);

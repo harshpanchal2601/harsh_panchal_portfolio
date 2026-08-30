@@ -207,10 +207,8 @@ function negativeLength(value: string): string {
   return value.startsWith("-") ? value.slice(1) : `-${value}`;
 }
 
-function settleHero(scope: HTMLElement): void {
+function applySettledHeroVisuals(scope: HTMLElement): void {
   const select = gsap.utils.selector(scope);
-
-  scope.dataset.heroState = "ready";
 
   gsap.set(select(".v2-hero-intro"), {
     autoAlpha: 0,
@@ -229,6 +227,11 @@ function settleHero(scope: HTMLElement): void {
     rotation: 0,
     opacity: 1,
   });
+}
+
+function settleHero(scope: HTMLElement): void {
+  scope.dataset.heroState = "ready";
+  applySettledHeroVisuals(scope);
 
   resumeV2Scroll();
   announceHeaderReveal();
@@ -776,12 +779,7 @@ export function playHeroOpening(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    const hasInitialTargetHash =
-      Boolean(window.location.hash) &&
-      window.location.hash !== "#top" &&
-      window.location.hash !== "#";
-
-    if (reducedMotion || hasInitialTargetHash) {
+    if (reducedMotion) {
       settleHero(scope);
       const profile = getHeroMotionProfile(
         window.innerWidth,
@@ -802,6 +800,7 @@ export function playHeroOpening(
       );
 
       if (scope.dataset.heroState === "ready") {
+        applySettledHeroVisuals(scope);
         return createHeroExitScroll(scope, profile);
       }
 
