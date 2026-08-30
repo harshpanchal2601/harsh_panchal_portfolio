@@ -54,8 +54,11 @@ export function resumeV2Scroll(): void {
   lenisInstance?.start();
 }
 
-export function scrollV2To(target: number | HTMLElement): void {
-  const immediate = prefersReducedMotion();
+export function scrollV2To(
+  target: number | HTMLElement,
+  options?: { immediate?: boolean },
+): void {
+  const immediate = options?.immediate ?? prefersReducedMotion();
 
   if (lenisInstance) {
     lenisInstance.scrollTo(target, {
@@ -94,33 +97,67 @@ export function useV2ScrollRuntime(rootRef: RefObject<HTMLElement | null>): void
     let teardownRuntime: (() => void) | undefined;
     let initialHashHandled = false;
 
-    const scrollToCurrentHash = () => {
+    const resolveSceneTarget = (hash: string): number | HTMLElement | null => {
+      const cleanHash = decodeURIComponent(hash.replace(/^#/, ""));
+      if (!cleanHash || cleanHash === "top") {
+        return 0;
+      }
+
+      const target = document.getElementById(cleanHash);
+      if (!target) {
+        return null;
+      }
+
+      const triggerMap: Record<string, string> = {
+        about: "v2-about-copy",
+        capabilities: "v2-capabilities-master",
+        work: "v2-work-master",
+        process: "v2-process-master",
+        contact: "v2-contact-enter",
+      };
+
+      const triggerId = triggerMap[cleanHash];
+      if (triggerId) {
+        const trigger = ScrollTrigger.getById(triggerId);
+        if (trigger && typeof trigger.start === "number") {
+          return trigger.start;
+        }
+      }
+
+      return target;
+    };
+
+    const scrollToCurrentHash = (immediate = false) => {
       if (!window.location.hash) {
         return;
       }
 
-      const target = document.getElementById(
-        decodeURIComponent(window.location.hash.slice(1)),
-      );
-
-      if (!target) {
+      const target = resolveSceneTarget(window.location.hash);
+      if (target === null) {
         return;
       }
 
       lenisInstance?.resize();
       ScrollTrigger.refresh();
-      window.requestAnimationFrame(() => scrollV2To(target));
+      window.requestAnimationFrame(() => {
+        scrollV2To(target, { immediate });
+        ScrollTrigger.update();
+      });
       initialHashHandled = true;
     };
 
     const onHeroReady = () => {
       if (!initialHashHandled) {
-        scrollToCurrentHash();
+        scrollToCurrentHash(true);
       }
     };
 
+    const onHashChange = () => {
+      scrollToCurrentHash(false);
+    };
+
     window.addEventListener(V2_HERO_READY_EVENT, onHeroReady);
-    window.addEventListener("hashchange", scrollToCurrentHash);
+    window.addEventListener("hashchange", onHashChange);
 
     const startNativeScroll = () => {
       markReducedMotion(root, true);
@@ -191,14 +228,14 @@ export function useV2ScrollRuntime(rootRef: RefObject<HTMLElement | null>): void
     syncRuntime();
 
     if (root.querySelector('[data-hero-state="ready"]')) {
-      scrollToCurrentHash();
+      scrollToCurrentHash(true);
     }
 
     mediaQuery.addEventListener("change", syncRuntime);
 
     return () => {
       window.removeEventListener(V2_HERO_READY_EVENT, onHeroReady);
-      window.removeEventListener("hashchange", scrollToCurrentHash);
+      window.removeEventListener("hashchange", onHashChange);
       mediaQuery.removeEventListener("change", syncRuntime);
       teardownRuntime?.();
       deactivateDocument();

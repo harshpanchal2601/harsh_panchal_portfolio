@@ -228,7 +228,7 @@ function buildProcessTimeline(scope: HTMLElement): () => void {
     0,
   );
 
-  slices.forEach((slice, index) => {
+  slices.forEach((slice) => {
     timeline.to(
       slice,
       {

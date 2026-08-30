@@ -10,12 +10,12 @@ const CAPABILITIES_TRIGGER_ID = "v2-capabilities-master";
 
 const COLOR_TEXT = "#F3E4D0";
 const COLOR_ACCENT = "#B96143";
-const COLOR_INACTIVE = "rgba(243, 228, 208, 0.29)";
-const COLOR_COMPLETED = "rgba(243, 228, 208, 0.5)";
-const COLOR_FAINT = "rgba(243, 228, 208, 0.12)";
-const COLOR_MUTED = "rgba(243, 228, 208, 0.28)";
+const COLOR_INACTIVE = "rgba(243, 228, 208, 0.45)";
+const COLOR_COMPLETED = "rgba(243, 228, 208, 0.65)";
+const COLOR_FAINT = "rgba(243, 228, 208, 0.55)";
+const COLOR_MUTED = "rgba(243, 228, 208, 0.68)";
 const COLOR_LINE = "rgba(243, 228, 208, 0.14)";
-const COLOR_LINE_ACTIVE = "rgba(243, 228, 208, 0.28)";
+const COLOR_LINE_ACTIVE = "rgba(243, 228, 208, 0.32)";
 
 const CAPABILITY_STATES = [
   { id: "cap:frontend", at: 0.08 },
@@ -46,19 +46,6 @@ function readCoordinate(
   return Number.parseFloat(value) || 50;
 }
 
-function nodeOffset(
-  scope: HTMLElement,
-  system: HTMLElement,
-  stateIndex: number,
-  nodeIndex: number,
-  axis: "x" | "y",
-): number {
-  const percentage = readCoordinate(scope, stateIndex, nodeIndex, axis);
-  const dimension = axis === "x" ? system.clientWidth : system.clientHeight;
-
-  return ((percentage - 50) / 100) * dimension;
-}
-
 function rowParts(row: HTMLElement) {
   return {
     number: row.querySelector(".v2-cap-row-number"),
@@ -85,15 +72,15 @@ function applyRowLook(
   if (look === "completed") {
     gsap.set(parts.number, { color: COLOR_COMPLETED });
     gsap.set(parts.title, { color: COLOR_COMPLETED });
-    gsap.set(parts.description, { color: COLOR_MUTED, opacity: 0.36 });
-    gsap.set(parts.technologies, { color: COLOR_FAINT, opacity: 0.5 });
+    gsap.set(parts.description, { color: COLOR_MUTED, opacity: 0.65 });
+    gsap.set(parts.technologies, { color: COLOR_FAINT, opacity: 0.8 });
     return;
   }
 
   gsap.set(parts.number, { color: COLOR_FAINT });
   gsap.set(parts.title, { color: COLOR_INACTIVE });
-  gsap.set(parts.description, { color: COLOR_MUTED, opacity: 0.08 });
-  gsap.set(parts.technologies, { color: COLOR_FAINT, opacity: 0.18 });
+  gsap.set(parts.description, { color: COLOR_MUTED, opacity: 0.35 });
+  gsap.set(parts.technologies, { color: COLOR_FAINT, opacity: 0.45 });
 }
 
 function setCapabilityState(
@@ -112,6 +99,9 @@ function setCapabilityState(
     return;
   }
 
+  const systemWidth = system.clientWidth;
+  const systemHeight = system.clientHeight;
+
   rows.forEach((row, index) => {
     applyRowLook(
       row,
@@ -124,9 +114,11 @@ function setCapabilityState(
   });
 
   nodes.forEach((node, nodeIndex) => {
+    const xPct = readCoordinate(scope, stateIndex, nodeIndex, "x");
+    const yPct = readCoordinate(scope, stateIndex, nodeIndex, "y");
     gsap.set(node, {
-      x: nodeOffset(scope, system, stateIndex, nodeIndex, "x"),
-      y: nodeOffset(scope, system, stateIndex, nodeIndex, "y"),
+      x: ((xPct - 50) / 100) * systemWidth,
+      y: ((yPct - 50) / 100) * systemHeight,
     });
   });
 
@@ -202,12 +194,12 @@ function tweenRow(
   timeline.to(parts.title, { color: COLOR_COMPLETED, duration: ROW_TWEEN }, at);
   timeline.to(
     parts.description,
-    { color: COLOR_MUTED, opacity: 0.34, duration: ROW_TWEEN },
+    { color: COLOR_MUTED, opacity: 0.65, duration: ROW_TWEEN },
     at,
   );
   timeline.to(
     parts.technologies,
-    { color: COLOR_FAINT, opacity: 0.48, duration: ROW_TWEEN },
+    { color: COLOR_FAINT, opacity: 0.8, duration: ROW_TWEEN },
     at,
   );
 }
@@ -231,6 +223,17 @@ function buildCapabilitiesTimeline(scope: HTMLElement): () => void {
     settleCapabilities(scope);
     return () => {};
   }
+
+  let systemWidth = system.clientWidth;
+  let systemHeight = system.clientHeight;
+
+  const cachedCoords: Array<Array<{ x: number; y: number }>> = CAPABILITY_STATES.map(
+    (_, sIdx) =>
+      [0, 1, 2, 3].map((nIdx) => ({
+        x: readCoordinate(scope, sIdx, nIdx, "x"),
+        y: readCoordinate(scope, sIdx, nIdx, "y"),
+      })),
+  );
 
   gsap.set(chapterKicker, {
     autoAlpha: 0,
@@ -265,17 +268,19 @@ function buildCapabilitiesTimeline(scope: HTMLElement): () => void {
   });
 
   nodes.forEach((node, nodeIndex) => {
+    const coord = cachedCoords[0][nodeIndex];
     gsap.set(node, {
-      x: nodeOffset(scope, system, 0, nodeIndex, "x"),
-      y: nodeOffset(scope, system, 0, nodeIndex, "y"),
+      x: ((coord.x - 50) / 100) * systemWidth,
+      y: ((coord.y - 50) / 100) * systemHeight,
     });
   });
 
   connectors.forEach((connector, nodeIndex) => {
+    const coord = cachedCoords[0][nodeIndex];
     gsap.set(connector, {
       attr: {
-        x2: readCoordinate(scope, 0, nodeIndex, "x"),
-        y2: readCoordinate(scope, 0, nodeIndex, "y"),
+        x2: coord.x,
+        y2: coord.y,
       },
     });
   });
@@ -293,6 +298,9 @@ function buildCapabilitiesTimeline(scope: HTMLElement): () => void {
       scrub: true,
       invalidateOnRefresh: true,
       onRefresh(self) {
+        systemWidth = system.clientWidth;
+        systemHeight = system.clientHeight;
+
         const start = scope.getBoundingClientRect().top + window.scrollY;
         const end = start + scope.offsetHeight - window.innerHeight;
 
@@ -369,11 +377,12 @@ function buildCapabilitiesTimeline(scope: HTMLElement): () => void {
     }
 
     nodes.forEach((node, nodeIndex) => {
+      const coord = cachedCoords[stateIndex][nodeIndex];
       timeline.to(
         node,
         {
-          x: () => nodeOffset(scope, system, stateIndex, nodeIndex, "x"),
-          y: () => nodeOffset(scope, system, stateIndex, nodeIndex, "y"),
+          x: () => ((coord.x - 50) / 100) * systemWidth,
+          y: () => ((coord.y - 50) / 100) * systemHeight,
           duration: STATE_MORPH,
         },
         at,
@@ -381,12 +390,13 @@ function buildCapabilitiesTimeline(scope: HTMLElement): () => void {
     });
 
     connectors.forEach((connector, nodeIndex) => {
+      const coord = cachedCoords[stateIndex][nodeIndex];
       timeline.to(
         connector,
         {
           attr: {
-            x2: () => readCoordinate(scope, stateIndex, nodeIndex, "x"),
-            y2: () => readCoordinate(scope, stateIndex, nodeIndex, "y"),
+            x2: coord.x,
+            y2: coord.y,
           },
           stroke:
             stateIndex === 4 && nodeIndex === 3

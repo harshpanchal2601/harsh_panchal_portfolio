@@ -24,7 +24,36 @@ type FragmentMotion = {
   at: number;
 };
 
-type MotionMode = "desktop" | "mobile";
+type HeadlineMode = "desktop" | "mobile";
+
+type HeroMotionProfile = Readonly<{
+  name: "phone" | "tablet" | "compact" | "desktop";
+  headlineMode: HeadlineMode;
+  fragmentTravel: number;
+  introTitleDuration: number;
+  introSplitAt: number;
+  introSplitX: string;
+  introSplitY: string;
+  introSplitDuration: number;
+  mediaPeekClip: string;
+  mediaPeekAt: number;
+  mediaPeekDuration: number;
+  mediaExpandAt: number;
+  mediaExpandDuration: number;
+  headerResolveAt: number;
+  introResolveX: string | number;
+  introResolveY: string;
+  headlineAssembleAt: number;
+  headlineAssembleDuration: number;
+  heroReadyAt: number;
+  exitScrollDistance: string;
+  exitTravel: number;
+  photoTransformOrigin: string;
+  photoDriftScale: number;
+  photoDriftY: number;
+  photoExitScale: number;
+  photoExitY: number;
+}>;
 
 const CLIP_HIDDEN = "inset(50% 50% 50% 50%)";
 const CLIP_PEEK_DESKTOP = "inset(36% 41% 36% 41%)";
@@ -33,12 +62,149 @@ const CLIP_OPEN = "inset(0% 0% 0% 0%)";
 
 const HERO_EXIT_TRIGGER_ID = "v2-hero-exit";
 
+const HERO_MEDIA_QUERIES = {
+  phone: "(max-width: 599px)",
+  tablet: "(min-width: 600px) and (max-width: 899px)",
+  compact: "(min-width: 900px) and (max-width: 1279px)",
+  desktop: "(min-width: 1280px)",
+} as const;
+
+function getHeroMotionProfile(width: number, height: number): HeroMotionProfile {
+  if (width >= 1280) {
+    return {
+      name: "desktop",
+      headlineMode: "desktop",
+      fragmentTravel: 1,
+      introTitleDuration: 0.56,
+      introSplitAt: 0.4,
+      introSplitX: "15vw",
+      introSplitY: "0svh",
+      introSplitDuration: 0.6,
+      mediaPeekClip: CLIP_PEEK_DESKTOP,
+      mediaPeekAt: 0.52,
+      mediaPeekDuration: 0.36,
+      mediaExpandAt: 0.9,
+      mediaExpandDuration: 0.86,
+      headerResolveAt: 1.1,
+      introResolveX: "-5vw",
+      introResolveY: "-8vh",
+      headlineAssembleAt: 1.48,
+      headlineAssembleDuration: 0.72,
+      heroReadyAt: 2.5,
+      exitScrollDistance: "+=128%",
+      exitTravel: 1,
+      photoTransformOrigin: "50% 42%",
+      photoDriftScale: 1.055,
+      photoDriftY: -3,
+      photoExitScale: 1.06,
+      photoExitY: -4,
+    };
+  }
+
+  if (width >= 900) {
+    const shortScreen = height <= 800;
+
+    return {
+      name: "compact",
+      headlineMode: "desktop",
+      fragmentTravel: shortScreen ? 0.68 : 0.78,
+      introTitleDuration: 0.52,
+      introSplitAt: 0.38,
+      introSplitX: shortScreen ? "10vw" : "12vw",
+      introSplitY: "0svh",
+      introSplitDuration: 0.56,
+      mediaPeekClip: "inset(35% 38% 35% 38%)",
+      mediaPeekAt: 0.5,
+      mediaPeekDuration: 0.34,
+      mediaExpandAt: 0.84,
+      mediaExpandDuration: 0.78,
+      headerResolveAt: 1.02,
+      introResolveX: "-3vw",
+      introResolveY: shortScreen ? "-4svh" : "-6svh",
+      headlineAssembleAt: 1.32,
+      headlineAssembleDuration: 0.64,
+      heroReadyAt: shortScreen ? 2.16 : 2.25,
+      exitScrollDistance: shortScreen ? "+=104%" : "+=116%",
+      exitTravel: shortScreen ? 0.7 : 0.8,
+      photoTransformOrigin: "50% 39%",
+      photoDriftScale: 1.045,
+      photoDriftY: -2.5,
+      photoExitScale: 1.05,
+      photoExitY: -3.5,
+    };
+  }
+
+  if (width >= 600) {
+    return {
+      name: "tablet",
+      headlineMode: "mobile",
+      fragmentTravel: 1.1,
+      introTitleDuration: 0.54,
+      introSplitAt: 0.4,
+      introSplitX: "0vw",
+      introSplitY: "9svh",
+      introSplitDuration: 0.6,
+      mediaPeekClip: "inset(34% 31% 34% 31%)",
+      mediaPeekAt: 0.54,
+      mediaPeekDuration: 0.36,
+      mediaExpandAt: 0.88,
+      mediaExpandDuration: 0.8,
+      headerResolveAt: 1.08,
+      introResolveX: 0,
+      introResolveY: "-6svh",
+      headlineAssembleAt: 1.42,
+      headlineAssembleDuration: 0.66,
+      heroReadyAt: 2.38,
+      exitScrollDistance: "+=108%",
+      exitTravel: 0.72,
+      photoTransformOrigin: "48% 27%",
+      photoDriftScale: 1.042,
+      photoDriftY: -2.25,
+      photoExitScale: 1.047,
+      photoExitY: -3.25,
+    };
+  }
+
+  return {
+    name: "phone",
+    headlineMode: "mobile",
+    fragmentTravel: 1,
+    introTitleDuration: 0.52,
+    introSplitAt: 0.38,
+    introSplitX: "0vw",
+    introSplitY: "8svh",
+    introSplitDuration: 0.58,
+    mediaPeekClip: CLIP_PEEK_MOBILE,
+    mediaPeekAt: 0.5,
+    mediaPeekDuration: 0.34,
+    mediaExpandAt: 0.84,
+    mediaExpandDuration: 0.74,
+    headerResolveAt: 1.02,
+    introResolveX: 0,
+    introResolveY: "-5svh",
+    headlineAssembleAt: 1.34,
+    headlineAssembleDuration: 0.62,
+    heroReadyAt: 2.28,
+    exitScrollDistance: "+=96%",
+    exitTravel: 1,
+    photoTransformOrigin: "46% 24%",
+    photoDriftScale: 1.035,
+    photoDriftY: -2,
+    photoExitScale: 1.04,
+    photoExitY: -3.5,
+  };
+}
+
 function announceHeaderReveal(): void {
   window.dispatchEvent(new Event(V2_HEADER_REVEAL_EVENT));
 }
 
 function announceHeroReady(): void {
   window.dispatchEvent(new Event(V2_HERO_READY_EVENT));
+}
+
+function negativeLength(value: string): string {
+  return value.startsWith("-") ? value.slice(1) : `-${value}`;
 }
 
 function settleHero(scope: HTMLElement): void {
@@ -75,12 +241,12 @@ function killHeroExitTrigger(): void {
 
 function createHeroExitScroll(
   scope: HTMLElement,
-  mode: MotionMode,
+  profile: HeroMotionProfile,
 ): () => void {
   killHeroExitTrigger();
 
   const select = gsap.utils.selector(scope);
-  const mobile = mode === "mobile";
+  const mobile = profile.headlineMode === "mobile";
 
   const media = select(".v2-hero-media");
   const photo = select(".v2-hero-photo");
@@ -95,7 +261,7 @@ function createHeroExitScroll(
   const [lineOne, lineTwo, lineThree, lineFour] = lines;
 
   gsap.set(photo, {
-    transformOrigin: mobile ? "46% 24%" : "50% 42%",
+    transformOrigin: profile.photoTransformOrigin,
     scale: 1,
     yPercent: 0,
   });
@@ -124,7 +290,7 @@ function createHeroExitScroll(
       id: HERO_EXIT_TRIGGER_ID,
       trigger: scope,
       start: "top top",
-      end: mobile ? "+=96%" : "+=128%",
+      end: profile.exitScrollDistance,
       pin: true,
       pinSpacing: true,
       scrub: true,
@@ -138,8 +304,8 @@ function createHeroExitScroll(
       timeline.to(
         lineOne,
         {
-          xPercent: -5,
-          y: "-3.5vw",
+          xPercent: -5 * profile.exitTravel,
+          y: `${-3.5 * profile.exitTravel}vw`,
           duration: 0.36,
         },
         0.12,
@@ -150,7 +316,7 @@ function createHeroExitScroll(
       timeline.to(
         lineTwo,
         {
-          xPercent: 6,
+          xPercent: 6 * profile.exitTravel,
           duration: 0.36,
         },
         0.12,
@@ -161,7 +327,7 @@ function createHeroExitScroll(
       timeline.to(
         lineThree,
         {
-          xPercent: -4,
+          xPercent: -4 * profile.exitTravel,
           duration: 0.36,
         },
         0.12,
@@ -172,8 +338,8 @@ function createHeroExitScroll(
       timeline.to(
         lineFour,
         {
-          xPercent: 5,
-          y: "3.5vw",
+          xPercent: 5 * profile.exitTravel,
+          y: `${3.5 * profile.exitTravel}vw`,
           duration: 0.36,
         },
         0.12,
@@ -184,7 +350,7 @@ function createHeroExitScroll(
       timeline.to(
         lineOne,
         {
-          xPercent: -10,
+          xPercent: -10 * profile.exitTravel,
           duration: 0.36,
         },
         0.12,
@@ -195,7 +361,7 @@ function createHeroExitScroll(
       timeline.to(
         lineTwo,
         {
-          xPercent: 10,
+          xPercent: 10 * profile.exitTravel,
           duration: 0.36,
         },
         0.12,
@@ -206,7 +372,7 @@ function createHeroExitScroll(
       timeline.to(
         lineThree,
         {
-          xPercent: -7,
+          xPercent: -7 * profile.exitTravel,
           duration: 0.36,
         },
         0.12,
@@ -226,8 +392,8 @@ function createHeroExitScroll(
   timeline.to(
     photo,
     {
-      scale: mobile ? 1.035 : 1.055,
-      yPercent: mobile ? -2 : -3,
+      scale: profile.photoDriftScale,
+      yPercent: profile.photoDriftY,
       duration: 0.52,
     },
     0.2,
@@ -238,8 +404,8 @@ function createHeroExitScroll(
       timeline.to(
         lineOne,
         {
-          xPercent: -7,
-          y: "-16vw",
+          xPercent: -7 * profile.exitTravel,
+          y: `${-16 * profile.exitTravel}vw`,
           opacity: 0,
           duration: 0.28,
         },
@@ -251,8 +417,8 @@ function createHeroExitScroll(
       timeline.to(
         lineTwo,
         {
-          xPercent: 7,
-          y: "-10vw",
+          xPercent: 7 * profile.exitTravel,
+          y: `${-10 * profile.exitTravel}vw`,
           opacity: 0,
           duration: 0.28,
         },
@@ -264,8 +430,8 @@ function createHeroExitScroll(
       timeline.to(
         lineThree,
         {
-          xPercent: -6,
-          y: "8vw",
+          xPercent: -6 * profile.exitTravel,
+          y: `${8 * profile.exitTravel}vw`,
           opacity: 0,
           duration: 0.28,
         },
@@ -277,8 +443,8 @@ function createHeroExitScroll(
       timeline.to(
         lineFour,
         {
-          xPercent: 7,
-          y: "18vw",
+          xPercent: 7 * profile.exitTravel,
+          y: `${18 * profile.exitTravel}vw`,
           opacity: 0,
           duration: 0.28,
         },
@@ -290,8 +456,8 @@ function createHeroExitScroll(
       timeline.to(
         lineOne,
         {
-          xPercent: -22,
-          yPercent: -42,
+          xPercent: -22 * profile.exitTravel,
+          yPercent: -42 * profile.exitTravel,
           opacity: 0,
           duration: 0.28,
         },
@@ -303,8 +469,8 @@ function createHeroExitScroll(
       timeline.to(
         lineTwo,
         {
-          xPercent: 24,
-          yPercent: 6,
+          xPercent: 24 * profile.exitTravel,
+          yPercent: 6 * profile.exitTravel,
           opacity: 0,
           duration: 0.28,
         },
@@ -316,8 +482,8 @@ function createHeroExitScroll(
       timeline.to(
         lineThree,
         {
-          xPercent: -18,
-          yPercent: 48,
+          xPercent: -18 * profile.exitTravel,
+          yPercent: 48 * profile.exitTravel,
           opacity: 0,
           duration: 0.28,
         },
@@ -338,8 +504,8 @@ function createHeroExitScroll(
   timeline.to(
     photo,
     {
-      scale: mobile ? 1.04 : 1.06,
-      yPercent: mobile ? -3.5 : -4,
+      scale: profile.photoExitScale,
+      yPercent: profile.photoExitY,
       duration: 0.28,
     },
     0.72,
@@ -356,23 +522,19 @@ function createHeroExitScroll(
 
 function buildOpeningTimeline(
   scope: HTMLElement,
-  mode: MotionMode,
+  profile: HeroMotionProfile,
 ): () => void {
   pauseV2Scroll();
 
   const select = gsap.utils.selector(scope);
 
-  const mobile = mode === "mobile";
+  const mobile = profile.headlineMode === "mobile";
 
   const motion = (
     mobile
       ? HERO_FRAGMENT_MOTION_MOBILE
       : HERO_FRAGMENT_MOTION_DESKTOP
   ) as Record<string, FragmentMotion>;
-
-  const peekClip = mobile
-    ? CLIP_PEEK_MOBILE
-    : CLIP_PEEK_DESKTOP;
 
   const intro = select(".v2-hero-intro");
   const introInner = select(".v2-hero-intro-inner");
@@ -408,9 +570,9 @@ function buildOpeningTimeline(
     const target = select(`[data-frag="${id}"]`);
 
     gsap.set(target, {
-      xPercent: config.xPercent,
-      y: config.y,
-      rotation: config.rotation,
+      xPercent: config.xPercent * profile.fragmentTravel,
+      y: config.y * profile.fragmentTravel,
+      rotation: config.rotation * profile.fragmentTravel,
       opacity: 0,
     });
   });
@@ -431,7 +593,7 @@ function buildOpeningTimeline(
     introInner,
     {
       yPercent: 0,
-      duration: mobile ? 0.48 : 0.56,
+      duration: profile.introTitleDuration,
       stagger: 0.06,
       ease: "power4.out",
     },
@@ -440,61 +602,41 @@ function buildOpeningTimeline(
 
   timeline.addLabel(
     "intro:split",
-    mobile ? 0.36 : 0.4,
+    profile.introSplitAt,
   );
 
-  if (mobile) {
-    timeline.to(
-      harsh,
-      {
-        y: "-8vh",
-        duration: 0.52,
-        ease: "power3.inOut",
-      },
-      "intro:split",
-    );
+  timeline.to(
+    harsh,
+    {
+      x: negativeLength(profile.introSplitX),
+      y: negativeLength(profile.introSplitY),
+      duration: profile.introSplitDuration,
+      ease: "power3.inOut",
+    },
+    "intro:split",
+  );
 
-    timeline.to(
-      panchal,
-      {
-        y: "8vh",
-        duration: 0.52,
-        ease: "power3.inOut",
-      },
-      "intro:split",
-    );
-  } else {
-    timeline.to(
-      harsh,
-      {
-        x: "-15vw",
-        duration: 0.6,
-        ease: "power3.inOut",
-      },
-      "intro:split",
-    );
-
-    timeline.to(
-      panchal,
-      {
-        x: "15vw",
-        duration: 0.6,
-        ease: "power3.inOut",
-      },
-      "intro:split",
-    );
-  }
+  timeline.to(
+    panchal,
+    {
+      x: profile.introSplitX,
+      y: profile.introSplitY,
+      duration: profile.introSplitDuration,
+      ease: "power3.inOut",
+    },
+    "intro:split",
+  );
 
   timeline.addLabel(
     "media:peek",
-    mobile ? 0.46 : 0.52,
+    profile.mediaPeekAt,
   );
 
   timeline.to(
     media,
     {
-      clipPath: peekClip,
-      duration: mobile ? 0.3 : 0.36,
+      clipPath: profile.mediaPeekClip,
+      duration: profile.mediaPeekDuration,
       ease: "power3.out",
     },
     "media:peek",
@@ -502,14 +644,14 @@ function buildOpeningTimeline(
 
   timeline.addLabel(
     "media:expand",
-    mobile ? 0.78 : 0.9,
+    profile.mediaExpandAt,
   );
 
   timeline.to(
     media,
     {
       clipPath: CLIP_OPEN,
-      duration: mobile ? 0.72 : 0.86,
+      duration: profile.mediaExpandDuration,
       ease: "power4.inOut",
     },
     "media:expand",
@@ -517,15 +659,15 @@ function buildOpeningTimeline(
 
   timeline.addLabel(
     "header:resolve",
-    mobile ? 0.96 : 1.1,
+    profile.headerResolveAt,
   );
 
   timeline.to(
     intro,
     {
       autoAlpha: 0,
-      y: mobile ? "-5vh" : "-8vh",
-      x: mobile ? 0 : "-5vw",
+      y: profile.introResolveY,
+      x: profile.introResolveX,
       duration: 0.46,
       ease: "power3.inOut",
     },
@@ -540,12 +682,12 @@ function buildOpeningTimeline(
 
   timeline.addLabel(
     "headline:scatter",
-    mobile ? 1.2 : 1.4,
+    profile.headlineAssembleAt - 0.08,
   );
 
   timeline.addLabel(
     "headline:assemble",
-    mobile ? 1.28 : 1.48,
+    profile.headlineAssembleAt,
   );
 
   Object.entries(motion).forEach(([id, config]) => {
@@ -559,7 +701,7 @@ function buildOpeningTimeline(
         xPercent: 0,
         rotation: 0,
         opacity: 1,
-        duration: mobile ? 0.58 : 0.72,
+        duration: profile.headlineAssembleDuration,
         ease: "power3.out",
       },
       `headline:assemble+=${config.at}`,
@@ -568,7 +710,7 @@ function buildOpeningTimeline(
 
   timeline.addLabel(
     "hero:ready",
-    mobile ? 2.15 : 2.5,
+    profile.heroReadyAt,
   );
 
   let killHeroExit = () => {};
@@ -582,7 +724,7 @@ function buildOpeningTimeline(
 
       exitAttached = true;
       settleHero(scope);
-      killHeroExit = createHeroExitScroll(scope, mode);
+      killHeroExit = createHeroExitScroll(scope, profile);
     },
     [],
     "hero:ready",
@@ -634,30 +776,37 @@ export function playHeroOpening(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    if (reducedMotion) {
+    const hasInitialTargetHash =
+      Boolean(window.location.hash) &&
+      window.location.hash !== "#top" &&
+      window.location.hash !== "#";
+
+    if (reducedMotion || hasInitialTargetHash) {
       settleHero(scope);
-      return;
+      const profile = getHeroMotionProfile(
+        window.innerWidth,
+        window.innerHeight,
+      );
+      const killHeroExit = createHeroExitScroll(scope, profile);
+      return () => {
+        killHeroExit();
+      };
     }
 
     const matchMedia = gsap.matchMedia();
 
-    matchMedia.add(
-      "(min-width: 1024px)",
-      () =>
-        buildOpeningTimeline(
-          scope,
-          "desktop",
-        ),
-    );
+    matchMedia.add(HERO_MEDIA_QUERIES, () => {
+      const profile = getHeroMotionProfile(
+        window.innerWidth,
+        window.innerHeight,
+      );
 
-    matchMedia.add(
-      "(max-width: 1023px)",
-      () =>
-        buildOpeningTimeline(
-          scope,
-          "mobile",
-        ),
-    );
+      if (scope.dataset.heroState === "ready") {
+        return createHeroExitScroll(scope, profile);
+      }
+
+      return buildOpeningTimeline(scope, profile);
+    });
 
     return () => {
       matchMedia.revert();

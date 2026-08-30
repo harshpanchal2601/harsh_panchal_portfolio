@@ -233,9 +233,9 @@ export function ProjectCaseStudy({
       }}
     >
       <header className="v2-project-header">
-        <a className="v2-project-wordmark" href="/">
+        <Link className="v2-project-wordmark" href="/">
           Harsh Panchal
-        </a>
+        </Link>
         <a className="v2-project-back" href={allWorkHref}>
           ← All Work
         </a>

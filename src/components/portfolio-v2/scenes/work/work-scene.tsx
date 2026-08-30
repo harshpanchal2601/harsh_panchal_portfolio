@@ -166,7 +166,7 @@ export function WorkScene() {
         firstFrame = window.requestAnimationFrame(() => {
           secondFrame = window.requestAnimationFrame(() => {
             if (!cancelled) {
-              scrollToWorkProject(root, returnSlug);
+              scrollToWorkProject(root, returnSlug, { immediate: true });
             }
           });
         });

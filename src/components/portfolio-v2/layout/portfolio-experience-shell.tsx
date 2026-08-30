@@ -19,7 +19,9 @@ export function PortfolioExperienceShell({
   return (
     <div ref={rootRef} className="portfolio-v2" data-portfolio-v2="">
       <V2Header />
-      {children}
+      <main id="main-content" className="portfolio-v2-main">
+        {children}
+      </main>
     </div>
   );
 }

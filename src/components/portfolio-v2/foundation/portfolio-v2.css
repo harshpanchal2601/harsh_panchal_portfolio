@@ -36,7 +36,7 @@ html.portfolio-v2-active {
 }
 
 html.portfolio-v2-scroll-paused {
-  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 html.portfolio-v2-active body {

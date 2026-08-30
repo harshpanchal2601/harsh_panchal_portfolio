@@ -15,20 +15,12 @@ const HEADER_SAMPLE_Y = 80;
 
 type HeaderTone = "dark" | "light";
 
-function resolveHeaderOwner(): HTMLElement | null {
-  const x = Math.round(window.innerWidth / 2);
-  const y = Math.min(HEADER_SAMPLE_Y, window.innerHeight - 1);
-
-  for (const element of document.elementsFromPoint(x, y)) {
-    const owner = element.closest<HTMLElement>("[data-scene-header-tone]");
-
-    if (owner) {
-      return owner;
-    }
-  }
-
-  return null;
-}
+type SceneToneRange = {
+  tone: HeaderTone;
+  sectionId?: string;
+  top: number;
+  bottom: number;
+};
 
 export function V2Header() {
   const headerRef = useRef<HTMLElement>(null);
@@ -44,6 +36,43 @@ export function V2Header() {
     let direction: "up" | "down" | null = null;
     let accumulatedDelta = 0;
     let updateFrame = 0;
+    let cachedToneRanges: SceneToneRange[] = [];
+
+    const refreshToneRanges = () => {
+      const elements = Array.from(
+        document.querySelectorAll<HTMLElement>("[data-scene-header-tone]"),
+      );
+
+      const scrollY = window.scrollY;
+      cachedToneRanges = elements
+        .map((element) => {
+          const rect = element.getBoundingClientRect();
+          const top = rect.top + scrollY;
+          const bottom = top + rect.height;
+          const tone = (element.dataset.sceneHeaderTone as HeaderTone) || "dark";
+          const section = element.closest<HTMLElement>("section[id]");
+          return {
+            tone,
+            sectionId: section?.id,
+            top,
+            bottom,
+          };
+        })
+        .sort((a, b) => a.top - b.top);
+    };
+
+    const resolveHeaderContext = (currentY: number) => {
+      const sampleY = currentY + HEADER_SAMPLE_Y;
+
+      for (let i = cachedToneRanges.length - 1; i >= 0; i -= 1) {
+        const range = cachedToneRanges[i];
+        if (sampleY >= range.top && sampleY < range.bottom) {
+          return { tone: range.tone, sectionId: range.sectionId };
+        }
+      }
+
+      return { tone: "dark" as HeaderTone };
+    };
 
     const setVisibility = (visible: boolean) => {
       const next = visible ? "visible" : "hidden";
@@ -53,15 +82,13 @@ export function V2Header() {
       }
     };
 
-    const updateSceneContext = () => {
-      const owner = resolveHeaderOwner();
-      const tone = owner?.dataset.sceneHeaderTone as HeaderTone | undefined;
-      const section = owner?.closest<HTMLElement>("section[id]");
+    const updateSceneContext = (currentY: number) => {
+      const { tone, sectionId } = resolveHeaderContext(currentY);
 
-      header.dataset.headerTone = tone ?? "dark";
+      header.dataset.headerTone = tone;
 
-      if (section?.id) {
-        header.dataset.activeSection = section.id;
+      if (sectionId) {
+        header.dataset.activeSection = sectionId;
       } else {
         delete header.dataset.activeSection;
       }
@@ -74,7 +101,7 @@ export function V2Header() {
       const delta = currentY - previousY;
       previousY = currentY;
 
-      updateSceneContext();
+      updateSceneContext(currentY);
 
       if (currentY <= TOP_VISIBILITY_LIMIT) {
         direction = null;
@@ -111,25 +138,32 @@ export function V2Header() {
       }
     };
 
+    const onResize = () => {
+      refreshToneRanges();
+      scheduleUpdate();
+    };
+
     const revealAfterHero = () => {
       header.dataset.headerReady = "true";
+      refreshToneRanges();
       setVisibility(window.scrollY <= TOP_VISIBILITY_LIMIT);
       scheduleUpdate();
     };
 
+    refreshToneRanges();
     window.addEventListener("scroll", scheduleUpdate, { passive: true });
-    window.addEventListener("resize", scheduleUpdate);
+    window.addEventListener("resize", onResize);
     window.addEventListener(V2_HEADER_REVEAL_EVENT, revealAfterHero);
 
     if (document.querySelector('[data-hero-state="ready"]')) {
       revealAfterHero();
     } else {
-      updateSceneContext();
+      updateSceneContext(window.scrollY);
     }
 
     return () => {
       window.removeEventListener("scroll", scheduleUpdate);
-      window.removeEventListener("resize", scheduleUpdate);
+      window.removeEventListener("resize", onResize);
       window.removeEventListener(V2_HEADER_REVEAL_EVENT, revealAfterHero);
       window.cancelAnimationFrame(updateFrame);
     };

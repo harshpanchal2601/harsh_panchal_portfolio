@@ -2,8 +2,8 @@
   --contact-bg: #0f0e0c;
   --contact-bg-secondary: #15110e;
   --contact-text: #eee4d7;
-  --contact-text-muted: rgba(238, 228, 215, 0.42);
-  --contact-text-faint: rgba(238, 228, 215, 0.2);
+  --contact-text-muted: rgba(238, 228, 215, 0.68);
+  --contact-text-faint: rgba(238, 228, 215, 0.58);
   --contact-accent: #b96143;
   --contact-accent-mid: #c87352;
   --contact-accent-soft: #d68a68;
@@ -267,7 +267,7 @@
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgb(238 228 215 / 0.36);
+  color: rgb(238 228 215 / 0.68);
 }
 
 .portfolio-v2 .v2-contact-rail-group a {

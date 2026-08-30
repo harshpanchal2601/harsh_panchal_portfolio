@@ -59,8 +59,14 @@ function bindContactPointer(scope: HTMLElement): () => void {
     return () => {};
   }
 
-  const rootRect = root.getBoundingClientRect();
-  const scopeRect = scope.getBoundingClientRect();
+  let rootRect = root.getBoundingClientRect();
+  let scopeRect = scope.getBoundingClientRect();
+
+  const updateRects = () => {
+    rootRect = root.getBoundingClientRect();
+    scopeRect = scope.getBoundingClientRect();
+  };
+
   const initialTextX = rootRect.width * 0.64;
   const initialTextY = rootRect.height * 0.34;
   const initialBgX = scopeRect.width * 0.65;
@@ -135,15 +141,17 @@ function bindContactPointer(scope: HTMLElement): () => void {
     }
   };
 
+  const onEnter = () => {
+    updateRects();
+  };
+
   const onMove = (event: PointerEvent) => {
-    const nextRootRect = root.getBoundingClientRect();
-    const nextScopeRect = scope.getBoundingClientRect();
-    const pointerX = event.clientX - nextRootRect.left;
-    const pointerY = event.clientY - nextRootRect.top;
-    const scopePointerX = event.clientX - nextScopeRect.left;
-    const scopePointerY = event.clientY - nextScopeRect.top;
-    const scopeCenterX = nextScopeRect.width / 2;
-    const scopeCenterY = nextScopeRect.height * 0.42;
+    const pointerX = event.clientX - rootRect.left;
+    const pointerY = event.clientY - rootRect.top;
+    const scopePointerX = event.clientX - scopeRect.left;
+    const scopePointerY = event.clientY - scopeRect.top;
+    const scopeCenterX = scopeRect.width / 2;
+    const scopeCenterY = scopeRect.height * 0.42;
 
     targetTextX = pointerX;
     targetTextY = pointerY;
@@ -157,24 +165,25 @@ function bindContactPointer(scope: HTMLElement): () => void {
   };
 
   const onLeave = () => {
-    const nextRootRect = root.getBoundingClientRect();
-    const nextScopeRect = scope.getBoundingClientRect();
-
-    targetTextX = nextRootRect.width * 0.7;
-    targetTextY = nextRootRect.height * 0.68;
-    targetBgX = nextScopeRect.width * 0.65;
-    targetBgY = nextScopeRect.height * 0.3;
+    targetTextX = rootRect.width * 0.7;
+    targetTextY = rootRect.height * 0.68;
+    targetBgX = scopeRect.width * 0.65;
+    targetBgY = scopeRect.height * 0.3;
     targetTextStrength = 0;
     targetBgStrength = REST_BACKGROUND_STRENGTH;
     startLoop();
   };
 
+  root.addEventListener("pointerenter", onEnter);
   root.addEventListener("pointermove", onMove);
   root.addEventListener("pointerleave", onLeave);
+  window.addEventListener("resize", updateRects);
 
   return () => {
+    root.removeEventListener("pointerenter", onEnter);
     root.removeEventListener("pointermove", onMove);
     root.removeEventListener("pointerleave", onLeave);
+    window.removeEventListener("resize", updateRects);
     stopLoop();
   };
 }

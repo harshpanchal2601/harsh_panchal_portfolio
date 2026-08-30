@@ -25,8 +25,8 @@ export const featuredProjectPreviews = [
     presentation: {
       surface: "#17130f",
       ink: "#f3e4d0",
-      muted: "rgba(243, 228, 208, 0.42)",
-      faint: "rgba(243, 228, 208, 0.18)",
+      muted: "rgba(243, 228, 208, 0.72)",
+      faint: "rgba(243, 228, 208, 0.58)",
       media: "#241c16",
     },
     caseStudy: {
@@ -90,8 +90,8 @@ export const featuredProjectPreviews = [
     presentation: {
       surface: "#e4d3bc",
       ink: "#17130f",
-      muted: "rgba(23, 19, 15, 0.48)",
-      faint: "rgba(23, 19, 15, 0.18)",
+      muted: "rgba(23, 19, 15, 0.68)",
+      faint: "rgba(23, 19, 15, 0.58)",
       media: "#f3eee7",
     },
     caseStudy: {
@@ -131,8 +131,8 @@ export const featuredProjectPreviews = [
     presentation: {
       surface: "#c9a36a",
       ink: "#17130f",
-      muted: "rgba(23, 19, 15, 0.5)",
-      faint: "rgba(23, 19, 15, 0.2)",
+      muted: "rgba(23, 19, 15, 0.72)",
+      faint: "rgba(23, 19, 15, 0.62)",
       media: "#efe4d2",
     },
     caseStudy: {
@@ -167,8 +167,8 @@ export const featuredProjectPreviews = [
     presentation: {
       surface: "#3a4454",
       ink: "#f3eee7",
-      muted: "rgba(243, 238, 231, 0.48)",
-      faint: "rgba(243, 238, 231, 0.18)",
+      muted: "rgba(243, 238, 231, 0.75)",
+      faint: "rgba(243, 238, 231, 0.60)",
       media: "#2c3441",
     },
     caseStudy: {

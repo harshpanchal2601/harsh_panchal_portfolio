@@ -184,7 +184,7 @@
 }
 
 .portfolio-v2 .v2-header-link {
-  opacity: 0.58;
+  opacity: 0.72;
   text-decoration: none;
   transition: color 220ms ease, opacity 180ms ease;
 }
@@ -568,7 +568,7 @@
    DESKTOP MEDIA GEOMETRY
    ========================================================= */
 
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
   .portfolio-v2
     .v2-header-menu {
     display: none;
@@ -588,55 +588,47 @@
 }
 
 /*
- * Small laptops need a little more image width,
- * but still respect viewport height.
+ * Compact laptops and landscape tablets bridge the responsive
+ * composition into the approved desktop treatment.
  */
 
 @media
   (max-width: 1279px)
   and
-  (min-width: 1024px) {
+  (min-width: 900px) {
 
   .portfolio-v2 .v2-hero {
     --hero-title-size:
       clamp(
-        2.1rem,
-        4.5vw,
-        3.5rem
+        3.1rem,
+        5.3vw,
+        4.5rem
       );
 
     --hero-headline-size:
       clamp(
-        3.55rem,
-        6.05vw,
-        4.8rem
+        3.4rem,
+        6vw,
+        4.75rem
       );
+  }
+
+  .portfolio-v2
+    .v2-hero-photo {
+    object-position: 50% 39%;
+  }
+
+  .portfolio-v2
+    .v2-hero-headline {
+    top: 59%;
   }
 }
 
 /* =========================================================
-   MOBILE
+   PHONE + TABLET SHARED COMPOSITION
    ========================================================= */
 
-@media (max-width: 1023px) {
-  .portfolio-v2 .v2-hero {
-    --hero-title-size:
-      min(
-        2.55rem,
-        11vw
-      );
-
-    --hero-headline-size:
-      clamp(
-        2.2rem,
-        9.2vw,
-        3.05rem
-      );
-
-    --hero-headline-leading:
-      0.94;
-  }
-
+@media (max-width: 899px) {
   .portfolio-v2 .v2-header {
     grid-template-columns:
       1fr
@@ -662,7 +654,7 @@
   }
 
   /*
-   * Mobile media covers the entire Hero canvas.
+   * Responsive media covers the entire Hero canvas.
    *
    * Because the source is 3:2 landscape and the viewport
    * is portrait, cropping happens horizontally only.
@@ -764,27 +756,114 @@
 }
 
 /* =========================================================
-   NARROW MOBILE
+   TABLET
    ========================================================= */
 
-@media (max-width: 360px) {
+@media
+  (min-width: 600px)
+  and
+  (max-width: 899px) {
+
   .portfolio-v2 .v2-hero {
     --hero-title-size:
-      min(
-        2.05rem,
-        9.8vw
+      clamp(
+        3.4rem,
+        8vw,
+        4.6rem
       );
 
     --hero-headline-size:
-      min(
-        2.25rem,
-        10.2vw
+      clamp(
+        2.65rem,
+        6.2vw,
+        3.65rem
+      );
+
+    --hero-headline-leading: 0.93;
+    --hero-media-x-mobile: 48%;
+    --hero-media-y-mobile: 28%;
+  }
+
+  .portfolio-v2
+    .v2-hero-headline {
+    top: 58.5%;
+
+    padding-inline:
+      clamp(
+        2rem,
+        6vw,
+        4rem
+      );
+  }
+}
+
+/* =========================================================
+   PHONE
+   ========================================================= */
+
+@media (max-width: 599px) {
+  .portfolio-v2 .v2-hero {
+    --hero-title-size:
+      clamp(
+        2.8rem,
+        14vw,
+        4.35rem
+      );
+
+    --hero-headline-size:
+      clamp(
+        2.15rem,
+        9.4vw,
+        2.75rem
+      );
+
+    --hero-headline-leading: 0.94;
+    --hero-media-x-mobile: 48%;
+    --hero-media-y-mobile: 22%;
+  }
+}
+
+/* =========================================================
+   SHORT RESPONSIVE VIEWPORTS
+   ========================================================= */
+
+@media
+  (min-width: 900px)
+  and
+  (max-width: 1279px)
+  and
+  (max-height: 800px) {
+
+  .portfolio-v2 .v2-hero {
+    --hero-title-size:
+      clamp(
+        2.6rem,
+        4.4vw,
+        3.6rem
+      );
+
+    --hero-headline-size:
+      clamp(
+        3.25rem,
+        5.45vw,
+        4.25rem
       );
   }
 
   .portfolio-v2
     .v2-hero-headline {
-    top: 59%;
+    top: 56.5%;
+  }
+}
+
+@media
+  (max-width: 599px)
+  and
+  (max-height: 820px) {
+
+  .portfolio-v2
+    .v2-hero-headline {
+    top: 58.5%;
   }
 }
 

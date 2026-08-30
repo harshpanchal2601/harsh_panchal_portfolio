@@ -502,6 +502,7 @@ export function playWorkScene(scope: HTMLElement): gsap.Context {
 export function scrollToWorkProject(
   scope: HTMLElement,
   slug: string,
+  options?: { immediate?: boolean },
 ): boolean {
   const panel = Array.from(
     scope.querySelectorAll<HTMLElement>("[data-work-project]"),
@@ -517,7 +518,7 @@ export function scrollToWorkProject(
   const duration = timeline?.duration() ?? 0;
 
   if (!trigger || labelTime === undefined || duration <= 0) {
-    scrollV2To(panel);
+    scrollV2To(panel, options);
     return true;
   }
 
@@ -527,6 +528,6 @@ export function scrollToWorkProject(
   const scrollPosition =
     trigger.start + (trigger.end - trigger.start) * progress;
 
-  scrollV2To(scrollPosition);
+  scrollV2To(scrollPosition, options);
   return true;
 }

@@ -1,8 +1,8 @@
 .portfolio-v2 .v2-capabilities {
   --cap-bg: #17130f;
   --cap-text: #f3e4d0;
-  --cap-muted: rgba(243, 228, 208, 0.28);
-  --cap-faint: rgba(243, 228, 208, 0.12);
+  --cap-muted: rgba(243, 228, 208, 0.68);
+  --cap-faint: rgba(243, 228, 208, 0.55);
   --cap-accent: #b96143;
   --cap-line: rgba(243, 228, 208, 0.14);
   --cap-scroll-distance: 300dvh;
