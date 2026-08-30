@@ -1,8 +1,8 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useRef } from "react";
 
-import { playCapabilitiesScene } from "@/components/portfolio-v2/scenes/capabilities/capabilities-motion";
+import { useNearViewportMotion } from "@/components/portfolio-v2/motion/near-viewport-motion";
 
 import "@/components/portfolio-v2/scenes/capabilities/capabilities-scene.css";
 
@@ -53,6 +53,23 @@ const CAPABILITIES = [
     core: "INTELLIGENCE",
   },
 ] as const;
+
+let capabilitiesMotionPromise:
+  | Promise<typeof import("@/components/portfolio-v2/scenes/capabilities/capabilities-motion")>
+  | undefined;
+
+function preloadCapabilitiesMotion() {
+  capabilitiesMotionPromise ??= import(
+    "@/components/portfolio-v2/scenes/capabilities/capabilities-motion"
+  );
+  return capabilitiesMotionPromise;
+}
+
+async function initializeCapabilitiesMotion(root: HTMLElement) {
+  const { playCapabilitiesScene } = await preloadCapabilitiesMotion();
+  const context = playCapabilitiesScene(root);
+  return () => context.revert();
+}
 
 function CapabilityRow({
   capability,
@@ -128,19 +145,12 @@ function EngineeringSystem() {
 export function CapabilitiesScene() {
   const rootRef = useRef<HTMLElement>(null);
 
-  useLayoutEffect(() => {
-    const root = rootRef.current;
-
-    if (!root) {
-      return;
-    }
-
-    const context = playCapabilitiesScene(root);
-
-    return () => {
-      context.revert();
-    };
-  }, []);
+  useNearViewportMotion(
+    rootRef,
+    "capabilities",
+    preloadCapabilitiesMotion,
+    initializeCapabilitiesMotion,
+  );
 
   return (
     <section

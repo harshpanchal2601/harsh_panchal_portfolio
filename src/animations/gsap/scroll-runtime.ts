@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, type RefObject } from "react";
-import Lenis from "lenis";
+import type Lenis from "lenis";
 import { gsap, registerGsapPlugins, ScrollTrigger } from "@/animations/gsap/register-plugins";
 
 const ACTIVE_CLASS = "portfolio-v2-active";
@@ -15,6 +15,7 @@ const WORK_RETURN_INTENT_TTL = 20_000;
 
 export const V2_HERO_READY_EVENT = "portfolio-v2:hero-ready";
 export const V2_HEADER_REVEAL_EVENT = "portfolio-v2:header-reveal";
+export const V2_WORK_READY_EVENT = "portfolio-v2:work-ready";
 export const V2_VIEWPORT_GEOMETRY_CHANGE_EVENT =
   "portfolio-v2:viewport-geometry-change";
 
@@ -67,15 +68,16 @@ export function readV2WorkReturnIntent(): string | null {
       slug?: unknown;
       createdAt?: unknown;
     };
-    const isValid =
-      typeof intent.slug === "string" &&
-      intent.slug.length > 0 &&
-      typeof intent.createdAt === "number" &&
-      Date.now() - intent.createdAt >= 0 &&
-      Date.now() - intent.createdAt <= WORK_RETURN_INTENT_TTL;
+    const { createdAt, slug } = intent;
 
-    if (isValid) {
-      return intent.slug;
+    if (
+      typeof slug === "string" &&
+      slug.length > 0 &&
+      typeof createdAt === "number" &&
+      Date.now() - createdAt >= 0 &&
+      Date.now() - createdAt <= WORK_RETURN_INTENT_TTL
+    ) {
+      return slug;
     }
 
     window.sessionStorage.removeItem(WORK_RETURN_INTENT_KEY);
@@ -180,10 +182,6 @@ export function useV2ScrollRuntime(rootRef: RefObject<HTMLElement | null>): void
     delete runtimeWindow.__portfolioV2PreviousScrollRestoration;
     window.history.scrollRestoration = "manual";
 
-    if (window.location.pathname === "/") {
-      window.scrollTo({ top: 0, behavior: "auto" });
-    }
-
     activateDocument();
     removeStaleIntroGuard();
 
@@ -200,7 +198,6 @@ export function useV2ScrollRuntime(rootRef: RefObject<HTMLElement | null>): void
       }
 
       canonicalizeV2HomepageUrl();
-      scrollV2To(0, { immediate: true });
       ScrollTrigger.update();
     };
 
@@ -211,14 +208,26 @@ export function useV2ScrollRuntime(rootRef: RefObject<HTMLElement | null>): void
       let viewportWidth = window.innerWidth;
       let viewportHeight = window.innerHeight;
       let refreshTimer = 0;
+      let refreshPending = false;
 
-      const refresh = () => {
-        refreshTimer = 0;
+      const performRefresh = () => {
+        refreshPending = false;
         viewportWidth = window.innerWidth;
         viewportHeight = window.innerHeight;
         beforeRefresh?.();
         window.dispatchEvent(new Event(V2_VIEWPORT_GEOMETRY_CHANGE_EVENT));
         ScrollTrigger.refresh();
+      };
+
+      const refresh = () => {
+        refreshTimer = 0;
+
+        if (ScrollTrigger.isScrolling()) {
+          refreshPending = true;
+          return;
+        }
+
+        performRefresh();
       };
 
       const scheduleRefresh = (force = false) => {
@@ -235,16 +244,23 @@ export function useV2ScrollRuntime(rootRef: RefObject<HTMLElement | null>): void
 
       const onResize = () => scheduleRefresh();
       const onOrientationChange = () => scheduleRefresh(true);
+      const onScrollEnd = () => {
+        if (refreshPending) {
+          performRefresh();
+        }
+      };
 
       window.addEventListener("resize", onResize, { passive: true });
       window.addEventListener("orientationchange", onOrientationChange, {
         passive: true,
       });
+      ScrollTrigger.addEventListener("scrollEnd", onScrollEnd);
 
       return () => {
         window.clearTimeout(refreshTimer);
         window.removeEventListener("resize", onResize);
         window.removeEventListener("orientationchange", onOrientationChange);
+        ScrollTrigger.removeEventListener("scrollEnd", onScrollEnd);
       };
     };
 
@@ -255,10 +271,10 @@ export function useV2ScrollRuntime(rootRef: RefObject<HTMLElement | null>): void
       return unbindViewportRefresh;
     };
 
-    const startSmoothScroll = () => {
+    const startSmoothScroll = (LenisConstructor: typeof Lenis) => {
       markReducedMotion(root, false);
 
-      const lenis = new Lenis({
+      const lenis = new LenisConstructor({
         autoRaf: false,
         autoResize: true,
         content: root,
@@ -301,12 +317,42 @@ export function useV2ScrollRuntime(rootRef: RefObject<HTMLElement | null>): void
       };
     };
 
+    let runtimeGeneration = 0;
+
     const syncRuntime = () => {
+      const generation = ++runtimeGeneration;
       teardownRuntime?.();
       const reducedMotion = prefersReducedMotion();
-      teardownRuntime = reducedMotion || usesNativeTouchScroll()
-        ? startNativeScroll(reducedMotion)
-        : startSmoothScroll();
+
+      if (reducedMotion || usesNativeTouchScroll()) {
+        teardownRuntime = startNativeScroll(reducedMotion);
+        return;
+      }
+
+      let cancelled = false;
+      teardownRuntime = () => {
+        cancelled = true;
+      };
+
+      void import("lenis")
+        .then(({ default: LenisConstructor }) => {
+          if (cancelled || generation !== runtimeGeneration) {
+            return;
+          }
+
+          const teardownSmoothScroll = startSmoothScroll(LenisConstructor);
+          teardownRuntime = () => {
+            cancelled = true;
+            teardownSmoothScroll();
+          };
+        })
+        .catch(() => {
+          if (cancelled || generation !== runtimeGeneration) {
+            return;
+          }
+
+          teardownRuntime = startNativeScroll(false);
+        });
     };
 
     syncRuntime();

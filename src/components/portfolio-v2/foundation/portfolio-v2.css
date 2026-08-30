@@ -51,6 +51,7 @@ html.portfolio-v2-active body {
   isolation: isolate;
   min-height: 100dvh;
   overflow-x: clip;
+  touch-action: pan-y;
   background: var(--v2-bg);
   color: var(--v2-text);
   font-family: var(--font-inter), system-ui, sans-serif;

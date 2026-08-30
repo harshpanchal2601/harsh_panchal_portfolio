@@ -1,8 +1,8 @@
 "use client";
 
-import { FormEvent, useLayoutEffect, useRef } from "react";
+import { FormEvent, useRef } from "react";
 
-import { playContactScene } from "@/components/portfolio-v2/scenes/contact/contact-motion";
+import { useNearViewportMotion } from "@/components/portfolio-v2/motion/near-viewport-motion";
 
 import "@/components/portfolio-v2/scenes/contact/contact-scene.css";
 
@@ -16,6 +16,23 @@ const HEADLINE_LINES = [
   "YOUR NEXT IDEA INTO",
   "PRODUCTION",
 ] as const;
+
+let contactMotionPromise:
+  | Promise<typeof import("@/components/portfolio-v2/scenes/contact/contact-motion")>
+  | undefined;
+
+function preloadContactMotion() {
+  contactMotionPromise ??= import(
+    "@/components/portfolio-v2/scenes/contact/contact-motion"
+  );
+  return contactMotionPromise;
+}
+
+async function initializeContactMotion(root: HTMLElement) {
+  const { playContactScene } = await preloadContactMotion();
+  const context = playContactScene(root);
+  return () => context.revert();
+}
 
 function HeadlineCopy() {
   return (
@@ -42,19 +59,12 @@ function openMailto(name: string, email: string): void {
 export function ContactScene() {
   const rootRef = useRef<HTMLElement>(null);
 
-  useLayoutEffect(() => {
-    const root = rootRef.current;
-
-    if (!root) {
-      return;
-    }
-
-    const context = playContactScene(root);
-
-    return () => {
-      context.revert();
-    };
-  }, []);
+  useNearViewportMotion(
+    rootRef,
+    "contact",
+    preloadContactMotion,
+    initializeContactMotion,
+  );
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

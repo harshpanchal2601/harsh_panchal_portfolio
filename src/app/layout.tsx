@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Inter } from "next/font/google";
-import { AppProviders } from "@/providers/app-providers";
 import { SITE_METADATA } from "@/constants/site";
 import { createSeoMetadata } from "@/lib/seo";
 import "./globals.css";
@@ -8,13 +7,11 @@ import "./globals.css";
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
 });
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -24,8 +21,8 @@ export const metadata: Metadata = {
   authors: [{ name: SITE_METADATA.author }],
   creator: SITE_METADATA.author,
   icons: {
-    icon: "/icon.png",
-    shortcut: "/favicon.png",
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
     apple: "/apple-icon.png",
   },
 };
@@ -43,9 +40,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${inter.variable} h-full antialiased`}
+      className={`${dmSans.variable} ${inter.variable}`}
     >
-      <body className="min-h-full bg-background font-sans text-foreground">
+      <body>
         {/* Route boot behavior that must run before React hydration. */}
         <script
           dangerouslySetInnerHTML={{
@@ -55,10 +52,21 @@ export default function RootLayout({
   if(p==='/'){
     window.__portfolioV2PreviousScrollRestoration=history.scrollRestoration;
     history.scrollRestoration='manual';
+    var hasWorkReturn=false;
+    try{
+      var raw=sessionStorage.getItem('portfolio-v2:work-return');
+      if(raw){
+        var intent=JSON.parse(raw);
+        var age=Date.now()-intent.createdAt;
+        hasWorkReturn=typeof intent.slug==='string'&&intent.slug.length>0&&typeof intent.createdAt==='number'&&age>=0&&age<=20000;
+      }
+    }catch(e){}
     if(location.search||location.hash){
       history.replaceState(history.state,'','/');
     }
-    scrollTo(0,0);
+    if(!hasWorkReturn){
+      scrollTo(0,0);
+    }
   }
 
   if(p!=='/legacy') return;
@@ -69,7 +77,7 @@ export default function RootLayout({
 })();`,
           }}
         />
-        <AppProviders>{children}</AppProviders>
+        {children}
       </body>
     </html>
   );

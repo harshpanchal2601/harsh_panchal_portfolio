@@ -3,6 +3,7 @@ import {
   ScrollTrigger,
 } from "@/animations/gsap/register-plugins";
 import { scrollV2To } from "@/animations/gsap/scroll-runtime";
+import { V2_WORK_READY_EVENT } from "@/animations/gsap/scroll-runtime";
 
 import { createSceneContext } from "@/components/portfolio-v2/motion/scene-context";
 
@@ -16,8 +17,6 @@ import { createSceneContext } from "@/components/portfolio-v2/motion/scene-conte
 
 const WORK_TRIGGER_ID = "v2-work-master";
 const WORK_PROJECT_LABEL_PREFIX = "work:project:";
-
-export const V2_WORK_READY_EVENT = "portfolio-v2:work-ready";
 
 function signalWorkReady(): void {
   window.dispatchEvent(new Event(V2_WORK_READY_EVENT));
@@ -478,9 +477,6 @@ function buildWorkTimeline(scope: HTMLElement): () => void {
     exitEndAt,
   );
 
-  /* ── Refresh ───────────────────────────────────────────── */
-
-  ScrollTrigger.refresh();
   signalWorkReady();
 
   return () => {
@@ -530,8 +526,6 @@ export function scrollToWorkProject(
     scrollV2To(panel, options);
     return true;
   }
-
-  ScrollTrigger.refresh();
 
   const progress = gsap.utils.clamp(0, 1, labelTime / duration);
   const scrollPosition =

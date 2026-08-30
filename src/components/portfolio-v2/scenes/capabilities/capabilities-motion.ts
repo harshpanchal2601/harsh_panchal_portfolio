@@ -10,8 +10,8 @@ const CAPABILITIES_TRIGGER_ID = "v2-capabilities-master";
 
 const COLOR_TEXT = "#F3E4D0";
 const COLOR_ACCENT = "#B96143";
-const COLOR_INACTIVE = "rgba(243, 228, 208, 0.45)";
-const COLOR_COMPLETED = "rgba(243, 228, 208, 0.65)";
+const COLOR_INACTIVE = "rgba(243, 228, 208, 0.72)";
+const COLOR_COMPLETED = "rgba(243, 228, 208, 0.78)";
 const COLOR_FAINT = "rgba(243, 228, 208, 0.55)";
 const COLOR_MUTED = "rgba(243, 228, 208, 0.68)";
 const COLOR_LINE = "rgba(243, 228, 208, 0.14)";
@@ -72,15 +72,15 @@ function applyRowLook(
   if (look === "completed") {
     gsap.set(parts.number, { color: COLOR_COMPLETED });
     gsap.set(parts.title, { color: COLOR_COMPLETED });
-    gsap.set(parts.description, { color: COLOR_MUTED, opacity: 0.65 });
-    gsap.set(parts.technologies, { color: COLOR_FAINT, opacity: 0.8 });
+    gsap.set(parts.description, { color: COLOR_MUTED, opacity: 0.92 });
+    gsap.set(parts.technologies, { color: COLOR_FAINT, opacity: 1 });
     return;
   }
 
   gsap.set(parts.number, { color: COLOR_FAINT });
   gsap.set(parts.title, { color: COLOR_INACTIVE });
-  gsap.set(parts.description, { color: COLOR_MUTED, opacity: 0.35 });
-  gsap.set(parts.technologies, { color: COLOR_FAINT, opacity: 0.45 });
+  gsap.set(parts.description, { color: COLOR_MUTED, opacity: 0.88 });
+  gsap.set(parts.technologies, { color: COLOR_FAINT, opacity: 1 });
 }
 
 function setCapabilityState(
@@ -194,12 +194,12 @@ function tweenRow(
   timeline.to(parts.title, { color: COLOR_COMPLETED, duration: ROW_TWEEN }, at);
   timeline.to(
     parts.description,
-    { color: COLOR_MUTED, opacity: 0.65, duration: ROW_TWEEN },
+    { color: COLOR_MUTED, opacity: 0.92, duration: ROW_TWEEN },
     at,
   );
   timeline.to(
     parts.technologies,
-    { color: COLOR_FAINT, opacity: 0.8, duration: ROW_TWEEN },
+    { color: COLOR_FAINT, opacity: 1, duration: ROW_TWEEN },
     at,
   );
 }
@@ -461,8 +461,6 @@ function buildCapabilitiesTimeline(scope: HTMLElement): () => void {
         button.removeEventListener("click", onClick);
       };
     });
-
-  ScrollTrigger.refresh();
 
   return () => {
     removeCapabilityInteractions.forEach((removeInteraction) => {

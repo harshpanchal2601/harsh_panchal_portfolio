@@ -3,8 +3,9 @@
 import {
   type MouseEvent,
   useId,
-  useLayoutEffect,
+  useEffect,
   useRef,
+  useState,
 } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -14,14 +15,11 @@ import {
   pauseV2Scroll,
   readV2WorkReturnIntent,
   V2_HERO_READY_EVENT,
+  V2_WORK_READY_EVENT,
 } from "@/animations/gsap/scroll-runtime";
 import { gsap } from "@/animations/gsap/register-plugins";
-import { featuredProjectPreviews } from "@/data/projects";
-import {
-  playWorkScene,
-  scrollToWorkProject,
-  V2_WORK_READY_EVENT,
-} from "@/components/portfolio-v2/scenes/work/work-motion";
+import { featuredProjectPreviews } from "@/data/projects/previews";
+import { bindNearViewportActivation } from "@/components/portfolio-v2/motion/near-viewport-motion";
 
 import "@/components/portfolio-v2/scenes/work/work-scene.css";
 
@@ -38,6 +36,17 @@ const EXIT_KINETIC_COPY =
 const WORK_PROJECTS = featuredProjectPreviews;
 type WorkProject = (typeof WORK_PROJECTS)[number];
 
+let workMotionPromise:
+  | Promise<typeof import("@/components/portfolio-v2/scenes/work/work-motion")>
+  | undefined;
+
+function preloadWorkMotion() {
+  workMotionPromise ??= import(
+    "@/components/portfolio-v2/scenes/work/work-motion"
+  );
+  return workMotionPromise;
+}
+
 function formatProjectNumber(index: number): string {
   return `(${String(index + 1).padStart(2, "0")})`;
 }
@@ -45,21 +54,25 @@ function formatProjectNumber(index: number): string {
 /* ── Project media (iframe embed with fallback) ──────────── */
 
 function ProjectMedia({
+  previewEnabled,
   project,
 }: {
+  previewEnabled: boolean;
   project: (typeof WORK_PROJECTS)[number];
 }) {
   if (project.liveUrl) {
     return (
       <figure className="v2-work-media" data-work-media="">
-        <iframe
-          className="v2-work-media-frame"
-          loading="lazy"
-          sandbox="allow-scripts allow-same-origin"
-          src={project.liveUrl}
-          tabIndex={-1}
-          title={`${project.title} live product`}
-        />
+        {previewEnabled ? (
+          <iframe
+            className="v2-work-media-frame"
+            loading="lazy"
+            sandbox="allow-scripts allow-same-origin"
+            src={project.liveUrl}
+            tabIndex={-1}
+            title={`${project.title} live product`}
+          />
+        ) : null}
       </figure>
     );
   }
@@ -78,6 +91,7 @@ function ProjectPanel({
   project,
   index,
   onOpen,
+  previewEnabled,
 }: {
   project: WorkProject;
   index: number;
@@ -86,6 +100,7 @@ function ProjectPanel({
     project: WorkProject,
     index: number,
   ) => void;
+  previewEnabled: boolean;
 }) {
   const presentation = project.presentation;
 
@@ -108,6 +123,7 @@ function ProjectPanel({
         <h3 className="v2-work-panel-title">{project.title}</h3>
         <p className="v2-work-panel-number">{formatProjectNumber(index)}</p>
         <Link
+          aria-label={`View ${project.title} case study`}
           className="v2-work-panel-link"
           href={`/projects/${project.slug}`}
           onClick={(event) => onOpen(event, project, index)}
@@ -128,7 +144,7 @@ function ProjectPanel({
           </p>
         </div>
 
-        <ProjectMedia project={project} />
+        <ProjectMedia previewEnabled={previewEnabled} project={project} />
       </div>
     </article>
   );
@@ -140,10 +156,11 @@ export function WorkScene() {
   const router = useRouter();
   const rootRef = useRef<HTMLElement>(null);
   const transitioningRef = useRef(false);
+  const [previewsEnabled, setPreviewsEnabled] = useState(false);
   const entryPathId = `v2-work-arc${useId().replace(/:/g, "")}`;
   const exitPathId = `v2-work-exit-arc${useId().replace(/:/g, "")}`;
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const root = rootRef.current;
 
     if (!root) {
@@ -151,6 +168,11 @@ export function WorkScene() {
     }
 
     let returnSlug = readV2WorkReturnIntent();
+    let scrollToProject:
+      | typeof import("@/components/portfolio-v2/scenes/work/work-motion")["scrollToWorkProject"]
+      | undefined;
+    let revertMotion: (() => void) | undefined;
+    let cancelled = false;
     let heroReady = Boolean(
       document.querySelector('[data-hero-state="ready"]'),
     );
@@ -161,7 +183,7 @@ export function WorkScene() {
         return;
       }
 
-      if (scrollToWorkProject(root, returnSlug, { immediate: true })) {
+      if (scrollToProject?.(root, returnSlug, { immediate: true })) {
         clearV2WorkReturnIntent();
         returnSlug = null;
       }
@@ -180,12 +202,31 @@ export function WorkScene() {
     window.addEventListener(V2_HERO_READY_EVENT, onHeroReady);
     window.addEventListener(V2_WORK_READY_EVENT, onWorkReady);
 
-    const context = playWorkScene(root);
+    const unbindActivation = bindNearViewportActivation(
+      root,
+      "work",
+      preloadWorkMotion,
+      () => {
+        setPreviewsEnabled(true);
+        void preloadWorkMotion().then((motion) => {
+          if (cancelled) {
+            return;
+          }
+
+          scrollToProject = motion.scrollToWorkProject;
+          const context = motion.playWorkScene(root);
+          revertMotion = () => context.revert();
+        });
+      },
+      Boolean(returnSlug),
+    );
 
     return () => {
+      cancelled = true;
+      unbindActivation();
       window.removeEventListener(V2_HERO_READY_EVENT, onHeroReady);
       window.removeEventListener(V2_WORK_READY_EVENT, onWorkReady);
-      context.revert();
+      revertMotion?.();
     };
   }, []);
 
@@ -377,6 +418,7 @@ export function WorkScene() {
               index={index}
               key={project.slug}
               onOpen={openProject}
+              previewEnabled={previewsEnabled}
               project={project}
             />
           ))}

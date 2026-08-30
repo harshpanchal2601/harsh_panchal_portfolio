@@ -10,6 +10,7 @@ import {
   V2_VIEWPORT_GEOMETRY_CHANGE_EVENT,
 } from "@/animations/gsap/scroll-runtime";
 import { V2_NAV_ITEMS } from "@/components/portfolio-v2/scenes/hero/hero-content";
+import { prewarmV2Scene } from "@/components/portfolio-v2/motion/near-viewport-motion";
 
 const TOP_VISIBILITY_LIMIT = 40;
 const HIDE_THRESHOLD = 12;
@@ -236,6 +237,7 @@ export function V2Header() {
       return;
     }
 
+    prewarmV2Scene(target.id);
     scrollV2To(target);
   };
 

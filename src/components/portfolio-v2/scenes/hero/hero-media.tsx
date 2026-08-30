@@ -8,9 +8,8 @@ export function HeroMedia() {
         src={HERO_IMAGE_SRC}
         alt="Harsh Panchal"
         fill
-        priority
-        fetchPriority="high"
-        quality={90}
+        preload
+        quality={82}
         draggable={false}
         sizes="100vw"
         className="v2-hero-photo"
@@ -20,6 +19,13 @@ export function HeroMedia() {
         aria-hidden="true"
         className="v2-hero-media-shade"
       />
+
+      <div aria-hidden="true" className="v2-hero-reveal">
+        <span className="v2-hero-reveal-cover" data-hero-reveal="top" />
+        <span className="v2-hero-reveal-cover" data-hero-reveal="right" />
+        <span className="v2-hero-reveal-cover" data-hero-reveal="bottom" />
+        <span className="v2-hero-reveal-cover" data-hero-reveal="left" />
+      </div>
     </div>
   );
 }

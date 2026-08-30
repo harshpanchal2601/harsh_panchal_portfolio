@@ -418,8 +418,6 @@ function buildProcessTimeline(scope: HTMLElement): () => void {
 
   timeline.to({}, { duration: 0.14 }, 0.86);
 
-  ScrollTrigger.refresh();
-
   return () => {
     window.clearTimeout(snapTimer);
     timeline.scrollTrigger?.kill();

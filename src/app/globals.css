@@ -1,66 +1,3 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-
-@custom-variant dark (&:is(.dark *));
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-void: var(--void);
-  --color-ink: var(--ink);
-  --color-charcoal: var(--charcoal);
-  --color-graphite: var(--graphite);
-  --color-mist: var(--mist);
-  --color-smoke: var(--smoke);
-  --color-ash: var(--ash);
-  --color-champagne: var(--champagne);
-  --color-bronze: var(--bronze);
-  --color-copper: var(--copper);
-  --color-steel: var(--steel);
-  --color-sage: var(--sage);
-  --font-sans: var(--font-inter);
-  --font-mono: var(--font-inter);
-  --font-display: var(--font-dm-sans);
-  --font-heading: var(--font-dm-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
-}
-
 :root {
   --void: #f7f4ef;
   --ink: #171717;
@@ -108,150 +45,84 @@
   --sidebar-ring: var(--champagne);
 }
 
-@layer base {
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-
-  * {
-    @apply border-border outline-ring/50;
-  }
-  html {
-    @apply h-full overflow-x-hidden font-sans;
-    color-scheme: light;
-    text-rendering: optimizeLegibility;
-  }
-  body {
-    @apply min-h-full overflow-x-hidden bg-background text-foreground antialiased;
-    background:
-      linear-gradient(rgba(23, 23, 23, 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(23, 23, 23, 0.035) 1px, transparent 1px),
-      radial-gradient(at 12% 0%, rgba(109, 94, 246, 0.12) 0px, transparent 38%),
-      radial-gradient(at 86% 8%, rgba(215, 199, 163, 0.24) 0px, transparent 34%),
-      var(--background);
-    background-size: 48px 48px, 48px 48px, auto, auto, auto;
-    font-feature-settings:
-      "rlig" 1,
-      "calt" 1;
-  }
-  ::selection {
-    background: color-mix(in srgb, var(--champagne) 22%, transparent);
-    color: var(--ink);
-  }
-  a {
-    @apply underline-offset-4;
-  }
-  button,
-  a {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-@layer utilities {
-  .mesh-gradient {
-    background:
-      radial-gradient(at 12% 8%, rgba(109, 94, 246, 0.14) 0px, transparent 34%),
-      radial-gradient(at 82% 18%, rgba(215, 199, 163, 0.32) 0px, transparent 32%),
-      linear-gradient(180deg, #f7f4ef 0%, #f5f2ec 100%);
-  }
-
-  .glass-panel {
-    background: rgba(255, 255, 255, 0.78);
-    border: 1px solid rgba(23, 23, 23, 0.1);
-    box-shadow: 0 24px 70px rgba(23, 23, 23, 0.08);
-  }
-
-  .kinetic-text {
-    -webkit-text-stroke: 1px rgba(23, 23, 23, 0.14);
-    color: transparent;
-  }
-
-  .journey-line {
-    background: linear-gradient(to bottom, transparent, #6d5ef6, transparent);
-  }
-
-  .text-gradient-primary {
-    background: linear-gradient(135deg, #6d5ef6 0%, #5b6cff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .card-hover-lift {
-    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.32s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.32s ease;
-  }
-  .card-hover-lift:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 32px 80px rgba(109, 94, 246, 0.14);
-    border-color: rgba(109, 94, 246, 0.28);
-  }
-
-  .premium-card-hover {
-    position: relative;
-    overflow: hidden;
-    transition:
-      transform 0.34s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 0.34s cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 0.34s ease,
-      background-color 0.34s ease;
-  }
-  .premium-card-hover::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background:
-      linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.42) 48%, transparent 64%);
-    opacity: 0;
-    transform: translateX(-12%);
-    transition:
-      opacity 0.34s ease,
-      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .premium-card-hover:hover {
-    transform: translateY(-4px);
-    border-color: rgba(23, 23, 23, 0.16);
-    background-color: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 24px 62px rgba(23, 23, 23, 0.075);
-  }
-  .premium-card-hover:hover::before {
-    opacity: 0.7;
-    transform: translateX(12%);
-  }
-
-  .section-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--primary);
-  }
-  .section-label::before {
-    content: '';
-    display: inline-block;
-    width: 20px;
-    height: 2px;
-    background: var(--primary);
-    border-radius: 1px;
-  }
+html {
+  min-height: 100%;
+  overflow-x: hidden;
+  color-scheme: light;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  line-height: 1.5;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
 }
 
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+body {
+  min-height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+  background:
+    linear-gradient(rgba(23, 23, 23, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 23, 23, 0.035) 1px, transparent 1px),
+    radial-gradient(at 12% 0%, rgba(109, 94, 246, 0.12) 0, transparent 38%),
+    radial-gradient(at 86% 8%, rgba(215, 199, 163, 0.24) 0, transparent 34%),
+    var(--background);
+  background-size: 48px 48px, 48px 48px, auto, auto, auto;
+  color: var(--foreground);
+  font-feature-settings: "rlig" 1, "calt" 1;
 }
 
-.animate-marquee {
-  animation: marquee 30s linear infinite;
+h1,
+h2,
+h3,
+h4,
+p,
+figure {
+  margin: 0;
+}
+
+button,
+input,
+textarea,
+select {
+  color: inherit;
+  font: inherit;
+}
+
+button {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  text-underline-offset: 4px;
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--champagne) 22%, transparent);
+  color: var(--ink);
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -263,22 +134,4 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent 25%, rgba(109,94,246,0.08) 50%, transparent 75%);
-  background-size: 200% 100%;
-  animation: shimmer 2.5s ease infinite;
-}
-
-@keyframes float-up {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
-.animate-float {
-  animation: float-up 5s ease-in-out infinite;
 }

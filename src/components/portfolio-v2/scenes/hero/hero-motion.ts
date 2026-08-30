@@ -58,6 +58,7 @@ type HeroMotionProfile = Readonly<{
 const CLIP_HIDDEN = "inset(50% 50% 50% 50%)";
 const CLIP_PEEK_DESKTOP = "inset(36% 41% 36% 41%)";
 const CLIP_PEEK_MOBILE = "inset(32% 26% 32% 26%)";
+const CLIP_PHONE_INITIAL = "inset(46% 42% 46% 42%)";
 const CLIP_OPEN = "inset(0% 0% 0% 0%)";
 
 const HERO_EXIT_TRIGGER_ID = "v2-hero-exit";
@@ -169,22 +170,22 @@ function getHeroMotionProfile(width: number, height: number): HeroMotionProfile 
     name: "phone",
     headlineMode: "mobile",
     fragmentTravel: 1,
-    introTitleDuration: 0.52,
-    introSplitAt: 0.38,
+    introTitleDuration: 0.44,
+    introSplitAt: 0.3,
     introSplitX: "0vw",
     introSplitY: "8svh",
-    introSplitDuration: 0.58,
+    introSplitDuration: 0.48,
     mediaPeekClip: CLIP_PEEK_MOBILE,
-    mediaPeekAt: 0.5,
-    mediaPeekDuration: 0.34,
-    mediaExpandAt: 0.84,
-    mediaExpandDuration: 0.74,
-    headerResolveAt: 1.02,
+    mediaPeekAt: 0.34,
+    mediaPeekDuration: 0.28,
+    mediaExpandAt: 0.64,
+    mediaExpandDuration: 0.62,
+    headerResolveAt: 0.84,
     introResolveX: 0,
     introResolveY: "-5svh",
-    headlineAssembleAt: 1.34,
-    headlineAssembleDuration: 0.62,
-    heroReadyAt: 2.28,
+    headlineAssembleAt: 1.06,
+    headlineAssembleDuration: 0.54,
+    heroReadyAt: 1.86,
     exitScrollDistance: "+=96%",
     exitTravel: 1,
     photoTransformOrigin: "46% 24%",
@@ -207,6 +208,20 @@ function negativeLength(value: string): string {
   return value.startsWith("-") ? value.slice(1) : `-${value}`;
 }
 
+function revealCoverClips(inset: string): string[] {
+  const values = Array.from(inset.matchAll(/([\d.]+)%/g), (match) =>
+    Number.parseFloat(match[1]),
+  );
+  const [top = 50, right = 50, bottom = 50, left = 50] = values;
+
+  return [
+    `inset(0% 0% ${100 - top}% 0%)`,
+    `inset(${top}% 0% ${bottom}% ${100 - right}%)`,
+    `inset(${100 - bottom}% 0% 0% 0%)`,
+    `inset(${top}% ${100 - left}% ${bottom}% 0%)`,
+  ];
+}
+
 function applySettledHeroVisuals(scope: HTMLElement): void {
   const select = gsap.utils.selector(scope);
 
@@ -216,8 +231,9 @@ function applySettledHeroVisuals(scope: HTMLElement): void {
     y: 0,
   });
 
-  gsap.set(select(".v2-hero-media"), {
-    clipPath: CLIP_OPEN,
+  const openRevealClips = revealCoverClips(CLIP_OPEN);
+  gsap.set(select(".v2-hero-reveal-cover"), {
+    clipPath: (index: number) => openRevealClips[index],
   });
 
   gsap.set(select(".v2-hero-frag"), {
@@ -251,7 +267,6 @@ function createHeroExitScroll(
   const select = gsap.utils.selector(scope);
   const mobile = profile.headlineMode === "mobile";
 
-  const media = select(".v2-hero-media");
   const photo = select(".v2-hero-photo");
   const headline = select(".v2-hero-headline");
   const lines = gsap.utils.toArray<HTMLElement>(
@@ -267,10 +282,6 @@ function createHeroExitScroll(
     transformOrigin: profile.photoTransformOrigin,
     scale: 1,
     yPercent: 0,
-  });
-
-  gsap.set(media, {
-    clipPath: CLIP_OPEN,
   });
 
   gsap.set(lines, {
@@ -543,7 +554,7 @@ function buildOpeningTimeline(
   const introInner = select(".v2-hero-intro-inner");
   const harsh = select(".v2-hero-intro-name--harsh");
   const panchal = select(".v2-hero-intro-name--panchal");
-  const media = select(".v2-hero-media");
+  const revealCovers = select(".v2-hero-reveal-cover");
   const fragments = select(".v2-hero-frag");
 
   gsap.set(intro, {
@@ -561,8 +572,11 @@ function buildOpeningTimeline(
     y: 0,
   });
 
-  gsap.set(media, {
-    clipPath: CLIP_HIDDEN,
+  const hiddenRevealClips = revealCoverClips(
+    profile.name === "phone" ? CLIP_PHONE_INITIAL : CLIP_HIDDEN,
+  );
+  gsap.set(revealCovers, {
+    clipPath: (index: number) => hiddenRevealClips[index],
   });
 
   gsap.set(fragments, {
@@ -636,9 +650,10 @@ function buildOpeningTimeline(
   );
 
   timeline.to(
-    media,
+    revealCovers,
     {
-      clipPath: profile.mediaPeekClip,
+      clipPath: (index: number) =>
+        revealCoverClips(profile.mediaPeekClip)[index],
       duration: profile.mediaPeekDuration,
       ease: "power3.out",
     },
@@ -651,9 +666,9 @@ function buildOpeningTimeline(
   );
 
   timeline.to(
-    media,
+    revealCovers,
     {
-      clipPath: CLIP_OPEN,
+      clipPath: (index: number) => revealCoverClips(CLIP_OPEN)[index],
       duration: profile.mediaExpandDuration,
       ease: "power4.inOut",
     },

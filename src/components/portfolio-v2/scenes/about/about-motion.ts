@@ -5,7 +5,7 @@ import {
 
 import { createSceneContext } from "@/components/portfolio-v2/motion/scene-context";
 
-const WORD_MUTED = "rgba(23, 19, 15, 0.15)";
+const WORD_MUTED = "rgba(23, 19, 15, 0.48)";
 const WORD_ACCENT = "#B96143";
 const WORD_INK = "#17130F";
 

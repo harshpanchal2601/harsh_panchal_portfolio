@@ -147,11 +147,9 @@
   gap: clamp(2rem, 5vw, 7rem);
   align-items: end;
   padding:
-    clamp(11rem, 24vh, 15rem)
+    clamp(13rem, 23vh, 15rem)
     var(--v2-page-padding)
-    clamp(4rem, 10vh, 6.5rem);
-  visibility: hidden;
-  opacity: 0;
+    clamp(1.5rem, 3vh, 2.5rem);
 }
 
 .portfolio-v2 .v2-cap-list {
