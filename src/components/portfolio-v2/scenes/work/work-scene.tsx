@@ -5,7 +5,6 @@ import {
   useId,
   useLayoutEffect,
   useRef,
-  useState,
 } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -19,6 +18,7 @@ import {
 } from "@/animations/gsap/scroll-runtime";
 import { gsap } from "@/animations/gsap/register-plugins";
 import { featuredProjectPreviews } from "@/data/projects/previews";
+import { ProjectArtwork } from "@/components/portfolio-v2/shared/project-artwork";
 import {
   playWorkScene,
   scrollToWorkProject,
@@ -43,36 +43,16 @@ function formatProjectNumber(index: number): string {
   return `(${String(index + 1).padStart(2, "0")})`;
 }
 
-/* ── Project media (iframe embed with fallback) ──────────── */
+/* ── Project media ───────────────────────────────────────── */
 
-function ProjectMedia({
-  previewEnabled,
-  project,
-}: {
-  previewEnabled: boolean;
-  project: (typeof WORK_PROJECTS)[number];
-}) {
-  if (project.liveUrl) {
-    return (
-      <figure className="v2-work-media" data-work-media="">
-        {previewEnabled ? (
-          <iframe
-            className="v2-work-media-frame"
-            loading="lazy"
-            sandbox="allow-scripts allow-same-origin"
-            src={project.liveUrl}
-            tabIndex={-1}
-            title={`${project.title} live product`}
-          />
-        ) : null}
-      </figure>
-    );
-  }
-
+function ProjectMedia({ project }: { project: WorkProject }) {
   return (
     <figure className="v2-work-media" data-work-media="">
-      <p className="v2-work-media-title">{project.title}</p>
-      <p className="v2-work-media-tech">{project.tech.slice(0, 4).join(" / ")}</p>
+      <ProjectArtwork
+        role={project.role}
+        tech={project.tech}
+        title={project.title}
+      />
     </figure>
   );
 }
@@ -83,7 +63,6 @@ function ProjectPanel({
   project,
   index,
   onOpen,
-  previewEnabled,
 }: {
   project: WorkProject;
   index: number;
@@ -92,7 +71,6 @@ function ProjectPanel({
     project: WorkProject,
     index: number,
   ) => void;
-  previewEnabled: boolean;
 }) {
   const presentation = project.presentation;
 
@@ -136,7 +114,7 @@ function ProjectPanel({
           </p>
         </div>
 
-        <ProjectMedia previewEnabled={previewEnabled} project={project} />
+        <ProjectMedia project={project} />
       </div>
     </article>
   );
@@ -148,7 +126,6 @@ export function WorkScene() {
   const router = useRouter();
   const rootRef = useRef<HTMLElement>(null);
   const transitioningRef = useRef(false);
-  const [previewsEnabled, setPreviewsEnabled] = useState(false);
   const entryPathId = `v2-work-arc${useId().replace(/:/g, "")}`;
   const exitPathId = `v2-work-exit-arc${useId().replace(/:/g, "")}`;
 
@@ -159,7 +136,6 @@ export function WorkScene() {
       return;
     }
 
-    setPreviewsEnabled(true);
     const context = playWorkScene(root);
 
     let returnSlug =
@@ -257,7 +233,7 @@ export function WorkScene() {
     number.className = "v2-project-transition-number";
     number.textContent = formatProjectNumber(projectIndex);
     mediaClone.classList.add("v2-project-transition-media");
-    mediaClone.querySelectorAll<HTMLElement>("a, button, input, iframe").forEach(
+    mediaClone.querySelectorAll<HTMLElement>("a, button, input").forEach(
       (element) => {
         element.tabIndex = -1;
       },
@@ -393,7 +369,6 @@ export function WorkScene() {
               index={index}
               key={project.slug}
               onOpen={openProject}
-              previewEnabled={previewsEnabled}
               project={project}
             />
           ))}

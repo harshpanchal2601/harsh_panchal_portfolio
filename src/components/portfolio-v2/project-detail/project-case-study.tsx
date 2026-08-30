@@ -14,7 +14,9 @@ import {
   setV2WorkReturnIntent,
   useV2ScrollRuntime,
 } from "@/animations/gsap/scroll-runtime";
+import { BackToTopButton } from "@/components/portfolio-v2/layout/back-to-top-button";
 import { playProjectCaseStudy } from "@/components/portfolio-v2/project-detail/project-case-study-motion";
+import { ProjectArtwork } from "@/components/portfolio-v2/shared/project-artwork";
 import type { V2CaseStudyProject } from "@/data/projects";
 import type { ProjectCaseStudySectionId } from "@/types/project";
 
@@ -291,21 +293,13 @@ export function ProjectCaseStudy({
           ) : null}
         </div>
 
-        {project.liveUrl ? (
-          <figure className="v2-project-media" data-project-media="">
-            <div className="v2-project-media-fallback" aria-hidden="true">
-              <span>{project.title}</span>
-              <span>Live product view</span>
-            </div>
-            <iframe
-              loading="lazy"
-              sandbox="allow-scripts allow-same-origin"
-              src={project.liveUrl}
-              tabIndex={-1}
-              title={`${project.title} live product preview`}
-            />
-          </figure>
-        ) : null}
+        <figure className="v2-project-media" data-project-media="">
+          <ProjectArtwork
+            role={project.role}
+            tech={project.tech}
+            title={project.title}
+          />
+        </figure>
       </section>
 
       <div className="v2-project-story">
@@ -336,6 +330,7 @@ export function ProjectCaseStudy({
           </Link>
         )}
       </footer>
+      <BackToTopButton />
     </main>
   );
 }

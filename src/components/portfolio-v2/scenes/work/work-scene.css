@@ -257,7 +257,6 @@
   transform: scale(1.01);
 }
 
-/* Fallback gradient when iframe fails to load */
 .portfolio-v2 .v2-work-media::before {
   content: "";
   position: absolute;
@@ -269,19 +268,7 @@
       var(--work-panel-media, #241c16) 0%,
       color-mix(in srgb, var(--work-panel-media, #241c16), transparent 20%) 100%
     );
-  opacity: 0.7;
-}
-
-.portfolio-v2 .v2-work-media-frame {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  width: 180%;
-  height: 180%;
-  border: 0;
-  pointer-events: none;
-  transform: scale(0.555);
-  transform-origin: top left;
+  opacity: 0.45;
 }
 
 .v2-project-transition {
@@ -319,46 +306,6 @@
   overflow: hidden;
   background: #241c16;
   will-change: transform;
-}
-
-.v2-project-transition-media .v2-work-media-frame {
-  position: absolute;
-  inset: 0;
-  width: 180%;
-  height: 180%;
-  border: 0;
-  pointer-events: none;
-  transform: scale(0.555);
-  transform-origin: top left;
-}
-
-.v2-project-transition-media .v2-work-media-title,
-.v2-project-transition-media .v2-work-media-tech {
-  position: relative;
-  z-index: 1;
-}
-
-.portfolio-v2 .v2-work-media-title {
-  position: relative;
-  z-index: 1;
-  margin: auto 8% 18% 8%;
-  font-family: var(--font-dm-sans), system-ui, sans-serif;
-  font-size: clamp(2rem, 4vw, 3.75rem);
-  font-weight: 400;
-  letter-spacing: -0.05em;
-  line-height: 0.92;
-  text-transform: uppercase;
-}
-
-.portfolio-v2 .v2-work-media-tech {
-  position: relative;
-  z-index: 1;
-  margin: 0 8% 10%;
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--work-panel-muted);
 }
 
 /* ============================================================
@@ -539,8 +486,10 @@
 
   .portfolio-v2 .v2-work-panel-body {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
     gap: clamp(0.6rem, 1.8vh, 1rem);
     align-items: stretch;
+    overflow: hidden;
     padding-top: clamp(0.5rem, 1.5vh, 1rem);
   }
 
@@ -561,7 +510,8 @@
   }
 
   .portfolio-v2 .v2-work-media {
-    min-height: clamp(7.5rem, 22vh, 12rem);
+    height: 100%;
+    min-height: 0;
   }
 }
 
@@ -614,5 +564,16 @@
 
   .portfolio-v2 .v2-work-exit-rail {
     opacity: 1;
+  }
+}
+
+@media (max-width: 599px) and (prefers-reduced-motion: reduce) {
+  .portfolio-v2 .v2-work-panel-body {
+    grid-template-rows: auto minmax(15rem, 1fr);
+  }
+
+  .portfolio-v2 .v2-work-media {
+    height: auto;
+    min-height: 15rem;
   }
 }
